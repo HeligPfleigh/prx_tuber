@@ -1,0 +1,22 @@
+name: Lint check and unit test
+
+on: push
+
+jobs:
+  test:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@master
+
+      - name: Install node modules
+        run: |
+          yarn install
+      - name: Lint check
+        run: |
+          yarn lint
+      - name: Unit test
+        run: |
+          yarn test
