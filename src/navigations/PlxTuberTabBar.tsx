@@ -8,6 +8,10 @@ import DiscoverIcon from '@plx_tuber/assets/icons/Discover.icon';
 import HeartIcon from '@plx_tuber/assets/icons/Heart.icon';
 import CogIcon from '@plx_tuber/assets/icons/Cog.icon';
 import {colors, responsiveSize, spacing} from '@plx_tuber/theme';
+import HomeFillIcon from '@plx_tuber/assets/icons/HomeFill.icon';
+import DiscoverFillIcon from '@plx_tuber/assets/icons/DiscoverFill.icon';
+import HeartFillIcon from '@plx_tuber/assets/icons/HeartFill.icon';
+import CogFillIcon from '@plx_tuber/assets/icons/CogFill.icon';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,6 +32,20 @@ const styles = StyleSheet.create({
     marginTop: spacing(1),
   },
 });
+
+const Icons = {
+  [NavigatorMap.HomeTab]: <HomeIcon color={colors.scorpion} />,
+  [NavigatorMap.DiscoverTab]: <DiscoverIcon color={colors.scorpion} />,
+  [NavigatorMap.FavoriteAndPlaylistTab]: <HeartIcon color={colors.scorpion} />,
+  [NavigatorMap.SettingTab]: <CogIcon color={colors.scorpion} />,
+};
+
+const SelectedIcons = {
+  [NavigatorMap.HomeTab]: <HomeFillIcon color={colors.white} />,
+  [NavigatorMap.DiscoverTab]: <DiscoverFillIcon color={colors.white} />,
+  [NavigatorMap.FavoriteAndPlaylistTab]: <HeartFillIcon color={colors.white} />,
+  [NavigatorMap.SettingTab]: <CogFillIcon color={colors.white} />,
+};
 
 const PlxTuberTabBar: React.FC<BottomTabBarProps> = ({
   state,
@@ -65,16 +83,6 @@ const PlxTuberTabBar: React.FC<BottomTabBarProps> = ({
           });
         };
 
-        const iconColor = isFocused ? colors.white : colors.scorpion;
-        const Icons = {
-          [NavigatorMap.HomeTab]: <HomeIcon color={iconColor} />,
-          [NavigatorMap.DiscoverTab]: <DiscoverIcon color={iconColor} />,
-          [NavigatorMap.FavoriteAndPlaylistTab]: (
-            <HeartIcon color={iconColor} />
-          ),
-          [NavigatorMap.SettingTab]: <CogIcon color={iconColor} />,
-        };
-
         return (
           <TouchableOpacity
             accessibilityRole="button"
@@ -85,7 +93,9 @@ const PlxTuberTabBar: React.FC<BottomTabBarProps> = ({
             onLongPress={onLongPress}
             style={styles.tab}
             key={route.key}>
-            {Icons[route.name as NavigatorMap]}
+            {isFocused
+              ? SelectedIcons[route.name as NavigatorMap]
+              : Icons[route.name as NavigatorMap]}
             <View
               style={[
                 styles.tabIndicator,
