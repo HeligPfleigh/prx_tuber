@@ -7,8 +7,9 @@ import React, {useRef} from 'react';
 
 import NavigatorMap from './NavigatorMap';
 import {RootTabParamList} from './types';
-import HomeScreen from '@plx_tuber/screens/Home';
 import PlxTuberTabBar from './PlxTuberTabBar';
+import HomeScreen from '@plx_tuber/screens/Home';
+import ArtistsScreen from '@plx_tuber/screens/Artists';
 import Prototype from '@plx_tuber/screens/Prototype';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -63,7 +64,7 @@ const AppNavigator = () => {
           headerShown: false,
         }}>
         <Tab.Screen name={NavigatorMap.HomeTab} component={HomeScreen} />
-        <Tab.Screen name={NavigatorMap.DiscoverTab} component={Prototype} />
+        <Tab.Screen name={NavigatorMap.DiscoverTab} component={ArtistsScreen} />
         <Tab.Screen
           name={NavigatorMap.FavoriteAndPlaylistTab}
           component={Prototype}

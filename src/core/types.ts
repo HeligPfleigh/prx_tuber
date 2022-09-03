@@ -30,3 +30,11 @@ export type ISong = {
   audioDownloadAllowed: boolean;
   source: string | null;
 };
+
+export type IArtist = {
+  id: string;
+  createdAt: number;
+  nameArtist: string;
+  avatar: string;
+  orderTag: number;
+};

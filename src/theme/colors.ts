@@ -6,6 +6,8 @@ const colors = <const>{
   java: '#26B8BB',
   gray: '#909090',
   blueBayoux: '#54667B',
+  tundora: '#414141',
+  caribbeanGreen: '#08C2AB',
 };
 
 export default colors;

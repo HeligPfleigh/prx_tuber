@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import {IPlaylist, ISong} from './types';
+import {IArtist, IPlaylist, ISong} from './types';
 
 const API_SERVER = 'http://onesharemedia.club/yt';
 
@@ -27,6 +27,12 @@ export const getPlaylists = async (): Promise<Array<IPlaylist>> => {
 
 export const getTopSong = async (): Promise<Array<ISong>> => {
   const {data} = await instance.get('/jamendo/topsong');
+
+  return data?.data;
+};
+
+export const getArtists = async (): Promise<Array<IArtist>> => {
+  const {data} = await instance.get('/artist');
 
   return data?.data;
 };
