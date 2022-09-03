@@ -1,5 +1,6 @@
 import axios from 'axios';
-import {IPlaylist} from './types';
+
+import {IPlaylist, ISong} from './types';
 
 const API_SERVER = 'http://onesharemedia.club/yt';
 
@@ -8,8 +9,24 @@ const instance = axios.create({
   timeout: 10000,
 });
 
+export const getHomeCharts = async (): Promise<{
+  discover: Array<IPlaylist>;
+  hotTopic: Array<IPlaylist>;
+  topSong: Array<IPlaylist>;
+}> => {
+  const {data} = await instance.get('/chart');
+
+  return data?.data;
+};
+
 export const getPlaylists = async (): Promise<Array<IPlaylist>> => {
   const {data} = await instance.get('/jamendo/playlist');
+
+  return data?.data;
+};
+
+export const getTopSong = async (): Promise<Array<ISong>> => {
+  const {data} = await instance.get('/jamendo/topsong');
 
   return data?.data;
 };

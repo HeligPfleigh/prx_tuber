@@ -4,6 +4,8 @@ const colors = <const>{
   scorpion: '#565656',
   codGray: '#121212',
   java: '#26B8BB',
+  gray: '#909090',
+  blueBayoux: '#54667B',
 };
 
 export default colors;

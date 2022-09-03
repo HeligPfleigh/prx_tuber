@@ -3,9 +3,8 @@ import {FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {Box, Typography} from '@plx_tuber/components';
-import {colors, responsiveSize, round} from '@plx_tuber/theme';
+import {colors, responsiveSize} from '@plx_tuber/theme';
 import {IPlaylist} from '@plx_tuber/core/types';
-import PlayIcon from '@plx_tuber/assets/icons/Play.icon';
 
 const styles = StyleSheet.create({
   seeAll__btn: {
@@ -16,54 +15,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  playlist: {
-    position: 'relative',
-    width: responsiveSize(264),
-    height: responsiveSize(128),
+  item__container: {
+    width: responsiveSize(144),
+  },
+  item__thumbnail: {
+    width: responsiveSize(144),
+    height: responsiveSize(144),
     borderRadius: responsiveSize(10),
-  },
-  actions: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    borderBottomLeftRadius: responsiveSize(10),
-    borderBottomRightRadius: responsiveSize(10),
-    display: 'flex',
-    flexDirection: 'row',
-    padding: 8,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  play__btn: {
-    ...round(34),
-    backgroundColor: colors.white,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 
-interface IHotTopicsProps {
-  topics: Array<IPlaylist>;
+interface IDiscoverProps {
+  playlist: Array<IPlaylist>;
 }
 
-const HotTopics: React.FC<IHotTopicsProps> = ({topics}) => {
+const Discover: React.FC<IDiscoverProps> = ({playlist}) => {
   const renderItem = ({item}: {item: IPlaylist}) => (
     <Box mr={2}>
-      <TouchableOpacity style={styles.playlist}>
+      <TouchableOpacity style={styles.item__container}>
         <FastImage
           source={{uri: item.urlthumb}}
-          style={styles.playlist}
+          style={styles.item__thumbnail}
           resizeMode={FastImage.resizeMode.cover}
         />
 
-        <Box style={styles.actions}>
-          <Typography variant="h6" color={colors.white} fontWeight="700">
+        <Box mt={1.5}>
+          <Typography variant="b5" color={colors.white}>
             {item.name}
           </Typography>
-
-          <TouchableOpacity style={styles.play__btn}>
-            <PlayIcon color={colors.codGray} />
-          </TouchableOpacity>
         </Box>
       </TouchableOpacity>
     </Box>
@@ -73,7 +52,7 @@ const HotTopics: React.FC<IHotTopicsProps> = ({topics}) => {
     <>
       <Box row space="between" center mb={1.5}>
         <Typography variant="b5" color={colors.white} fontWeight="700">
-          Hot topics
+          Discover
         </Typography>
 
         <TouchableOpacity style={styles.seeAll__btn}>
@@ -84,7 +63,7 @@ const HotTopics: React.FC<IHotTopicsProps> = ({topics}) => {
       </Box>
 
       <FlatList
-        data={topics}
+        data={playlist}
         renderItem={renderItem}
         keyExtractor={item => `${item.id}`}
         horizontal
@@ -94,4 +73,4 @@ const HotTopics: React.FC<IHotTopicsProps> = ({topics}) => {
   );
 };
 
-export default HotTopics;
+export default Discover;

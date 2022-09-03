@@ -7,3 +7,26 @@ export type IPlaylist = {
   playListGroup: string;
   name: string;
 };
+
+export type ISong = {
+  id: number;
+  name: string;
+  duration: number;
+  artistId: string;
+  artistName: string;
+  artistIdstr: string;
+  albumName: string;
+  albumId: string;
+  licenseCcurl: string;
+  position: number;
+  releaseDate: string;
+  albumImage: string;
+  audio: string;
+  audioDownload: string;
+  prourl: string;
+  shorturl: string;
+  shareurl: string;
+  image: string;
+  audioDownloadAllowed: boolean;
+  source: string | null;
+};
