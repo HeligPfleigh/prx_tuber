@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
   tab: {
     flex: 1,
     backgroundColor: colors.codGray,
-    borderLeftWidth: 1,
     paddingVertical: responsiveSize(16),
     display: 'flex',
     justifyContent: 'center',

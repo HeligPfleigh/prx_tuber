@@ -108,9 +108,9 @@ export default class Box extends PureComponent<IBoxProps> {
     } = this.props;
 
     const blockStyles: StyleProp<ViewStyle> = [
-      styles.block,
+      // styles.block,
       flex && {flex},
-      flex === false && {flex: 0}, // reset / disable flex
+      // flex === false && {flex: 0}, // reset / disable flex
       row && styles.row,
       column && styles.column,
       center && styles.center,

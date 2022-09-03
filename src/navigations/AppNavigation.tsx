@@ -9,6 +9,7 @@ import NavigatorMap from './NavigatorMap';
 import {RootTabParamList} from './types';
 import HomeScreen from '@plx_tuber/screens/Home';
 import PlxTuberTabBar from './PlxTuberTabBar';
+import Prototype from '@plx_tuber/screens/Prototype';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
@@ -62,12 +63,12 @@ const AppNavigator = () => {
           headerShown: false,
         }}>
         <Tab.Screen name={NavigatorMap.HomeTab} component={HomeScreen} />
-        <Tab.Screen name={NavigatorMap.DiscoverTab} component={HomeScreen} />
+        <Tab.Screen name={NavigatorMap.DiscoverTab} component={Prototype} />
         <Tab.Screen
           name={NavigatorMap.FavoriteAndPlaylistTab}
-          component={HomeScreen}
+          component={Prototype}
         />
-        <Tab.Screen name={NavigatorMap.SettingTab} component={HomeScreen} />
+        <Tab.Screen name={NavigatorMap.SettingTab} component={Prototype} />
       </Tab.Navigator>
     </NavigationContainer>
   );

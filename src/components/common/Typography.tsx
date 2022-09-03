@@ -28,6 +28,18 @@ export interface TypographyProps extends TextProps {
   textTransform?: 'uppercase' | 'none' | 'capitalize' | 'lowercase';
   textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify';
   fontFamily?: string;
+  fontWeight?:
+    | 'bold'
+    | 'normal'
+    | '100'
+    | '200'
+    | '300'
+    | '400'
+    | '500'
+    | '600'
+    | '700'
+    | '800'
+    | '900';
 }
 
 const styles = StyleSheet.create({
@@ -68,7 +80,10 @@ const styles = StyleSheet.create({
     fontSize: responsiveSize(12),
     lineHeight: responsiveSize(18),
   },
-  caps4: {},
+  caps4: {
+    fontSize: responsiveSize(10),
+    lineHeight: responsiveSize(12),
+  },
   caps5: {},
   b1: {},
   b2: {},
@@ -90,6 +105,7 @@ export default function Typography({
   textTransform,
   textAlign,
   fontFamily,
+  fontWeight,
   style,
   children,
   ...props
@@ -104,6 +120,7 @@ export default function Typography({
         textTransform && {textTransform},
         textAlign && {textAlign},
         fontFamily && {fontFamily},
+        fontWeight && {fontWeight},
         variantStyle,
         style,
       ]}>
