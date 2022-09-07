@@ -6,17 +6,17 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import LinearGradient from 'react-native-linear-gradient';
 
 import {Box, Typography} from '@plx_tuber/components';
 import {colors, responsiveSize, round, spacing} from '@plx_tuber/theme';
 import LeftArrowIcon from '@plx_tuber/assets/icons/LeftArrow.icon';
 import {PlaylistScreenProps} from './types';
-import LinearGradient from 'react-native-linear-gradient';
 import PlayIcon from '@plx_tuber/assets/icons/Play.icon';
 import {useQuery} from '@tanstack/react-query';
 import {getSongsOfJamendoPlaylist} from '@plx_tuber/core/apis';
 import {ISong} from '@plx_tuber/core/types';
-import MenuIcon from '@plx_tuber/assets/icons/Menu.icon';
+import {SongListItem} from '@plx_tuber/components/shared';
 
 const styles = StyleSheet.create({
   back__btn: {
@@ -50,10 +50,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  song__thumbnail: {
-    width: responsiveSize(60),
-    height: responsiveSize(60),
-  },
 });
 
 const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
@@ -64,26 +60,13 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
   );
 
   const renderItem = ({item}: {item: ISong}) => (
-    <TouchableOpacity>
-      <Box row flex={1} center p={2}>
-        <Box flex={1}>
-          <FastImage
-            source={{uri: item.image}}
-            style={styles.song__thumbnail}
-            resizeMode={FastImage.resizeMode.cover}
-          />
-        </Box>
-
-        <Box ml={1} middle mr={1} flex={4}>
-          <Typography color={colors.white}>{item.name}</Typography>
-          <Typography color={colors.gray}>{item.artistName}</Typography>
-        </Box>
-
-        <TouchableOpacity>
-          <MenuIcon color={colors.blueBayoux} />
-        </TouchableOpacity>
-      </Box>
-    </TouchableOpacity>
+    <Box p={2}>
+      <SongListItem
+        thumbnail={item.image}
+        artistName={item.artistName}
+        songName={item.name}
+      />
+    </Box>
   );
 
   const renderEmpty = (
