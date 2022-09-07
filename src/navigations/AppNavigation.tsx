@@ -3,16 +3,45 @@ import {
   NavigationContainer,
   useNavigationContainerRef,
 } from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useRef} from 'react';
 
 import NavigatorMap from './NavigatorMap';
-import {RootTabParamList} from './types';
+import {TabParamList, RootStackParamList} from './types';
 import PlxTuberTabBar from './PlxTuberTabBar';
 import HomeScreen from '@plx_tuber/screens/Home';
 import ArtistsScreen from '@plx_tuber/screens/Artists';
 import Prototype from '@plx_tuber/screens/Prototype';
+import PlaylistScreen from '@plx_tuber/screens/Playlist';
 
-const Tab = createBottomTabNavigator<RootTabParamList>();
+const Tab = createBottomTabNavigator<TabParamList>();
+const RootStack = createNativeStackNavigator<RootStackParamList>();
+
+const TabNavigator = () => (
+  <Tab.Navigator
+    tabBar={props => <PlxTuberTabBar {...props} />}
+    screenOptions={{
+      headerShown: false,
+    }}>
+    <Tab.Screen name={NavigatorMap.HomeTab} component={HomeScreen} />
+    <Tab.Screen name={NavigatorMap.DiscoverTab} component={ArtistsScreen} />
+    <Tab.Screen
+      name={NavigatorMap.FavoriteAndPlaylistTab}
+      component={Prototype}
+    />
+    <Tab.Screen name={NavigatorMap.SettingTab} component={Prototype} />
+  </Tab.Navigator>
+);
+
+const RootStackNavigator = () => (
+  <RootStack.Navigator
+    screenOptions={{
+      headerShown: false,
+    }}>
+    <RootStack.Screen name={NavigatorMap.MainTab} component={TabNavigator} />
+    <RootStack.Screen name={NavigatorMap.Playlist} component={PlaylistScreen} />
+  </RootStack.Navigator>
+);
 
 const AppNavigator = () => {
   const navigationRef = useNavigationContainerRef();
@@ -58,19 +87,7 @@ const AppNavigator = () => {
       ref={navigationRef}
       onReady={onNavigationReady}
       onStateChange={onStateChange}>
-      <Tab.Navigator
-        tabBar={props => <PlxTuberTabBar {...props} />}
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Tab.Screen name={NavigatorMap.HomeTab} component={HomeScreen} />
-        <Tab.Screen name={NavigatorMap.DiscoverTab} component={ArtistsScreen} />
-        <Tab.Screen
-          name={NavigatorMap.FavoriteAndPlaylistTab}
-          component={Prototype}
-        />
-        <Tab.Screen name={NavigatorMap.SettingTab} component={Prototype} />
-      </Tab.Navigator>
+      <RootStackNavigator />
     </NavigationContainer>
   );
 };

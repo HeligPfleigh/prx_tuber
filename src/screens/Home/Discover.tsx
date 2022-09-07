@@ -5,6 +5,9 @@ import FastImage from 'react-native-fast-image';
 import {Box, Typography} from '@plx_tuber/components';
 import {colors, responsiveSize} from '@plx_tuber/theme';
 import {IPlaylist} from '@plx_tuber/core/types';
+import {useNavigation} from '@react-navigation/native';
+import {HomeNavigationProps} from './types';
+import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 
 const styles = StyleSheet.create({
   seeAll__btn: {
@@ -30,9 +33,17 @@ interface IDiscoverProps {
 }
 
 const Discover: React.FC<IDiscoverProps> = ({playlist}) => {
+  const navigation = useNavigation<HomeNavigationProps>();
+
+  const handleOpenPlaylist = (item: IPlaylist) => () => {
+    navigation.navigate(NavigatorMap.Playlist, {playlist: item});
+  };
+
   const renderItem = ({item}: {item: IPlaylist}) => (
     <Box mr={2}>
-      <TouchableOpacity style={styles.item__container}>
+      <TouchableOpacity
+        style={styles.item__container}
+        onPress={handleOpenPlaylist(item)}>
         <FastImage
           source={{uri: item.urlthumb}}
           style={styles.item__thumbnail}

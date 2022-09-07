@@ -3,9 +3,12 @@ import {FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {Box, Typography} from '@plx_tuber/components';
-import {colors, responsiveSize, round} from '@plx_tuber/theme';
+import {colors, responsiveSize, round, spacing} from '@plx_tuber/theme';
 import {IPlaylist} from '@plx_tuber/core/types';
 import PlayIcon from '@plx_tuber/assets/icons/Play.icon';
+import {useNavigation} from '@react-navigation/native';
+import {HomeNavigationProps} from './types';
+import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 
 const styles = StyleSheet.create({
   seeAll__btn: {
@@ -30,7 +33,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: responsiveSize(10),
     display: 'flex',
     flexDirection: 'row',
-    padding: 8,
+    padding: spacing(1),
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -47,9 +50,17 @@ interface IHotTopicsProps {
 }
 
 const HotTopics: React.FC<IHotTopicsProps> = ({topics}) => {
+  const navigation = useNavigation<HomeNavigationProps>();
+
+  const handleOpenPlaylist = (item: IPlaylist) => () => {
+    navigation.navigate(NavigatorMap.Playlist, {playlist: item});
+  };
+
   const renderItem = ({item}: {item: IPlaylist}) => (
     <Box mr={2}>
-      <TouchableOpacity style={styles.playlist}>
+      <TouchableOpacity
+        style={styles.playlist}
+        onPress={handleOpenPlaylist(item)}>
         <FastImage
           source={{uri: item.urlthumb}}
           style={styles.playlist}

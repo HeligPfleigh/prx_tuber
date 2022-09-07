@@ -1,11 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   ActivityIndicator,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {useToast} from 'react-native-toast-notifications';
 import {useQuery} from '@tanstack/react-query';
 
 import {Box, Typography} from '@plx_tuber/components';
@@ -13,7 +12,7 @@ import {colors, responsiveSize, spacing} from '@plx_tuber/theme';
 import SearchIcon from '@plx_tuber/assets/icons/Search.icon';
 import HotTopics from './HotTopics';
 import TopSongs from './TopSongs';
-import {getHomeCharts} from '@plx_tuber/core/apis';
+import {getJamendoCharts} from '@plx_tuber/core/apis';
 import Discover from './Discover';
 
 const styles = StyleSheet.create({
@@ -34,24 +33,21 @@ const styles = StyleSheet.create({
 });
 
 const Home = () => {
-  const {error, data, isLoading} = useQuery(['chart'], getHomeCharts);
-  const toast = useToast();
+  const {data: jamendoData, isLoading: jamendoIsLoading} = useQuery(
+    ['jamendo_chart'],
+    getJamendoCharts,
+  );
 
-  useEffect(() => {
-    if (error) {
-      toast.show('Fail to fetch data', {
-        type: 'warning',
-      });
-    }
-  }, [toast, error]);
-
-  if (isLoading) {
+  if (jamendoIsLoading) {
     return (
       <Box flex={1} color={colors.codGray} p={2}>
         <ActivityIndicator />
       </Box>
     );
   }
+
+  const hotTopic = jamendoData?.hotTopic || [];
+  const discover = jamendoData?.discover || [];
 
   return (
     <ScrollView style={styles.container}>
@@ -66,7 +62,7 @@ const Home = () => {
       </Box>
 
       <Box mt={5}>
-        <HotTopics topics={data?.hotTopic || []} />
+        <HotTopics topics={hotTopic} />
       </Box>
 
       <Box mt={3.5}>
@@ -74,7 +70,7 @@ const Home = () => {
       </Box>
 
       <Box mt={4} mb={4}>
-        <Discover playlist={data?.discover || []} />
+        <Discover playlist={discover} />
       </Box>
     </ScrollView>
   );

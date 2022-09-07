@@ -9,14 +9,32 @@ const instance = axios.create({
   timeout: 10000,
 });
 
-export const getHomeCharts = async (): Promise<{
+// export const getYTCharts = async (): Promise<{
+//   discover: Array<IPlaylist>;
+//   hotTopic: Array<IPlaylist>;
+//   topSong: Array<IPlaylist>;
+// }> => {
+//   const {data} = await instance.get('/chart');
+
+//   return data?.data;
+// };
+
+export const getJamendoCharts = async (): Promise<{
   discover: Array<IPlaylist>;
   hotTopic: Array<IPlaylist>;
   topSong: Array<IPlaylist>;
 }> => {
-  const {data} = await instance.get('/chart');
+  const {data} = await instance.get('/jamendo/playlist');
 
-  return data?.data;
+  return {
+    discover: (data?.data || []).filter(
+      (item: IPlaylist) => item.type === 'discover',
+    ),
+    hotTopic: (data?.data || []).filter(
+      (item: IPlaylist) => item.type === 'hotTopic',
+    ),
+    topSong: [],
+  };
 };
 
 export const getPlaylists = async (): Promise<Array<IPlaylist>> => {
@@ -33,6 +51,18 @@ export const getTopSong = async (): Promise<Array<ISong>> => {
 
 export const getArtists = async (): Promise<Array<IArtist>> => {
   const {data} = await instance.get('/artist');
+
+  return data?.data;
+};
+
+export const getSongsOfJamendoPlaylist = async (
+  playlistId: string,
+): Promise<Array<ISong>> => {
+  const {data} = await instance.get('/jamendo/byPlaylist', {
+    params: {
+      playlistId,
+    },
+  });
 
   return data?.data;
 };
