@@ -56,6 +56,13 @@ const HotTopics: React.FC<IHotTopicsProps> = ({topics}) => {
     navigation.navigate(NavigatorMap.Playlist, {playlist: item});
   };
 
+  const handleSeeAll = () => {
+    navigation.navigate(NavigatorMap.Playlists, {
+      title: 'Hot topics',
+      playlists: topics,
+    });
+  };
+
   const renderItem = ({item}: {item: IPlaylist}) => (
     <Box mr={2}>
       <TouchableOpacity
@@ -87,7 +94,7 @@ const HotTopics: React.FC<IHotTopicsProps> = ({topics}) => {
           Hot topics
         </Typography>
 
-        <TouchableOpacity style={styles.seeAll__btn}>
+        <TouchableOpacity style={styles.seeAll__btn} onPress={handleSeeAll}>
           <Typography variant="caps4" color={colors.white}>
             See all
           </Typography>

@@ -39,6 +39,13 @@ const Discover: React.FC<IDiscoverProps> = ({playlist}) => {
     navigation.navigate(NavigatorMap.Playlist, {playlist: item});
   };
 
+  const handleSeeAll = () => {
+    navigation.navigate(NavigatorMap.Playlists, {
+      title: 'Discover',
+      playlists: playlist,
+    });
+  };
+
   const renderItem = ({item}: {item: IPlaylist}) => (
     <Box mr={2}>
       <TouchableOpacity
@@ -66,7 +73,7 @@ const Discover: React.FC<IDiscoverProps> = ({playlist}) => {
           Discover
         </Typography>
 
-        <TouchableOpacity style={styles.seeAll__btn}>
+        <TouchableOpacity style={styles.seeAll__btn} onPress={handleSeeAll}>
           <Typography variant="caps4" color={colors.white}>
             See all
           </Typography>

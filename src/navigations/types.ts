@@ -1,4 +1,4 @@
-import {IPlaylist} from '@plx_tuber/core/types';
+import {IPlaylist, ISong} from '@plx_tuber/core/types';
 import NavigatorMap from './NavigatorMap';
 
 export type TabParamList = {
@@ -12,5 +12,13 @@ export type RootStackParamList = {
   [NavigatorMap.MainTab]: undefined;
   [NavigatorMap.Playlist]: {
     playlist: IPlaylist;
+  };
+  [NavigatorMap.Songs]: {
+    title: string;
+    songs: Array<ISong>;
+  };
+  [NavigatorMap.Playlists]: {
+    title: string;
+    playlists: Array<IPlaylist>;
   };
 };
