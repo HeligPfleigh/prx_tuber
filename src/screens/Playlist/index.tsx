@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
   const handlePressBack = () => navigation.goBack();
   const {playlist} = route.params;
-  const {data} = useQuery(['playlist', playlist.id], () =>
+  const {data, isLoading} = useQuery(['playlist', playlist.id], () =>
     getSongsOfJamendoPlaylist(playlist.id),
   );
 
@@ -106,9 +106,11 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
               </Typography>
             </TouchableOpacity>
 
-            <Typography color={colors.gray} variant="caps3">
-              {`${data?.length} track${data?.length === 1 ? '' : 's'}`}
-            </Typography>
+            {!isLoading ? (
+              <Typography color={colors.gray} variant="caps3">
+                {`${data?.length} track${data?.length === 1 ? '' : 's'}`}
+              </Typography>
+            ) : null}
           </Box>
         </LinearGradient>
       </Box>

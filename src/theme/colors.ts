@@ -8,6 +8,7 @@ const colors = <const>{
   blueBayoux: '#54667B',
   tundora: '#414141',
   caribbeanGreen: '#08C2AB',
+  silver: '#BCBCBC',
 };
 
 export default colors;

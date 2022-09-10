@@ -15,6 +15,8 @@ import TopSongs from './TopSongs';
 import {getJamendoCharts} from '@plx_tuber/core/apis';
 import Discover from './Discover';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {HomeScreenProps} from './types';
+import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,11 +35,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const Home = () => {
+const Home: React.FC<HomeScreenProps> = ({navigation}) => {
   const {data: jamendoData, isLoading: jamendoIsLoading} = useQuery(
     ['jamendo_chart'],
     getJamendoCharts,
   );
+
+  const handleOpenSearch = () => navigation.navigate(NavigatorMap.Search);
 
   const hotTopic = jamendoData?.hotTopic || [];
   const discover = jamendoData?.discover || [];
@@ -50,7 +54,9 @@ const Home = () => {
             Hello, Welcome back!
           </Typography>
 
-          <TouchableOpacity style={styles.searchContainer}>
+          <TouchableOpacity
+            style={styles.searchContainer}
+            onPress={handleOpenSearch}>
             <SearchIcon color={colors.white} />
           </TouchableOpacity>
         </Box>

@@ -4,6 +4,7 @@ enum NavigatorMap {
   Playlist = 'Playlist',
   Songs = 'Songs',
   Playlists = 'Playlists',
+  Search = 'Search',
 
   // tab
   HomeTab = 'HomeTab',

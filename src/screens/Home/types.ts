@@ -6,8 +6,8 @@ import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 import {RootStackParamList, TabParamList} from '@plx_tuber/navigations/types';
 
 export type HomeScreenProps = CompositeScreenProps<
-  NativeStackScreenProps<RootStackParamList, NavigatorMap.MainTab>,
-  BottomTabScreenProps<TabParamList, NavigatorMap.HomeTab>
+  BottomTabScreenProps<TabParamList, NavigatorMap.HomeTab>,
+  NativeStackScreenProps<RootStackParamList, NavigatorMap.MainTab>
 >;
 
 export type HomeNavigationProps = HomeScreenProps['navigation'];

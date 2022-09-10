@@ -21,4 +21,5 @@ export type RootStackParamList = {
     title: string;
     playlists: Array<IPlaylist>;
   };
+  [NavigatorMap.Search]: undefined;
 };

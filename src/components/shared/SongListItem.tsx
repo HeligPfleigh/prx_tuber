@@ -41,7 +41,7 @@ const SongListItem: React.FC<SongListItemProps> = ({
           <Typography color={colors.gray}>{artistName}</Typography>
         </Box>
 
-        <TouchableOpacity>
+        <TouchableOpacity hitSlop={{top: 5, left: 10, bottom: 5, right: 10}}>
           <MenuIcon color={colors.blueBayoux} />
         </TouchableOpacity>
       </Box>

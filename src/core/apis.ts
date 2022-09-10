@@ -66,3 +66,13 @@ export const getSongsOfJamendoPlaylist = async (
 
   return data?.data;
 };
+
+export const searchSong = async (query: string): Promise<Array<ISong>> => {
+  const {data} = await instance.get('/jamendo/search', {
+    params: {
+      query,
+    },
+  });
+
+  return data?.data;
+};
