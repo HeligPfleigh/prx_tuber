@@ -9,6 +9,8 @@ const colors = <const>{
   tundora: '#414141',
   caribbeanGreen: '#08C2AB',
   silver: '#BCBCBC',
+  bondiBlue: '#02AAB0',
+  gray100: '#919191',
 };
 
 export default colors;

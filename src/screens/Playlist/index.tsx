@@ -16,7 +16,7 @@ import PlayIcon from '@plx_tuber/assets/icons/Play.icon';
 import {useQuery} from '@tanstack/react-query';
 import {getSongsOfJamendoPlaylist} from '@plx_tuber/core/apis';
 import {ISong} from '@plx_tuber/core/types';
-import {SongListItem} from '@plx_tuber/components/shared';
+import {SongListItem, withPlayerBar} from '@plx_tuber/components/shared';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
@@ -131,4 +131,4 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
   );
 };
 
-export default Playlist;
+export default withPlayerBar(Playlist);

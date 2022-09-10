@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useQuery} from '@tanstack/react-query';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {Box, Typography} from '@plx_tuber/components';
 import {colors, responsiveSize, spacing} from '@plx_tuber/theme';
@@ -14,9 +15,9 @@ import HotTopics from './HotTopics';
 import TopSongs from './TopSongs';
 import {getJamendoCharts} from '@plx_tuber/core/apis';
 import Discover from './Discover';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {HomeScreenProps} from './types';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
+import {withPlayerBar} from '@plx_tuber/components/shared';
 
 const styles = StyleSheet.create({
   container: {
@@ -85,4 +86,4 @@ const Home: React.FC<HomeScreenProps> = ({navigation}) => {
   );
 };
 
-export default Home;
+export default withPlayerBar(Home);

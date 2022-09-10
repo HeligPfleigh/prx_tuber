@@ -9,6 +9,7 @@ import {IPlaylist} from '@plx_tuber/core/types';
 import FastImage from 'react-native-fast-image';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {withPlayerBar} from '@plx_tuber/components/shared';
 
 const styles = StyleSheet.create({
   header__container: {
@@ -94,4 +95,4 @@ const Playlists: React.FC<PlaylistsScreenProps> = ({route, navigation}) => {
   );
 };
 
-export default Playlists;
+export default withPlayerBar(Playlists);

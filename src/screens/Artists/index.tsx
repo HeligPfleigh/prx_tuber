@@ -16,6 +16,7 @@ import {IArtist} from '@plx_tuber/core/types';
 import FastImage from 'react-native-fast-image';
 import UserIcon from '@plx_tuber/assets/icons/User.icon';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {withPlayerBar} from '@plx_tuber/components/shared';
 
 const styles = StyleSheet.create({
   search__container: {
@@ -122,4 +123,4 @@ const Artists = () => {
   );
 };
 
-export default Artists;
+export default withPlayerBar(Artists);

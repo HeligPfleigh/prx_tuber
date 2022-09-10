@@ -3,7 +3,7 @@ import {FlatList, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 
 import {Box, Typography} from '@plx_tuber/components';
 import {colors, responsiveSize, round, spacing} from '@plx_tuber/theme';
-import {SongListItem} from '@plx_tuber/components/shared';
+import {SongListItem, withPlayerBar} from '@plx_tuber/components/shared';
 import {ISong} from '@plx_tuber/core/types';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LeftArrowIcon from '@plx_tuber/assets/icons/LeftArrow.icon';
@@ -127,4 +127,4 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
   );
 };
 
-export default Search;
+export default withPlayerBar(Search);

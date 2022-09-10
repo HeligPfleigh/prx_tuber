@@ -1,28 +1,28 @@
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 // @ts-ignore
 import mockRNCNetInfo from '@react-native-community/netinfo/jest/netinfo-mock.js';
-// require('react-native-reanimated/lib/reanimated2/jestUtils').setUpTests();
+require('react-native-reanimated/lib/reanimated2/jestUtils').setUpTests();
 // import 'react-native-gesture-handler/jestSetup';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
-// jest.mock('react-native-reanimated', () => {
-//   const Reanimated = require('react-native-reanimated/mock');
-//   Reanimated.default.call = () => {};
+jest.mock('react-native-reanimated', () => {
+  const Reanimated = require('react-native-reanimated/mock');
+  Reanimated.default.call = () => {};
 
-//   return Reanimated;
-// });
+  return Reanimated;
+});
 
 // Silence the warning: Animated: `useNativeDriver` is not supported because the native animated module is missing
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 
 jest.mock('@react-native-community/netinfo', () => mockRNCNetInfo);
 
-// declare global {
-//   function __reanimatedWorkletInit(): unknown;
-// }
+declare global {
+  function __reanimatedWorkletInit(): unknown;
+}
 
-// global.__reanimatedWorkletInit = jest.fn();
+global.__reanimatedWorkletInit = jest.fn();
 
 // jest.mock('@react-native-firebase/analytics', () => () => {
 //   return {
