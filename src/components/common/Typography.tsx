@@ -44,7 +44,7 @@ export interface TypographyProps extends TextProps {
 
 const styles = StyleSheet.create({
   root: {
-    fontFamily: 'Poppins',
+    // fontFamily: 'Poppins',
   },
   h1: {},
   h2: {},

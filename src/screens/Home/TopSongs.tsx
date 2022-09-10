@@ -47,7 +47,7 @@ const TopSongs = () => {
       </Box>
 
       {(query.data || []).slice(0, 5).map(item => (
-        <Box mb={2}>
+        <Box mb={2} key={item.id}>
           <SongListItem
             artistName={item.artistName}
             thumbnail={item.image}

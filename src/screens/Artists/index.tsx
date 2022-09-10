@@ -15,6 +15,7 @@ import {getArtists} from '@plx_tuber/core/apis';
 import {IArtist} from '@plx_tuber/core/types';
 import FastImage from 'react-native-fast-image';
 import UserIcon from '@plx_tuber/assets/icons/User.icon';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
   search__container: {
@@ -29,13 +30,16 @@ const styles = StyleSheet.create({
   item__container: {
     height: responsiveSize(110),
     flex: 1 / 3,
-    backgroundColor: colors.tundora,
-    marginRight: spacing(1),
     marginBottom: spacing(1),
+  },
+  item__con: {
+    backgroundColor: colors.tundora,
     borderRadius: responsiveSize(5),
+    marginRight: spacing(1),
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
+    flex: 1,
   },
   avatar: {
     width: '100%',
@@ -68,49 +72,52 @@ const Artists = () => {
 
   const renderItem = ({item}: {item: IArtist}) => (
     <TouchableOpacity style={styles.item__container}>
-      {item.avatar ? (
-        <FastImage
-          source={{uri: item.avatar}}
-          style={styles.avatar}
-          resizeMode={FastImage.resizeMode.contain}
-        />
-      ) : (
-        <UserIcon color={colors.caribbeanGreen} />
-      )}
-      <Box style={styles.name__container}>
-        <Typography color={colors.white} variant="caps3">
-          {item.nameArtist}
-        </Typography>
+      <Box style={styles.item__con}>
+        {item.avatar ? (
+          <FastImage
+            source={{uri: item.avatar}}
+            style={styles.avatar}
+            resizeMode={FastImage.resizeMode.contain}
+          />
+        ) : (
+          <UserIcon color={colors.caribbeanGreen} />
+        )}
+        <Box style={styles.name__container}>
+          <Typography color={colors.white} variant="caps3">
+            {item.nameArtist}
+          </Typography>
+        </Box>
       </Box>
     </TouchableOpacity>
   );
 
-  if (isLoading) {
-    return (
-      <Box flex={1} color={colors.codGray} p={2}>
-        <ActivityIndicator />
-      </Box>
-    );
-  }
   return (
     <Box flex={1} color={colors.codGray} p={2}>
-      <Box row space="between" center mb={4}>
-        <Typography variant="h6" color={colors.white} fontWeight="700">
-          Discover
-        </Typography>
+      <SafeAreaView>
+        <Box row space="between" center mb={4}>
+          <Typography variant="h6" color={colors.white} fontWeight="700">
+            Discover
+          </Typography>
 
-        <TouchableOpacity style={styles.search__container}>
-          <SearchIcon color={colors.white} />
-        </TouchableOpacity>
-      </Box>
+          <TouchableOpacity style={styles.search__container}>
+            <SearchIcon color={colors.white} />
+          </TouchableOpacity>
+        </Box>
+      </SafeAreaView>
 
-      <FlatList
-        data={data || []}
-        renderItem={renderItem}
-        keyExtractor={item => `${item.id}`}
-        showsVerticalScrollIndicator={false}
-        numColumns={3}
-      />
+      {isLoading ? (
+        <Box flex={1} color={colors.codGray} p={2}>
+          <ActivityIndicator />
+        </Box>
+      ) : (
+        <FlatList
+          data={data || []}
+          renderItem={renderItem}
+          keyExtractor={item => `${item.id}`}
+          showsVerticalScrollIndicator={false}
+          numColumns={3}
+        />
+      )}
     </Box>
   );
 };

@@ -8,6 +8,7 @@ import LeftArrowIcon from '@plx_tuber/assets/icons/LeftArrow.icon';
 import {IPlaylist} from '@plx_tuber/core/types';
 import FastImage from 'react-native-fast-image';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
   header__container: {
@@ -21,10 +22,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     top: spacing(2),
-    left: spacing(2),
+    zIndex: 2,
   },
   item__container: {
-    width: '100%',
+    // width: '100%',
+    marginRight: spacing(2),
   },
   item__thumbnail: {
     width: '100%',
@@ -42,7 +44,7 @@ const Playlists: React.FC<PlaylistsScreenProps> = ({route, navigation}) => {
   };
 
   const renderItem = ({item}: {item: IPlaylist}) => (
-    <Box flex={1 / 2} p={2}>
+    <Box flex={1 / 2} mb={2}>
       <TouchableOpacity
         style={styles.item__container}
         onPress={handleOpenPlaylist(item)}>
@@ -62,17 +64,19 @@ const Playlists: React.FC<PlaylistsScreenProps> = ({route, navigation}) => {
   );
 
   const renderHeader = (
-    <Box style={styles.header__container}>
-      <TouchableOpacity onPress={handlePressBack} style={styles.back__btn}>
-        <LeftArrowIcon color={colors.white} />
-      </TouchableOpacity>
+    <SafeAreaView>
+      <Box style={styles.header__container}>
+        <TouchableOpacity onPress={handlePressBack} style={styles.back__btn}>
+          <LeftArrowIcon color={colors.white} />
+        </TouchableOpacity>
 
-      <Box p={2} center middle flex={1}>
-        <Typography variant="h6" color={colors.white} fontWeight="700">
-          {title}
-        </Typography>
+        <Box p={2} center middle flex={1}>
+          <Typography variant="h6" color={colors.white} fontWeight="700">
+            {title}
+          </Typography>
+        </Box>
       </Box>
-    </Box>
+    </SafeAreaView>
   );
 
   return (
@@ -84,6 +88,7 @@ const Playlists: React.FC<PlaylistsScreenProps> = ({route, navigation}) => {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={renderHeader}
         numColumns={2}
+        contentContainerStyle={{marginLeft: spacing(2)}}
       />
     </Box>
   );

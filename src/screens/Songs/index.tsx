@@ -7,6 +7,7 @@ import {SongsScreenProps} from './types';
 import LeftArrowIcon from '@plx_tuber/assets/icons/LeftArrow.icon';
 import {SongListItem} from '@plx_tuber/components/shared';
 import {ISong} from '@plx_tuber/core/types';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
   header__container: {
@@ -21,6 +22,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: spacing(2),
     left: spacing(2),
+    zIndex: 2,
   },
 });
 
@@ -39,17 +41,19 @@ const Songs: React.FC<SongsScreenProps> = ({route, navigation}) => {
   );
 
   const renderHeader = (
-    <Box style={styles.header__container}>
-      <TouchableOpacity onPress={handlePressBack} style={styles.back__btn}>
-        <LeftArrowIcon color={colors.white} />
-      </TouchableOpacity>
+    <SafeAreaView>
+      <Box style={styles.header__container}>
+        <TouchableOpacity onPress={handlePressBack} style={styles.back__btn}>
+          <LeftArrowIcon color={colors.white} />
+        </TouchableOpacity>
 
-      <Box p={2} center middle flex={1}>
-        <Typography variant="h6" color={colors.white} fontWeight="700">
-          {title}
-        </Typography>
+        <Box p={2} center middle flex={1}>
+          <Typography variant="h6" color={colors.white} fontWeight="700">
+            {title}
+          </Typography>
+        </Box>
       </Box>
-    </Box>
+    </SafeAreaView>
   );
 
   return (

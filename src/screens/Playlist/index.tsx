@@ -17,6 +17,7 @@ import {useQuery} from '@tanstack/react-query';
 import {getSongsOfJamendoPlaylist} from '@plx_tuber/core/apis';
 import {ISong} from '@plx_tuber/core/types';
 import {SongListItem} from '@plx_tuber/components/shared';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
   back__btn: {
@@ -76,40 +77,42 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
   );
 
   const renderHeader = (
-    <Box style={styles.top__container}>
-      <FastImage
-        source={{uri: playlist.urlthumb}}
-        style={styles.avatar}
-        resizeMode={FastImage.resizeMode.stretch}
-      />
+    <SafeAreaView>
+      <Box style={styles.top__container}>
+        <FastImage
+          source={{uri: playlist.urlthumb}}
+          style={styles.avatar}
+          resizeMode={FastImage.resizeMode.stretch}
+        />
 
-      <LinearGradient
-        colors={['rgba(0, 0, 0, 0.0001)', colors.codGray]}
-        style={styles.hero__container}>
-        <TouchableOpacity onPress={handlePressBack} style={styles.back__btn}>
-          <LeftArrowIcon color={colors.white} />
-        </TouchableOpacity>
-
-        <Box center>
-          <Typography variant="h4" color={colors.white} fontWeight="700">
-            {playlist.name}
-          </Typography>
-
-          <TouchableOpacity style={styles.playAll__btn}>
-            <Box mr={1}>
-              <PlayIcon color={colors.codGray} />
-            </Box>
-            <Typography color={colors.codGray} variant="h6" fontWeight="600">
-              Play all
-            </Typography>
+        <LinearGradient
+          colors={['rgba(0, 0, 0, 0.0001)', colors.codGray]}
+          style={styles.hero__container}>
+          <TouchableOpacity onPress={handlePressBack} style={styles.back__btn}>
+            <LeftArrowIcon color={colors.white} />
           </TouchableOpacity>
 
-          <Typography color={colors.gray} variant="caps3">
-            {`${data?.length} track${data?.length === 1 ? '' : 's'}`}
-          </Typography>
-        </Box>
-      </LinearGradient>
-    </Box>
+          <Box center>
+            <Typography variant="h4" color={colors.white} fontWeight="700">
+              {playlist.name}
+            </Typography>
+
+            <TouchableOpacity style={styles.playAll__btn}>
+              <Box mr={1}>
+                <PlayIcon color={colors.codGray} />
+              </Box>
+              <Typography color={colors.codGray} variant="h6" fontWeight="600">
+                Play all
+              </Typography>
+            </TouchableOpacity>
+
+            <Typography color={colors.gray} variant="caps3">
+              {`${data?.length} track${data?.length === 1 ? '' : 's'}`}
+            </Typography>
+          </Box>
+        </LinearGradient>
+      </Box>
+    </SafeAreaView>
   );
 
   return (
