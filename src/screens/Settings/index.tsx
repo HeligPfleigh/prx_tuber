@@ -11,6 +11,7 @@ import PrivacyIcon from '@plx_tuber/assets/icons/Privacy.icon';
 import StartIcon from '@plx_tuber/assets/icons/Star.icon';
 import {Box, Typography} from '@plx_tuber/components';
 import {colors, responsiveSize, spacing} from '@plx_tuber/theme';
+import {withPlayerBar} from '@plx_tuber/components/shared';
 
 const styles = StyleSheet.create({
   root: {
@@ -130,4 +131,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default withPlayerBar(Settings);

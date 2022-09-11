@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
@@ -6,9 +6,10 @@ import {Box, Typography} from '@plx_tuber/components';
 import {colors, responsiveSize} from '@plx_tuber/theme';
 import {useQuery} from '@tanstack/react-query';
 import {getTopSong} from '@plx_tuber/core/apis';
-import {SongListItem} from '@plx_tuber/components/shared';
+import {PlayerModal, SongListItem} from '@plx_tuber/components/shared';
 import {HomeNavigationProps} from './types';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
+import {ISong} from '@plx_tuber/core/types';
 
 const styles = StyleSheet.create({
   seeAll__btn: {
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
 const TopSongs = () => {
   const query = useQuery(['topSong'], getTopSong);
   const navigation = useNavigation<HomeNavigationProps>();
+  const [selectedSong, setSelectedSong] = useState<ISong>();
 
   const handleSeeAll = () => {
     navigation.navigate(NavigatorMap.Songs, {
@@ -31,6 +33,8 @@ const TopSongs = () => {
       songs: query.data || [],
     });
   };
+
+  const handleClosePlayerModal = () => setSelectedSong(undefined);
 
   return (
     <>
@@ -53,9 +57,18 @@ const TopSongs = () => {
             thumbnail={item.image}
             songName={item.name}
             url={item.audio}
+            onMenuPress={() => setSelectedSong(item)}
           />
         </Box>
       ))}
+
+      <PlayerModal
+        open={Boolean(selectedSong)}
+        onClose={handleClosePlayerModal}
+        artist={selectedSong?.artistName || ''}
+        thumbnail={selectedSong?.image || ''}
+        title={selectedSong?.name || ''}
+      />
     </>
   );
 };

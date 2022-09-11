@@ -13,6 +13,7 @@ const colors = <const>{
   bondiBlue: '#02AAB0',
   gray100: '#919191',
   sunsetOrange: '#FF5252',
+  mineShaft: '#222222',
 };
 
 export default colors;

@@ -1,5 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import {FlatList, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import {useQuery} from '@tanstack/react-query';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {Box, Typography} from '@plx_tuber/components';
 import {colors, responsiveSize, round, spacing} from '@plx_tuber/theme';
@@ -9,7 +11,6 @@ import LeftArrowIcon from '@plx_tuber/assets/icons/LeftArrow.icon';
 import {SearchScreenProps} from './types';
 import SearchIcon from '@plx_tuber/assets/icons/Search.icon';
 import {searchSong} from '@plx_tuber/core/apis';
-import {useQuery} from '@tanstack/react-query';
 
 const styles = StyleSheet.create({
   root: {
@@ -50,6 +51,8 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
     {enabled: Boolean(searchText)},
   );
 
+  const insets = useSafeAreaInsets();
+
   const handlePressBack = () => navigation.goBack();
 
   const renderItem = ({item}: {item: ISong}) => (
@@ -74,21 +77,23 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
     return null;
   }, [searchText, isFetched, data]);
 
-  const renderHeader = (
-    <>
-      <Box style={[styles.header__container]}>
-        <TouchableOpacity onPress={handlePressBack} style={styles.back__btn}>
-          <LeftArrowIcon color={colors.white} />
-        </TouchableOpacity>
+  return (
+    <Box color={colors.codGray} flex={1} p={2}>
+      <Box column style={{paddingTop: insets.top}} mb={2}>
+        <Box style={[styles.header__container]}>
+          <TouchableOpacity onPress={handlePressBack} style={styles.back__btn}>
+            <LeftArrowIcon color={colors.white} />
+          </TouchableOpacity>
 
-        <Box center middle flex={1}>
-          <Typography variant="h6" color={colors.white} fontWeight="700">
-            Search
-          </Typography>
+          <Box center middle flex={1}>
+            <Typography variant="h6" color={colors.white} fontWeight="700">
+              Search
+            </Typography>
+          </Box>
         </Box>
       </Box>
 
-      <Box flex={1} row center style={styles.input__container} color="red">
+      <Box row center style={styles.input__container} color="red">
         <SearchIcon color={colors.silver} />
         <TextInput
           value={searchText}
@@ -101,23 +106,18 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
       </Box>
 
       {resultTitle ? (
-        <Box mt={3}>
+        <Box mt={2} mb={2}>
           <Typography variant="b5" color={colors.white} fontWeight="700">
             {resultTitle}
           </Typography>
         </Box>
       ) : null}
-    </>
-  );
 
-  return (
-    <Box color={colors.codGray} flex={1} pl={2} pr={2}>
       <FlatList
         data={data || []}
         renderItem={renderItem}
         keyExtractor={item => `${item.id}`}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={renderHeader}
         contentContainerStyle={styles.root}
         refreshing={isLoading}
         onRefresh={refetch}

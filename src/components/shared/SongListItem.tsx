@@ -13,6 +13,7 @@ interface SongListItemProps {
   songName: string;
   artistName: string;
   url: string;
+  onMenuPress?: () => void;
 }
 
 const styles = StyleSheet.create({
@@ -28,6 +29,7 @@ const SongListItem: React.FC<SongListItemProps> = ({
   songName,
   artistName,
   url,
+  onMenuPress,
 }) => {
   const toast = useToast();
 
@@ -72,7 +74,9 @@ const SongListItem: React.FC<SongListItemProps> = ({
           <Typography color={colors.gray}>{artistName}</Typography>
         </Box>
 
-        <TouchableOpacity hitSlop={{top: 5, left: 10, bottom: 5, right: 10}}>
+        <TouchableOpacity
+          hitSlop={{top: 5, left: 10, bottom: 5, right: 10}}
+          onPress={onMenuPress}>
           <MenuIcon color={colors.blueBayoux} />
         </TouchableOpacity>
       </Box>
