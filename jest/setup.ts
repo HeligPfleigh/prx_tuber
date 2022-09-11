@@ -3,6 +3,7 @@ import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/asy
 import mockRNCNetInfo from '@react-native-community/netinfo/jest/netinfo-mock.js';
 require('react-native-reanimated/lib/reanimated2/jestUtils').setUpTests();
 // import 'react-native-gesture-handler/jestSetup';
+import '@react-native-community/datetimepicker/jest/setup.js';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 

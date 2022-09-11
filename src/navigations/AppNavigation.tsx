@@ -16,6 +16,7 @@ import PlaylistScreen from '@plx_tuber/screens/Playlist';
 import SongsScreen from '@plx_tuber/screens/Songs';
 import PlaylistsScreen from '@plx_tuber/screens/Playlists';
 import SearchScreen from '@plx_tuber/screens/Search';
+import SettingsScreen from '@plx_tuber/screens/Settings';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -32,7 +33,7 @@ const TabNavigator = () => (
       name={NavigatorMap.FavoriteAndPlaylistTab}
       component={Prototype}
     />
-    <Tab.Screen name={NavigatorMap.SettingTab} component={Prototype} />
+    <Tab.Screen name={NavigatorMap.SettingTab} component={SettingsScreen} />
   </Tab.Navigator>
 );
 
