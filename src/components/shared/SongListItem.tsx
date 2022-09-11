@@ -36,16 +36,17 @@ const SongListItem: React.FC<SongListItemProps> = ({
       if (!url) {
         throw new Error('Cannot load track!');
       }
+
       await TrackPlayer.reset();
 
       await TrackPlayer.add({
-        url, // Load media from the network
+        url,
         title: songName,
         artist: artistName,
         artwork: thumbnail,
       });
 
-      TrackPlayer.play();
+      await TrackPlayer.play();
     } catch (error) {
       if (error instanceof Error) {
         toast.show(error.message, {

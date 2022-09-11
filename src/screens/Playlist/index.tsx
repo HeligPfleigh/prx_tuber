@@ -18,6 +18,7 @@ import {getSongsOfJamendoPlaylist} from '@plx_tuber/core/apis';
 import {ISong} from '@plx_tuber/core/types';
 import {SongListItem, withPlayerBar} from '@plx_tuber/components/shared';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import TrackPlayer from 'react-native-track-player';
 
 const styles = StyleSheet.create({
   back__btn: {
@@ -60,6 +61,27 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
     getSongsOfJamendoPlaylist(playlist.id),
   );
 
+  const handlePlayAll = async () => {
+    try {
+      await TrackPlayer.reset();
+
+      await TrackPlayer.add(
+        (data || [])
+          .filter(item => Boolean(item.audio))
+          .map(item => ({
+            url: item.audio,
+            title: item.name,
+            artist: item.artistName,
+            artwork: item.image,
+          })),
+      );
+
+      await TrackPlayer.play();
+    } catch (error) {
+      // TODO
+    }
+  };
+
   const renderItem = ({item}: {item: ISong}) => (
     <Box p={2}>
       <SongListItem
@@ -98,7 +120,9 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
               {playlist.name}
             </Typography>
 
-            <TouchableOpacity style={styles.playAll__btn}>
+            <TouchableOpacity
+              style={styles.playAll__btn}
+              onPress={handlePlayAll}>
               <Box mr={1}>
                 <PlayIcon color={colors.codGray} />
               </Box>

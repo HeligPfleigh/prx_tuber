@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {ActivityIndicator, StyleSheet, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {Box, Progress, Typography} from '../common';
@@ -82,17 +82,25 @@ const PlayerBar = () => {
       case State.Stopped:
         return <PlayIcon color={colors.white} />;
       default:
-        return null;
+        return <ActivityIndicator />;
     }
   }, [trackState]);
 
   const handlePlayPause = async () => {
     try {
       const state = await TrackPlayer.getState();
-      if (state === State.Playing) {
-        await TrackPlayer.pause();
-      } else {
-        await TrackPlayer.play();
+
+      switch (state) {
+        case State.Playing:
+          await TrackPlayer.pause();
+          break;
+        case State.Paused:
+          await TrackPlayer.play();
+          break;
+        case State.Stopped:
+          await TrackPlayer.seekTo(0);
+          await TrackPlayer.play();
+          break;
       }
     } catch (error) {
       // TODO
