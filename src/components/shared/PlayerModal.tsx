@@ -15,7 +15,11 @@ interface IPlayerModalProps {
   title: string;
   artist: string;
   thumbnail: string;
-  onClose: () => void;
+  onClose?: () => void;
+  onFavorite?: () => void;
+  onShare?: () => void;
+  onPlay?: () => void;
+  onAddToPlaylist?: () => void;
 }
 
 const styles = StyleSheet.create({
@@ -62,6 +66,10 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
   artist,
   thumbnail,
   onClose,
+  onFavorite,
+  onShare,
+  onPlay,
+  onAddToPlaylist,
 }) => {
   return (
     <Modal
@@ -74,7 +82,7 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
         <Box style={styles.indicator} />
 
         <Box row flex={1} center style={styles.full__width} space="around">
-          <TouchableOpacity style={styles.icon__btn}>
+          <TouchableOpacity style={styles.icon__btn} onPress={onFavorite}>
             <HeartFillIcon color={colors.mineShaft} width={34} height={38} />
           </TouchableOpacity>
 
@@ -86,7 +94,7 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
             resizeMode={FastImage.resizeMode.cover}
           />
 
-          <TouchableOpacity style={styles.icon__btn}>
+          <TouchableOpacity style={styles.icon__btn} onPress={onShare}>
             <Box flex={1} center middle>
               <ReplyIcon color={colors.mineShaft} />
             </Box>
@@ -100,7 +108,7 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
           {artist}
         </Typography>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPlay}>
           <Box
             p={2}
             color="rgba(255, 255, 255, 0.14)"
@@ -119,7 +127,7 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
           </Box>
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onAddToPlaylist}>
           <Box
             p={2}
             color="rgba(255, 255, 255, 0.14)"

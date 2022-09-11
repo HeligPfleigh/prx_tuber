@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -16,9 +16,14 @@ import PlayIcon from '@plx_tuber/assets/icons/Play.icon';
 import {useQuery} from '@tanstack/react-query';
 import {getSongsOfJamendoPlaylist} from '@plx_tuber/core/apis';
 import {ISong} from '@plx_tuber/core/types';
-import {SongListItem, withPlayerBar} from '@plx_tuber/components/shared';
+import {
+  PlayerModal,
+  SongListItem,
+  withPlayerBar,
+} from '@plx_tuber/components/shared';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import TrackPlayer from 'react-native-track-player';
+import {useToast} from 'react-native-toast-notifications';
 
 const styles = StyleSheet.create({
   back__btn: {
@@ -55,11 +60,16 @@ const styles = StyleSheet.create({
 });
 
 const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
-  const handlePressBack = () => navigation.goBack();
   const {playlist} = route.params;
   const {data, isLoading} = useQuery(['playlist', playlist.id], () =>
     getSongsOfJamendoPlaylist(playlist.id),
   );
+
+  const toast = useToast();
+
+  const [selectedSong, setSelectedSong] = useState<ISong>();
+
+  const handlePressBack = () => navigation.goBack();
 
   const handlePlayAll = async () => {
     try {
@@ -82,6 +92,35 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
     }
   };
 
+  const handleClosePlayerModal = () => setSelectedSong(undefined);
+
+  const handlePlay = async () => {
+    try {
+      if (!selectedSong || !selectedSong.audio) {
+        throw new Error('Cannot load track!');
+      }
+
+      await TrackPlayer.reset();
+
+      await TrackPlayer.add({
+        url: selectedSong.audio,
+        title: selectedSong.name,
+        artist: selectedSong.artistName,
+        artwork: selectedSong.image,
+      });
+
+      await TrackPlayer.play();
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.show(error.message, {
+          type: 'danger',
+        });
+      }
+    } finally {
+      handleClosePlayerModal();
+    }
+  };
+
   const renderItem = ({item}: {item: ISong}) => (
     <Box p={2}>
       <SongListItem
@@ -89,6 +128,7 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
         artistName={item.artistName}
         songName={item.name}
         url={item.audio}
+        onMenuPress={() => setSelectedSong(item)}
       />
     </Box>
   );
@@ -122,7 +162,8 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
 
             <TouchableOpacity
               style={styles.playAll__btn}
-              onPress={handlePlayAll}>
+              onPress={handlePlayAll}
+              disabled={isLoading || !data?.length}>
               <Box mr={1}>
                 <PlayIcon color={colors.codGray} />
               </Box>
@@ -151,6 +192,15 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}
+      />
+
+      <PlayerModal
+        open={Boolean(selectedSong)}
+        artist={selectedSong?.artistName || ''}
+        thumbnail={selectedSong?.image || ''}
+        title={selectedSong?.name || ''}
+        onClose={handleClosePlayerModal}
+        onPlay={handlePlay}
       />
     </Box>
   );

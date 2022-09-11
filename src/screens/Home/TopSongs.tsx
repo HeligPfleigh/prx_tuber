@@ -10,6 +10,8 @@ import {PlayerModal, SongListItem} from '@plx_tuber/components/shared';
 import {HomeNavigationProps} from './types';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 import {ISong} from '@plx_tuber/core/types';
+import TrackPlayer from 'react-native-track-player';
+import {useToast} from 'react-native-toast-notifications';
 
 const styles = StyleSheet.create({
   seeAll__btn: {
@@ -26,6 +28,7 @@ const TopSongs = () => {
   const query = useQuery(['topSong'], getTopSong);
   const navigation = useNavigation<HomeNavigationProps>();
   const [selectedSong, setSelectedSong] = useState<ISong>();
+  const toast = useToast();
 
   const handleSeeAll = () => {
     navigation.navigate(NavigatorMap.Songs, {
@@ -35,6 +38,33 @@ const TopSongs = () => {
   };
 
   const handleClosePlayerModal = () => setSelectedSong(undefined);
+
+  const handlePlay = async () => {
+    try {
+      if (!selectedSong || !selectedSong.audio) {
+        throw new Error('Cannot load track!');
+      }
+
+      await TrackPlayer.reset();
+
+      await TrackPlayer.add({
+        url: selectedSong.audio,
+        title: selectedSong.name,
+        artist: selectedSong.artistName,
+        artwork: selectedSong.image,
+      });
+
+      await TrackPlayer.play();
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.show(error.message, {
+          type: 'danger',
+        });
+      }
+    } finally {
+      handleClosePlayerModal();
+    }
+  };
 
   return (
     <>
@@ -65,6 +95,7 @@ const TopSongs = () => {
       <PlayerModal
         open={Boolean(selectedSong)}
         onClose={handleClosePlayerModal}
+        onPlay={handlePlay}
         artist={selectedSong?.artistName || ''}
         thumbnail={selectedSong?.image || ''}
         title={selectedSong?.name || ''}
