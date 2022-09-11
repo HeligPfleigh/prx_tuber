@@ -36,6 +36,7 @@ const Songs: React.FC<SongsScreenProps> = ({route, navigation}) => {
         thumbnail={item.image}
         artistName={item.artistName}
         songName={item.name}
+        url={item.audio}
       />
     </Box>
   );

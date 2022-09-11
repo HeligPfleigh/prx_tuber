@@ -5,7 +5,6 @@ import {Box, Typography} from '@plx_tuber/components';
 import {colors, responsiveSize, round, spacing} from '@plx_tuber/theme';
 import {SongListItem, withPlayerBar} from '@plx_tuber/components/shared';
 import {ISong} from '@plx_tuber/core/types';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import LeftArrowIcon from '@plx_tuber/assets/icons/LeftArrow.icon';
 import {SearchScreenProps} from './types';
 import SearchIcon from '@plx_tuber/assets/icons/Search.icon';
@@ -14,11 +13,11 @@ import {useQuery} from '@tanstack/react-query';
 
 const styles = StyleSheet.create({
   root: {
-    paddingHorizontal: spacing(2),
+    // paddingHorizontal: spacing(2),
   },
   header__container: {
     position: 'relative',
-    minHeight: responsiveSize(70),
+    minHeight: responsiveSize(40),
   },
   back__btn: {
     ...round(34),
@@ -26,7 +25,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    top: spacing(2),
     zIndex: 2,
   },
   input__container: {
@@ -60,6 +58,7 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
         thumbnail={item.image}
         artistName={item.artistName}
         songName={item.name}
+        url={item.audio}
       />
     </Box>
   );
@@ -76,13 +75,13 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
   }, [searchText, isFetched, data]);
 
   const renderHeader = (
-    <SafeAreaView>
-      <Box style={styles.header__container}>
+    <>
+      <Box style={[styles.header__container]}>
         <TouchableOpacity onPress={handlePressBack} style={styles.back__btn}>
           <LeftArrowIcon color={colors.white} />
         </TouchableOpacity>
 
-        <Box p={2} center middle flex={1}>
+        <Box center middle flex={1}>
           <Typography variant="h6" color={colors.white} fontWeight="700">
             Search
           </Typography>
@@ -108,11 +107,11 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
           </Typography>
         </Box>
       ) : null}
-    </SafeAreaView>
+    </>
   );
 
   return (
-    <Box color={colors.codGray} flex={1}>
+    <Box color={colors.codGray} flex={1} pl={2} pr={2}>
       <FlatList
         data={data || []}
         renderItem={renderItem}

@@ -66,6 +66,7 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
         thumbnail={item.image}
         artistName={item.artistName}
         songName={item.name}
+        url={item.audio}
       />
     </Box>
   );

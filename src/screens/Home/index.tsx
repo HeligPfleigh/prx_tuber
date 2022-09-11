@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useQuery} from '@tanstack/react-query';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {Box, Typography} from '@plx_tuber/components';
 import {colors, responsiveSize, spacing} from '@plx_tuber/theme';
@@ -42,6 +42,8 @@ const Home: React.FC<HomeScreenProps> = ({navigation}) => {
     getJamendoCharts,
   );
 
+  const insets = useSafeAreaInsets();
+
   const handleOpenSearch = () => navigation.navigate(NavigatorMap.Search);
 
   const hotTopic = jamendoData?.hotTopic || [];
@@ -49,19 +51,17 @@ const Home: React.FC<HomeScreenProps> = ({navigation}) => {
 
   return (
     <ScrollView style={styles.container}>
-      <SafeAreaView>
-        <Box row space="between" center>
-          <Typography variant="h6" color={colors.white} fontWeight="700">
-            Hello, Welcome back!
-          </Typography>
+      <Box row space="between" center style={{paddingTop: insets.top}}>
+        <Typography variant="h6" color={colors.white} fontWeight="700">
+          Hello, Welcome back!
+        </Typography>
 
-          <TouchableOpacity
-            style={styles.searchContainer}
-            onPress={handleOpenSearch}>
-            <SearchIcon color={colors.white} />
-          </TouchableOpacity>
-        </Box>
-      </SafeAreaView>
+        <TouchableOpacity
+          style={styles.searchContainer}
+          onPress={handleOpenSearch}>
+          <SearchIcon color={colors.white} />
+        </TouchableOpacity>
+      </Box>
 
       {jamendoIsLoading ? (
         <Box flex={1} color={colors.codGray} p={2}>

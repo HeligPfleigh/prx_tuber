@@ -5,11 +5,14 @@ import {TouchableOpacity, StyleSheet} from 'react-native';
 import {Box, Typography} from '../common';
 import MenuIcon from '@plx_tuber/assets/icons/Menu.icon';
 import {colors, responsiveSize} from '@plx_tuber/theme';
+import TrackPlayer from 'react-native-track-player';
+import {useToast} from 'react-native-toast-notifications';
 
 interface SongListItemProps {
   thumbnail: string;
   songName: string;
   artistName: string;
+  url: string;
 }
 
 const styles = StyleSheet.create({
@@ -24,9 +27,36 @@ const SongListItem: React.FC<SongListItemProps> = ({
   thumbnail,
   songName,
   artistName,
+  url,
 }) => {
+  const toast = useToast();
+
+  const handlePlayMusic = async () => {
+    try {
+      if (!url) {
+        throw new Error('Cannot load track!');
+      }
+      await TrackPlayer.reset();
+
+      await TrackPlayer.add({
+        url, // Load media from the network
+        title: songName,
+        artist: artistName,
+        artwork: thumbnail,
+      });
+
+      TrackPlayer.play();
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.show(error.message, {
+          type: 'danger',
+        });
+      }
+    }
+  };
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={handlePlayMusic}>
       <Box row flex={1} center>
         <Box flex={1}>
           <FastImage

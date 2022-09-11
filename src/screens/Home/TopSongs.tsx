@@ -52,6 +52,7 @@ const TopSongs = () => {
             artistName={item.artistName}
             thumbnail={item.image}
             songName={item.name}
+            url={item.audio}
           />
         </Box>
       ))}

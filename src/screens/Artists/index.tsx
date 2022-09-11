@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import {useToast} from 'react-native-toast-notifications';
 import {useQuery} from '@tanstack/react-query';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {Box, Typography} from '@plx_tuber/components';
 import {colors, responsiveSize, spacing} from '@plx_tuber/theme';
@@ -15,7 +16,6 @@ import {getArtists} from '@plx_tuber/core/apis';
 import {IArtist} from '@plx_tuber/core/types';
 import FastImage from 'react-native-fast-image';
 import UserIcon from '@plx_tuber/assets/icons/User.icon';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {withPlayerBar} from '@plx_tuber/components/shared';
 
 const styles = StyleSheet.create({
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
 const Artists = () => {
   const {error, data, isLoading} = useQuery(['artists'], getArtists);
   const toast = useToast();
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     if (error) {
@@ -94,17 +95,15 @@ const Artists = () => {
 
   return (
     <Box flex={1} color={colors.codGray} p={2}>
-      <SafeAreaView>
-        <Box row space="between" center mb={4}>
-          <Typography variant="h6" color={colors.white} fontWeight="700">
-            Discover
-          </Typography>
+      <Box row space="between" center mb={2} style={{paddingTop: insets.top}}>
+        <Typography variant="h6" color={colors.white} fontWeight="700">
+          Discover
+        </Typography>
 
-          <TouchableOpacity style={styles.search__container}>
-            <SearchIcon color={colors.white} />
-          </TouchableOpacity>
-        </Box>
-      </SafeAreaView>
+        <TouchableOpacity style={styles.search__container}>
+          <SearchIcon color={colors.white} />
+        </TouchableOpacity>
+      </Box>
 
       {isLoading ? (
         <Box flex={1} color={colors.codGray} p={2}>
