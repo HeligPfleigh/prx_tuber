@@ -10,8 +10,6 @@ import {PlayerModal, SongListItem} from '@plx_tuber/components/shared';
 import {HomeNavigationProps} from './types';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 import {ISong} from '@plx_tuber/core/types';
-import TrackPlayer from 'react-native-track-player';
-import {useToast} from 'react-native-toast-notifications';
 import {useThemeStore} from '@plx_tuber/stores/theme';
 
 const styles = StyleSheet.create({
@@ -33,8 +31,6 @@ const TopSongs = () => {
 
   const theme = useThemeStore(state => state.theme);
 
-  const toast = useToast();
-
   const handleSeeAll = () => {
     navigation.navigate(NavigatorMap.Songs, {
       title: 'Top songs',
@@ -43,33 +39,6 @@ const TopSongs = () => {
   };
 
   const handleClosePlayerModal = () => setSelectedSong(undefined);
-
-  const handlePlay = async () => {
-    try {
-      if (!selectedSong || !selectedSong.audio) {
-        throw new Error('Cannot load track!');
-      }
-
-      await TrackPlayer.reset();
-
-      await TrackPlayer.add({
-        url: selectedSong.audio,
-        title: selectedSong.name,
-        artist: selectedSong.artistName,
-        artwork: selectedSong.image,
-      });
-
-      await TrackPlayer.play();
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.show(error.message, {
-          type: 'danger',
-        });
-      }
-    } finally {
-      handleClosePlayerModal();
-    }
-  };
 
   return (
     <>
@@ -92,23 +61,14 @@ const TopSongs = () => {
 
       {(query.data || []).slice(0, 5).map(item => (
         <Box mb={2} key={item.id}>
-          <SongListItem
-            artistName={item.artistName}
-            thumbnail={item.image}
-            songName={item.name}
-            url={item.audio}
-            onMenuPress={() => setSelectedSong(item)}
-          />
+          <SongListItem song={item} onMenuPress={() => setSelectedSong(item)} />
         </Box>
       ))}
 
       <PlayerModal
         open={Boolean(selectedSong)}
         onClose={handleClosePlayerModal}
-        onPlay={handlePlay}
-        artist={selectedSong?.artistName || ''}
-        thumbnail={selectedSong?.image || ''}
-        title={selectedSong?.name || ''}
+        song={selectedSong}
       />
     </>
   );

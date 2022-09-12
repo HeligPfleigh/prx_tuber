@@ -59,12 +59,7 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
 
   const renderItem = ({item}: {item: ISong}) => (
     <Box pb={2}>
-      <SongListItem
-        thumbnail={item.image}
-        artistName={item.artistName}
-        songName={item.name}
-        url={item.audio}
-      />
+      <SongListItem song={item} />
     </Box>
   );
 

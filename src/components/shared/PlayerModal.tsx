@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from 'react-native-modal';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity, Share} from 'react-native';
 
 import {colors, responsiveSize, round, spacing} from '@plx_tuber/theme';
 import {Box, Typography} from '../common';
@@ -10,16 +10,15 @@ import HeartFillIcon from '@plx_tuber/assets/icons/HeartFill.icon';
 import ReplyIcon from '@plx_tuber/assets/icons/Reply.icon';
 import FastImage from 'react-native-fast-image';
 import {useThemeStore} from '@plx_tuber/stores/theme';
+import {ISong} from '@plx_tuber/core/types';
+import TrackPlayer from 'react-native-track-player';
+import {useToast} from 'react-native-toast-notifications';
+import {useMyPlaylistsStore} from '@plx_tuber/stores/myPlaylists';
 
 interface IPlayerModalProps {
   open: boolean;
-  title: string;
-  artist: string;
-  thumbnail: string;
+  song?: ISong;
   onClose?: () => void;
-  onFavorite?: () => void;
-  onShare?: () => void;
-  onPlay?: () => void;
   onAddToPlaylist?: () => void;
 }
 
@@ -60,16 +59,56 @@ const styles = StyleSheet.create({
 
 export const PlayerModal: React.FC<IPlayerModalProps> = ({
   open,
-  title,
-  artist,
-  thumbnail,
+  song,
   onClose,
-  onFavorite,
-  onShare,
-  onPlay,
   onAddToPlaylist,
 }) => {
   const theme = useThemeStore(state => state.theme);
+
+  const favorite = useMyPlaylistsStore(state => state.favorite);
+
+  const addToFavorite = useMyPlaylistsStore(state => state.addToFavorite);
+
+  const toast = useToast();
+
+  const handlePlay = async () => {
+    try {
+      if (!song || !song.audio) {
+        throw new Error('Cannot load track!');
+      }
+
+      await TrackPlayer.reset();
+
+      await TrackPlayer.add({
+        url: song.audio,
+        title: song.name,
+        artist: song.artistName,
+        artwork: song.image,
+      });
+
+      await TrackPlayer.play();
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.show(error.message, {
+          type: 'danger',
+        });
+      }
+    } finally {
+      onClose?.();
+    }
+  };
+
+  const handleAddToFavorite = () => {
+    if (song) {
+      addToFavorite(song);
+    }
+  };
+
+  const handleShare = () => {
+    Share.share({
+      message: `Check out this song on our site: ${song?.shareurl || ''}`,
+    });
+  };
 
   return (
     <Modal
@@ -84,20 +123,33 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
           styles.container,
           {backgroundColor: theme.background.playerModal},
         ]}>
-        <Box style={[styles.indicator, {backgroundColor: theme.primary}]} />
+        <Box
+          style={[
+            styles.indicator,
+            {
+              backgroundColor: theme.primary,
+            },
+          ]}
+        />
 
         <Box row flex={1} center style={styles.full__width} space="around">
           <TouchableOpacity
             style={[styles.icon__btn, {backgroundColor: theme.primary}]}
-            onPress={onFavorite}>
+            onPress={handleAddToFavorite}>
             <Box flex={1} center middle>
-              <HeartFillIcon color={theme.background.playerModal} />
+              <HeartFillIcon
+                color={
+                  favorite.some(item => item.id === song?.id)
+                    ? colors.sunsetOrange
+                    : theme.background.playerModal
+                }
+              />
             </Box>
           </TouchableOpacity>
 
           <FastImage
             source={{
-              uri: thumbnail,
+              uri: song?.image || '',
             }}
             style={styles.thumbnail}
             resizeMode={FastImage.resizeMode.cover}
@@ -105,7 +157,7 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
 
           <TouchableOpacity
             style={[styles.icon__btn, {backgroundColor: theme.primary}]}
-            onPress={onShare}>
+            onPress={handleShare}>
             <Box flex={1} center middle>
               <ReplyIcon color={theme.background.playerModal} />
             </Box>
@@ -113,13 +165,13 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
         </Box>
 
         <Typography variant="h6" color={theme.text.primary}>
-          {title}
+          {song?.name || ''}
         </Typography>
         <Typography variant="caps3" color={colors.gray100}>
-          {artist}
+          {song?.artistName || ''}
         </Typography>
 
-        <TouchableOpacity onPress={onPlay}>
+        <TouchableOpacity onPress={handlePlay}>
           <Box
             p={2}
             style={[

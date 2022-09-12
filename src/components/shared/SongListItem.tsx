@@ -8,12 +8,10 @@ import {colors, responsiveSize} from '@plx_tuber/theme';
 import TrackPlayer from 'react-native-track-player';
 import {useToast} from 'react-native-toast-notifications';
 import {useThemeStore} from '@plx_tuber/stores/theme';
+import {ISong} from '@plx_tuber/core/types';
 
 interface SongListItemProps {
-  thumbnail: string;
-  songName: string;
-  artistName: string;
-  url: string;
+  song: ISong;
   onMenuPress?: () => void;
 }
 
@@ -25,30 +23,24 @@ const styles = StyleSheet.create({
   },
 });
 
-const SongListItem: React.FC<SongListItemProps> = ({
-  thumbnail,
-  songName,
-  artistName,
-  url,
-  onMenuPress,
-}) => {
+const SongListItem: React.FC<SongListItemProps> = ({song, onMenuPress}) => {
   const toast = useToast();
 
   const theme = useThemeStore(state => state.theme);
 
   const handlePlayMusic = async () => {
     try {
-      if (!url) {
+      if (!song.audio) {
         throw new Error('Cannot load track!');
       }
 
       await TrackPlayer.reset();
 
       await TrackPlayer.add({
-        url,
-        title: songName,
-        artist: artistName,
-        artwork: thumbnail,
+        url: song.audio,
+        title: song.name,
+        artist: song.artistName,
+        artwork: song.image,
       });
 
       await TrackPlayer.play();
@@ -66,15 +58,15 @@ const SongListItem: React.FC<SongListItemProps> = ({
       <Box row flex={1} center>
         <Box flex={1}>
           <FastImage
-            source={{uri: thumbnail}}
+            source={{uri: song.image}}
             style={styles.song__thumbnail}
             resizeMode={FastImage.resizeMode.cover}
           />
         </Box>
 
         <Box ml={1} middle mr={1} flex={4}>
-          <Typography color={theme.text.primary}>{songName}</Typography>
-          <Typography color={colors.gray}>{artistName}</Typography>
+          <Typography color={theme.text.primary}>{song.name}</Typography>
+          <Typography color={colors.gray}>{song.artistName}</Typography>
         </Box>
 
         <TouchableOpacity

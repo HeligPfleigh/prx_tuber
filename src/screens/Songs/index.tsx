@@ -35,12 +35,7 @@ const Songs: React.FC<SongsScreenProps> = ({route, navigation}) => {
 
   const renderItem = ({item}: {item: ISong}) => (
     <Box p={2}>
-      <SongListItem
-        thumbnail={item.image}
-        artistName={item.artistName}
-        songName={item.name}
-        url={item.audio}
-      />
+      <SongListItem song={item} />
     </Box>
   );
 

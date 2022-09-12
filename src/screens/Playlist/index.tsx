@@ -23,7 +23,6 @@ import {
 } from '@plx_tuber/components/shared';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import TrackPlayer from 'react-native-track-player';
-import {useToast} from 'react-native-toast-notifications';
 import {useThemeStore} from '@plx_tuber/stores/theme';
 
 const styles = StyleSheet.create({
@@ -66,8 +65,6 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
     getSongsOfJamendoPlaylist(playlist.id),
   );
 
-  const toast = useToast();
-
   const theme = useThemeStore(state => state.theme);
 
   const [selectedSong, setSelectedSong] = useState<ISong>();
@@ -97,42 +94,9 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
 
   const handleClosePlayerModal = () => setSelectedSong(undefined);
 
-  const handlePlay = async () => {
-    try {
-      if (!selectedSong || !selectedSong.audio) {
-        throw new Error('Cannot load track!');
-      }
-
-      await TrackPlayer.reset();
-
-      await TrackPlayer.add({
-        url: selectedSong.audio,
-        title: selectedSong.name,
-        artist: selectedSong.artistName,
-        artwork: selectedSong.image,
-      });
-
-      await TrackPlayer.play();
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.show(error.message, {
-          type: 'danger',
-        });
-      }
-    } finally {
-      handleClosePlayerModal();
-    }
-  };
-
   const renderItem = ({item}: {item: ISong}) => (
     <Box p={2}>
-      <SongListItem
-        thumbnail={item.image}
-        artistName={item.artistName}
-        songName={item.name}
-        url={item.audio}
-        onMenuPress={() => setSelectedSong(item)}
-      />
+      <SongListItem song={item} onMenuPress={() => setSelectedSong(item)} />
     </Box>
   );
 
@@ -199,11 +163,8 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
 
       <PlayerModal
         open={Boolean(selectedSong)}
-        artist={selectedSong?.artistName || ''}
-        thumbnail={selectedSong?.image || ''}
-        title={selectedSong?.name || ''}
+        song={selectedSong}
         onClose={handleClosePlayerModal}
-        onPlay={handlePlay}
       />
     </Box>
   );
