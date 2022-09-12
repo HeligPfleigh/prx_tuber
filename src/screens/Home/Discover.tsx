@@ -3,17 +3,17 @@ import {FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {Box, Typography} from '@plx_tuber/components';
-import {colors, responsiveSize} from '@plx_tuber/theme';
+import {responsiveSize} from '@plx_tuber/theme';
 import {IPlaylist} from '@plx_tuber/core/types';
 import {useNavigation} from '@react-navigation/native';
 import {HomeNavigationProps} from './types';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
+import {useThemeStore} from '@plx_tuber/stores/theme';
 
 const styles = StyleSheet.create({
   seeAll__btn: {
     width: responsiveSize(50),
     height: responsiveSize(19),
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     borderRadius: responsiveSize(20),
     justifyContent: 'center',
     alignItems: 'center',
@@ -34,6 +34,8 @@ interface IDiscoverProps {
 
 const Discover: React.FC<IDiscoverProps> = ({playlist}) => {
   const navigation = useNavigation<HomeNavigationProps>();
+
+  const theme = useThemeStore(state => state.theme);
 
   const handleOpenPlaylist = (item: IPlaylist) => () => {
     navigation.navigate(NavigatorMap.Playlist, {playlist: item});
@@ -58,7 +60,7 @@ const Discover: React.FC<IDiscoverProps> = ({playlist}) => {
         />
 
         <Box mt={1.5}>
-          <Typography variant="b5" color={colors.white}>
+          <Typography variant="b5" color={theme.text.primary}>
             {item.name}
           </Typography>
         </Box>
@@ -69,12 +71,17 @@ const Discover: React.FC<IDiscoverProps> = ({playlist}) => {
   return (
     <>
       <Box row space="between" center mb={1.5}>
-        <Typography variant="b5" color={colors.white} fontWeight="700">
+        <Typography variant="b5" color={theme.text.primary} fontWeight="700">
           Discover
         </Typography>
 
-        <TouchableOpacity style={styles.seeAll__btn} onPress={handleSeeAll}>
-          <Typography variant="caps4" color={colors.white}>
+        <TouchableOpacity
+          style={[
+            styles.seeAll__btn,
+            {backgroundColor: theme.background.seeAll},
+          ]}
+          onPress={handleSeeAll}>
+          <Typography variant="caps4" color={theme.text.primary}>
             See all
           </Typography>
         </TouchableOpacity>

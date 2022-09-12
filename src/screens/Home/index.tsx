@@ -9,7 +9,7 @@ import {useQuery} from '@tanstack/react-query';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {Box, Typography} from '@plx_tuber/components';
-import {colors, responsiveSize, spacing} from '@plx_tuber/theme';
+import {responsiveSize, spacing} from '@plx_tuber/theme';
 import SearchIcon from '@plx_tuber/assets/icons/Search.icon';
 import HotTopics from './HotTopics';
 import TopSongs from './TopSongs';
@@ -18,11 +18,11 @@ import Discover from './Discover';
 import {HomeScreenProps} from './types';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 import {withPlayerBar} from '@plx_tuber/components/shared';
+import {useThemeStore} from '@plx_tuber/stores/theme';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.codGray,
     padding: spacing(2),
   },
   searchContainer: {
@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     height: responsiveSize(34),
     borderRadius: responsiveSize(8),
     borderWidth: responsiveSize(1),
-    borderColor: colors.white,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -42,6 +41,8 @@ const Home: React.FC<HomeScreenProps> = ({navigation}) => {
     getJamendoCharts,
   );
 
+  const theme = useThemeStore(state => state.theme);
+
   const insets = useSafeAreaInsets();
 
   const handleOpenSearch = () => navigation.navigate(NavigatorMap.Search);
@@ -50,21 +51,22 @@ const Home: React.FC<HomeScreenProps> = ({navigation}) => {
   const discover = jamendoData?.discover || [];
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={[styles.container, {backgroundColor: theme.background.default}]}>
       <Box row space="between" center style={{paddingTop: insets.top}}>
-        <Typography variant="h6" color={colors.white} fontWeight="700">
+        <Typography variant="h6" color={theme.text.primary} fontWeight="700">
           Hello, Welcome back!
         </Typography>
 
         <TouchableOpacity
-          style={styles.searchContainer}
+          style={[styles.searchContainer, {borderColor: theme.text.primary}]}
           onPress={handleOpenSearch}>
-          <SearchIcon color={colors.white} />
+          <SearchIcon color={theme.text.primary} />
         </TouchableOpacity>
       </Box>
 
       {jamendoIsLoading ? (
-        <Box flex={1} color={colors.codGray} p={2}>
+        <Box flex={1} color={theme.background.default} p={2}>
           <ActivityIndicator />
         </Box>
       ) : (

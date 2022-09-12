@@ -11,6 +11,7 @@ import LeftArrowIcon from '@plx_tuber/assets/icons/LeftArrow.icon';
 import {SearchScreenProps} from './types';
 import SearchIcon from '@plx_tuber/assets/icons/Search.icon';
 import {searchSong} from '@plx_tuber/core/apis';
+import {useThemeStore} from '@plx_tuber/stores/theme';
 
 const styles = StyleSheet.create({
   root: {
@@ -22,7 +23,6 @@ const styles = StyleSheet.create({
   },
   back__btn: {
     ...round(34),
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
@@ -44,6 +44,8 @@ const styles = StyleSheet.create({
 
 const Search: React.FC<SearchScreenProps> = ({navigation}) => {
   const [searchText, setSearchText] = useState<string>('');
+
+  const theme = useThemeStore(state => state.theme);
 
   const {data, isLoading, isFetched, refetch} = useQuery(
     ['search', searchText],
@@ -78,22 +80,36 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
   }, [searchText, isFetched, data]);
 
   return (
-    <Box color={colors.codGray} flex={1} p={2}>
+    <Box color={theme.background.default} flex={1} p={2}>
       <Box column style={{paddingTop: insets.top}} mb={2}>
         <Box style={[styles.header__container]}>
-          <TouchableOpacity onPress={handlePressBack} style={styles.back__btn}>
+          <TouchableOpacity
+            onPress={handlePressBack}
+            style={[
+              styles.back__btn,
+              {backgroundColor: theme.background.back},
+            ]}>
             <LeftArrowIcon color={colors.white} />
           </TouchableOpacity>
 
           <Box center middle flex={1}>
-            <Typography variant="h6" color={colors.white} fontWeight="700">
+            <Typography
+              variant="h6"
+              color={theme.text.primary}
+              fontWeight="700">
               Search
             </Typography>
           </Box>
         </Box>
       </Box>
 
-      <Box row center style={styles.input__container} color="red">
+      <Box
+        row
+        center
+        style={[
+          styles.input__container,
+          {backgroundColor: theme.background.default},
+        ]}>
         <SearchIcon color={colors.silver} />
         <TextInput
           value={searchText}
@@ -107,7 +123,7 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
 
       {resultTitle ? (
         <Box mt={2} mb={2}>
-          <Typography variant="b5" color={colors.white} fontWeight="700">
+          <Typography variant="b5" color={theme.text.primary} fontWeight="700">
             {resultTitle}
           </Typography>
         </Box>

@@ -9,6 +9,7 @@ import AddCircleIcon from '@plx_tuber/assets/icons/AddCircle.icon';
 import HeartFillIcon from '@plx_tuber/assets/icons/HeartFill.icon';
 import ReplyIcon from '@plx_tuber/assets/icons/Reply.icon';
 import FastImage from 'react-native-fast-image';
+import {useThemeStore} from '@plx_tuber/stores/theme';
 
 interface IPlayerModalProps {
   open: boolean;
@@ -29,9 +30,8 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
-    backgroundColor: colors.mineShaft,
     alignItems: 'center',
-    minHeight: '50%',
+    minHeight: responsiveSize(400),
     borderTopLeftRadius: responsiveSize(20),
     borderTopRightRadius: responsiveSize(20),
     padding: spacing(1.5),
@@ -39,13 +39,11 @@ const styles = StyleSheet.create({
   indicator: {
     height: responsiveSize(5),
     width: responsiveSize(32),
-    backgroundColor: colors.white,
     borderRadius: responsiveSize(2.5),
     marginBottom: spacing(3.5),
   },
   icon__btn: {
     ...round(36),
-    backgroundColor: colors.white,
   },
   full__width: {
     width: '100%',
@@ -71,6 +69,8 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
   onPlay,
   onAddToPlaylist,
 }) => {
+  const theme = useThemeStore(state => state.theme);
+
   return (
     <Modal
       isVisible={open}
@@ -78,12 +78,23 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
       animationOut="fadeOutDown"
       style={styles.root}
       onBackdropPress={onClose}>
-      <Box flex={false} style={styles.container}>
-        <Box style={styles.indicator} />
+      <Box
+        flex={false}
+        style={[
+          styles.container,
+          {backgroundColor: theme.background.playerModal},
+        ]}>
+        <Box style={[styles.indicator, {backgroundColor: theme.primary}]} />
 
         <Box row flex={1} center style={styles.full__width} space="around">
-          <TouchableOpacity style={styles.icon__btn} onPress={onFavorite}>
-            <HeartFillIcon color={colors.mineShaft} width={34} height={38} />
+          <TouchableOpacity
+            style={[styles.icon__btn, {backgroundColor: theme.primary}]}
+            onPress={onFavorite}>
+            <HeartFillIcon
+              color={theme.background.playerModal}
+              width={34}
+              height={38}
+            />
           </TouchableOpacity>
 
           <FastImage
@@ -94,14 +105,16 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
             resizeMode={FastImage.resizeMode.cover}
           />
 
-          <TouchableOpacity style={styles.icon__btn} onPress={onShare}>
+          <TouchableOpacity
+            style={[styles.icon__btn, {backgroundColor: theme.primary}]}
+            onPress={onShare}>
             <Box flex={1} center middle>
-              <ReplyIcon color={colors.mineShaft} />
+              <ReplyIcon color={theme.background.playerModal} />
             </Box>
           </TouchableOpacity>
         </Box>
 
-        <Typography variant="h6" color={colors.white}>
+        <Typography variant="h6" color={theme.text.primary}>
           {title}
         </Typography>
         <Typography variant="caps3" color={colors.gray100}>
@@ -111,16 +124,19 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
         <TouchableOpacity onPress={onPlay}>
           <Box
             p={2}
-            color="rgba(255, 255, 255, 0.14)"
-            style={[styles.action__btn, styles.full__width]}
+            style={[
+              styles.action__btn,
+              styles.full__width,
+              {backgroundColor: theme.background.settingItem},
+            ]}
             row
             center
             mt={2}>
             <Box mr={2}>
-              <PlayIcon color={colors.white} />
+              <PlayIcon color={theme.primary} />
             </Box>
             <Box flex={1}>
-              <Typography variant="b5" color={colors.white}>
+              <Typography variant="b5" color={theme.text.primary}>
                 Play
               </Typography>
             </Box>
@@ -130,16 +146,19 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
         <TouchableOpacity onPress={onAddToPlaylist}>
           <Box
             p={2}
-            color="rgba(255, 255, 255, 0.14)"
-            style={[styles.action__btn, styles.full__width]}
+            style={[
+              styles.action__btn,
+              styles.full__width,
+              {backgroundColor: theme.background.settingItem},
+            ]}
             row
             center
             mt={2}>
             <Box mr={2}>
-              <AddCircleIcon color={colors.white} />
+              <AddCircleIcon color={theme.primary} />
             </Box>
             <Box flex={1}>
-              <Typography variant="b5" color={colors.white}>
+              <Typography variant="b5" color={theme.text.primary}>
                 Add to playlist
               </Typography>
             </Box>

@@ -17,6 +17,7 @@ import {IArtist} from '@plx_tuber/core/types';
 import FastImage from 'react-native-fast-image';
 import UserIcon from '@plx_tuber/assets/icons/User.icon';
 import {withPlayerBar} from '@plx_tuber/components/shared';
+import {useThemeStore} from '@plx_tuber/stores/theme';
 
 const styles = StyleSheet.create({
   search__container: {
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     height: responsiveSize(34),
     borderRadius: responsiveSize(8),
     borderWidth: responsiveSize(1),
-    borderColor: colors.white,
+
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -57,12 +58,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  artist__name: {
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10,
+  },
 });
 
 const Artists = () => {
   const {error, data, isLoading} = useQuery(['artists'], getArtists);
   const toast = useToast();
   const insets = useSafeAreaInsets();
+  const theme = useThemeStore(state => state.theme);
 
   useEffect(() => {
     if (error) {
@@ -85,7 +92,10 @@ const Artists = () => {
           <UserIcon color={colors.caribbeanGreen} />
         )}
         <Box style={styles.name__container}>
-          <Typography color={colors.white} variant="caps3">
+          <Typography
+            color={colors.white}
+            variant="caps3"
+            style={styles.artist__name}>
             {item.nameArtist}
           </Typography>
         </Box>
@@ -94,19 +104,20 @@ const Artists = () => {
   );
 
   return (
-    <Box flex={1} color={colors.codGray} p={2}>
+    <Box flex={1} color={theme.background.default} p={2}>
       <Box row space="between" center mb={2} style={{paddingTop: insets.top}}>
-        <Typography variant="h6" color={colors.white} fontWeight="700">
+        <Typography variant="h6" color={theme.text.primary} fontWeight="700">
           Discover
         </Typography>
 
-        <TouchableOpacity style={styles.search__container}>
-          <SearchIcon color={colors.white} />
+        <TouchableOpacity
+          style={[styles.search__container, {borderColor: theme.primary}]}>
+          <SearchIcon color={theme.primary} />
         </TouchableOpacity>
       </Box>
 
       {isLoading ? (
-        <Box flex={1} color={colors.codGray} p={2}>
+        <Box flex={1} color={theme.background.default} p={2}>
           <ActivityIndicator />
         </Box>
       ) : (

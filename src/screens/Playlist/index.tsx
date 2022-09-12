@@ -24,6 +24,7 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import TrackPlayer from 'react-native-track-player';
 import {useToast} from 'react-native-toast-notifications';
+import {useThemeStore} from '@plx_tuber/stores/theme';
 
 const styles = StyleSheet.create({
   back__btn: {
@@ -66,6 +67,8 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
   );
 
   const toast = useToast();
+
+  const theme = useThemeStore(state => state.theme);
 
   const [selectedSong, setSelectedSong] = useState<ISong>();
 
@@ -134,7 +137,7 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
   );
 
   const renderEmpty = (
-    <Box flex={1} color={colors.codGray}>
+    <Box flex={1} color={theme.background.default}>
       <ActivityIndicator />
     </Box>
   );
@@ -184,7 +187,7 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
   );
 
   return (
-    <Box flex={1} color={colors.codGray}>
+    <Box flex={1} color={theme.background.default}>
       <FlatList
         data={data || []}
         renderItem={renderItem}

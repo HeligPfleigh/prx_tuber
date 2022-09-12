@@ -10,6 +10,7 @@ import FastImage from 'react-native-fast-image';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {withPlayerBar} from '@plx_tuber/components/shared';
+import {useThemeStore} from '@plx_tuber/stores/theme';
 
 const styles = StyleSheet.create({
   header__container: {
@@ -18,7 +19,6 @@ const styles = StyleSheet.create({
   },
   back__btn: {
     ...round(34),
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
@@ -38,7 +38,10 @@ const styles = StyleSheet.create({
 
 const Playlists: React.FC<PlaylistsScreenProps> = ({route, navigation}) => {
   const handlePressBack = () => navigation.goBack();
+
   const {title, playlists} = route.params;
+
+  const theme = useThemeStore(state => state.theme);
 
   const handleOpenPlaylist = (item: IPlaylist) => () => {
     navigation.navigate(NavigatorMap.Playlist, {playlist: item});
@@ -56,7 +59,7 @@ const Playlists: React.FC<PlaylistsScreenProps> = ({route, navigation}) => {
         />
 
         <Box mt={1.5}>
-          <Typography variant="b5" color={colors.white}>
+          <Typography variant="b5" color={theme.text.primary}>
             {item.name}
           </Typography>
         </Box>
@@ -67,12 +70,14 @@ const Playlists: React.FC<PlaylistsScreenProps> = ({route, navigation}) => {
   const renderHeader = (
     <SafeAreaView>
       <Box style={styles.header__container}>
-        <TouchableOpacity onPress={handlePressBack} style={styles.back__btn}>
+        <TouchableOpacity
+          onPress={handlePressBack}
+          style={[styles.back__btn, {backgroundColor: theme.background.back}]}>
           <LeftArrowIcon color={colors.white} />
         </TouchableOpacity>
 
         <Box p={2} center middle flex={1}>
-          <Typography variant="h6" color={colors.white} fontWeight="700">
+          <Typography variant="h6" color={theme.text.primary} fontWeight="700">
             {title}
           </Typography>
         </Box>
@@ -81,7 +86,7 @@ const Playlists: React.FC<PlaylistsScreenProps> = ({route, navigation}) => {
   );
 
   return (
-    <Box color={colors.codGray} flex={1}>
+    <Box color={theme.background.default} flex={1}>
       <FlatList
         data={playlists}
         renderItem={renderItem}

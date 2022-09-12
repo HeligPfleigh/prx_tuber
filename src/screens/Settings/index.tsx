@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import DateTimePicker from '@react-native-community/datetimepicker';
+// import DateTimePicker from '@react-native-community/datetimepicker';
 
-import ClockIcon from '@plx_tuber/assets/icons/Clock.icon';
+// import ClockIcon from '@plx_tuber/assets/icons/Clock.icon';
 import EmailIcon from '@plx_tuber/assets/icons/Email.icon';
 import LightIcon from '@plx_tuber/assets/icons/Light.icon';
 import PlayIcon from '@plx_tuber/assets/icons/Play.icon';
@@ -12,10 +12,10 @@ import StartIcon from '@plx_tuber/assets/icons/Star.icon';
 import {Box, Typography} from '@plx_tuber/components';
 import {colors, responsiveSize, spacing} from '@plx_tuber/theme';
 import {withPlayerBar} from '@plx_tuber/components/shared';
+import {useThemeStore} from '@plx_tuber/stores/theme';
 
 const styles = StyleSheet.create({
   root: {
-    backgroundColor: colors.codGray,
     flex: 1,
     padding: spacing(2),
   },
@@ -25,59 +25,65 @@ const styles = StyleSheet.create({
 });
 
 const Settings = () => {
-  const [date, setDate] = useState<Date>();
+  // const [date, setDate] = useState<Date>();
   const insets = useSafeAreaInsets();
+  const theme = useThemeStore(state => state.theme);
+  const toggleDarkLightTheme = useThemeStore(
+    state => state.toggleDarkLightTheme,
+  );
 
-  const onChange = (_event: unknown, selectedDate?: Date) => {
-    const currentDate = selectedDate;
-    setDate(currentDate);
-  };
+  // const onChange = (_event: unknown, selectedDate?: Date) => {
+  //   const currentDate = selectedDate;
+  //   setDate(currentDate);
+  // };
 
   const settings = [
     {
-      icon: <PlayIcon color={colors.white} />,
+      icon: <PlayIcon color={theme.primary} />,
       title: 'Stream quality',
       status: 'Normal',
     },
     {
-      icon: <LightIcon color={colors.white} />,
+      icon: <LightIcon color={theme.primary} />,
       title: 'Light Mode',
-      status: 'Off',
+      status: theme.key === 'light' ? 'On' : 'Off',
+      onPress: toggleDarkLightTheme,
     },
     {
-      icon: <StartIcon color={colors.white} />,
+      icon: <StartIcon color={theme.primary} />,
       title: 'Rate this app',
     },
     {
-      icon: <EmailIcon color={colors.white} />,
+      icon: <EmailIcon color={theme.primary} />,
       title: 'Contact us',
     },
     {
-      icon: <PrivacyIcon color={colors.white} />,
+      icon: <PrivacyIcon color={theme.primary} />,
       title: 'Privacy policy',
     },
   ];
 
   return (
-    <ScrollView style={styles.root}>
+    <ScrollView
+      style={[styles.root, {backgroundColor: theme.background.default}]}>
       <Box row space="between" center mb={4} style={{paddingTop: insets.top}}>
-        <Typography variant="h6" color={colors.white} fontWeight="700">
+        <Typography variant="h6" color={theme.primary} fontWeight="700">
           Setting
         </Typography>
       </Box>
 
       {settings.map(setting => (
-        <TouchableOpacity key={setting.title}>
+        <TouchableOpacity key={setting.title} onPress={setting.onPress}>
           <Box
             p={2}
-            color="rgba(255, 255, 255, 0.14)"
+            color={theme.background.settingItem}
             style={styles.border__radius}
             row
             center
             mb={2}>
             <Box mr={2}>{setting.icon}</Box>
             <Box flex={1}>
-              <Typography variant="b5" color={colors.white}>
+              <Typography variant="b5" color={theme.text.primary}>
                 {setting.title}
               </Typography>
             </Box>
@@ -88,7 +94,7 @@ const Settings = () => {
         </TouchableOpacity>
       ))}
 
-      <Box
+      {/* <Box
         p={2}
         color="rgba(255, 255, 255, 0.14)"
         style={styles.border__radius}
@@ -126,7 +132,7 @@ const Settings = () => {
             </Box>
           </TouchableOpacity>
         </Box>
-      </Box>
+      </Box> */}
     </ScrollView>
   );
 };

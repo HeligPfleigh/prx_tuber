@@ -8,6 +8,7 @@ import LeftArrowIcon from '@plx_tuber/assets/icons/LeftArrow.icon';
 import {SongListItem, withPlayerBar} from '@plx_tuber/components/shared';
 import {ISong} from '@plx_tuber/core/types';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useThemeStore} from '@plx_tuber/stores/theme';
 
 const styles = StyleSheet.create({
   header__container: {
@@ -16,7 +17,6 @@ const styles = StyleSheet.create({
   },
   back__btn: {
     ...round(34),
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
@@ -28,7 +28,10 @@ const styles = StyleSheet.create({
 
 const Songs: React.FC<SongsScreenProps> = ({route, navigation}) => {
   const handlePressBack = () => navigation.goBack();
+
   const {title, songs} = route.params;
+
+  const theme = useThemeStore(state => state.theme);
 
   const renderItem = ({item}: {item: ISong}) => (
     <Box p={2}>
@@ -44,12 +47,14 @@ const Songs: React.FC<SongsScreenProps> = ({route, navigation}) => {
   const renderHeader = (
     <SafeAreaView>
       <Box style={styles.header__container}>
-        <TouchableOpacity onPress={handlePressBack} style={styles.back__btn}>
+        <TouchableOpacity
+          onPress={handlePressBack}
+          style={[styles.back__btn, {backgroundColor: theme.background.back}]}>
           <LeftArrowIcon color={colors.white} />
         </TouchableOpacity>
 
         <Box p={2} center middle flex={1}>
-          <Typography variant="h6" color={colors.white} fontWeight="700">
+          <Typography variant="h6" color={theme.text.primary} fontWeight="700">
             {title}
           </Typography>
         </Box>
@@ -58,7 +63,7 @@ const Songs: React.FC<SongsScreenProps> = ({route, navigation}) => {
   );
 
   return (
-    <Box color={colors.codGray} flex={1}>
+    <Box color={theme.background.default} flex={1}>
       <FlatList
         data={songs}
         renderItem={renderItem}

@@ -12,6 +12,7 @@ import HomeFillIcon from '@plx_tuber/assets/icons/HomeFill.icon';
 import DiscoverFillIcon from '@plx_tuber/assets/icons/DiscoverFill.icon';
 import HeartFillIcon from '@plx_tuber/assets/icons/HeartFill.icon';
 import CogFillIcon from '@plx_tuber/assets/icons/CogFill.icon';
+import {useThemeStore} from '@plx_tuber/stores/theme';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,7 +20,6 @@ const styles = StyleSheet.create({
   },
   tab: {
     flex: 1,
-    backgroundColor: colors.codGray,
     paddingVertical: responsiveSize(16),
     display: 'flex',
     justifyContent: 'center',
@@ -39,18 +39,22 @@ const Icons = {
   [NavigatorMap.SettingTab]: <CogIcon color={colors.scorpion} />,
 };
 
-const SelectedIcons = {
-  [NavigatorMap.HomeTab]: <HomeFillIcon color={colors.white} />,
-  [NavigatorMap.DiscoverTab]: <DiscoverFillIcon color={colors.white} />,
-  [NavigatorMap.FavoriteAndPlaylistTab]: <HeartFillIcon color={colors.white} />,
-  [NavigatorMap.SettingTab]: <CogFillIcon color={colors.white} />,
-};
-
 const PlxTuberTabBar: React.FC<BottomTabBarProps> = ({
   state,
   descriptors,
   navigation,
 }) => {
+  const theme = useThemeStore(mState => mState.theme);
+
+  const SelectedIcons = {
+    [NavigatorMap.HomeTab]: <HomeFillIcon color={theme.text.primary} />,
+    [NavigatorMap.DiscoverTab]: <DiscoverFillIcon color={theme.text.primary} />,
+    [NavigatorMap.FavoriteAndPlaylistTab]: (
+      <HeartFillIcon color={theme.text.primary} />
+    ),
+    [NavigatorMap.SettingTab]: <CogFillIcon color={theme.text.primary} />,
+  };
+
   return (
     <View style={styles.container}>
       {state.routes.map((route, index) => {
@@ -90,11 +94,11 @@ const PlxTuberTabBar: React.FC<BottomTabBarProps> = ({
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={styles.tab}
+            style={[styles.tab, {backgroundColor: theme.background.default}]}
             key={route.key}>
             {isFocused
-              ? SelectedIcons[route.name as NavigatorMap]
-              : Icons[route.name as NavigatorMap]}
+              ? SelectedIcons[route.name as keyof typeof SelectedIcons]
+              : Icons[route.name as keyof typeof SelectedIcons]}
             <View
               style={[
                 styles.tabIndicator,

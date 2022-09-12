@@ -7,6 +7,7 @@ import MenuIcon from '@plx_tuber/assets/icons/Menu.icon';
 import {colors, responsiveSize} from '@plx_tuber/theme';
 import TrackPlayer from 'react-native-track-player';
 import {useToast} from 'react-native-toast-notifications';
+import {useThemeStore} from '@plx_tuber/stores/theme';
 
 interface SongListItemProps {
   thumbnail: string;
@@ -32,6 +33,8 @@ const SongListItem: React.FC<SongListItemProps> = ({
   onMenuPress,
 }) => {
   const toast = useToast();
+
+  const theme = useThemeStore(state => state.theme);
 
   const handlePlayMusic = async () => {
     try {
@@ -70,7 +73,7 @@ const SongListItem: React.FC<SongListItemProps> = ({
         </Box>
 
         <Box ml={1} middle mr={1} flex={4}>
-          <Typography color={colors.white}>{songName}</Typography>
+          <Typography color={theme.text.primary}>{songName}</Typography>
           <Typography color={colors.gray}>{artistName}</Typography>
         </Box>
 

@@ -14,6 +14,7 @@ import TrackPlayer, {
   Track,
   useProgress,
 } from 'react-native-track-player';
+import {useThemeStore} from '@plx_tuber/stores/theme';
 
 const styles = StyleSheet.create({
   root: {
@@ -32,7 +33,11 @@ const styles = StyleSheet.create({
 
 const PlayerBar = () => {
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
+
   const [trackState, setTrackState] = useState<State>(State.None);
+
+  const theme = useThemeStore(state => state.theme);
+
   const progress = useProgress();
 
   useEffect(() => {
@@ -77,14 +82,14 @@ const PlayerBar = () => {
   const icon = useMemo(() => {
     switch (trackState) {
       case State.Playing:
-        return <PauseIcon color={colors.white} />;
+        return <PauseIcon color={theme.primary} />;
       case State.Paused:
       case State.Stopped:
-        return <PlayIcon color={colors.white} />;
+        return <PlayIcon color={theme.primary} />;
       default:
         return <ActivityIndicator />;
     }
-  }, [trackState]);
+  }, [trackState, theme]);
 
   const handlePlayPause = async () => {
     try {
@@ -112,7 +117,8 @@ const PlayerBar = () => {
   }
 
   return (
-    <TouchableOpacity style={styles.root}>
+    <TouchableOpacity
+      style={[styles.root, {backgroundColor: theme.background.default}]}>
       <Progress
         style={styles.progress}
         fill={colors.bondiBlue}
@@ -128,7 +134,7 @@ const PlayerBar = () => {
           resizeMode={FastImage.resizeMode.cover}
         />
         <Box flex={1} ml={1.5} mr={1}>
-          <Typography variant="b5" color={colors.white}>
+          <Typography variant="b5" color={theme.text.primary}>
             {currentTrack?.title || ''}
           </Typography>
           <Typography variant="caps4" color={colors.gray100}>
