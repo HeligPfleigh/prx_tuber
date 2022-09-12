@@ -1,7 +1,14 @@
 import React from 'react';
-import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+  Platform,
+} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 // import DateTimePicker from '@react-native-community/datetimepicker';
+import Config from 'react-native-config';
 
 // import ClockIcon from '@plx_tuber/assets/icons/Clock.icon';
 import EmailIcon from '@plx_tuber/assets/icons/Email.icon';
@@ -13,6 +20,8 @@ import {Box, Typography} from '@plx_tuber/components';
 import {colors, responsiveSize, spacing} from '@plx_tuber/theme';
 import {withPlayerBar} from '@plx_tuber/components/shared';
 import {useThemeStore} from '@plx_tuber/stores/theme';
+import {SettingScreenProps} from './types';
+import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 
 const styles = StyleSheet.create({
   root: {
@@ -24,7 +33,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const Settings = () => {
+const googlePlayLink = `https://play.google.com/store/apps/details?id=${Config.GOOGLEPLAY_ID}`;
+const appleStoreLink = `https://itunes.apple.com/us/app/id/${Config.APPSTORE_ID}`;
+
+const rateLink =
+  Platform.OS === 'ios'
+    ? `${appleStoreLink}&action=write-review`
+    : googlePlayLink;
+
+const Settings: React.FC<SettingScreenProps> = ({navigation}) => {
   // const [date, setDate] = useState<Date>();
   const insets = useSafeAreaInsets();
   const theme = useThemeStore(state => state.theme);
@@ -36,6 +53,15 @@ const Settings = () => {
   //   const currentDate = selectedDate;
   //   setDate(currentDate);
   // };
+
+  const handlePressRateAndReview = () => Linking.openURL(rateLink);
+
+  const handlePressEmail = () =>
+    Linking.openURL(`mailto:${Config.FEEDBACK_EMAIL}`);
+
+  const handlePressPrivacyPolicy = () => {
+    navigation.navigate(NavigatorMap.Policy);
+  };
 
   const settings = [
     {
@@ -52,14 +78,17 @@ const Settings = () => {
     {
       icon: <StartIcon color={theme.primary} />,
       title: 'Rate this app',
+      onPress: handlePressRateAndReview,
     },
     {
       icon: <EmailIcon color={theme.primary} />,
       title: 'Contact us',
+      onPress: handlePressEmail,
     },
     {
       icon: <PrivacyIcon color={theme.primary} />,
       title: 'Privacy policy',
+      onPress: handlePressPrivacyPolicy,
     },
   ];
 
