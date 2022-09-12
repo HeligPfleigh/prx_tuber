@@ -90,11 +90,9 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
           <TouchableOpacity
             style={[styles.icon__btn, {backgroundColor: theme.primary}]}
             onPress={onFavorite}>
-            <HeartFillIcon
-              color={theme.background.playerModal}
-              width={34}
-              height={38}
-            />
+            <Box flex={1} center middle>
+              <HeartFillIcon color={theme.background.playerModal} />
+            </Box>
           </TouchableOpacity>
 
           <FastImage
