@@ -1,7 +1,7 @@
 export type IPlaylist = {
   id: string;
   createdAt: number;
-  type: 'YT' | 'hotTopic' | 'discover';
+  type: 'YT' | 'hotTopic' | 'discover' | 'custom';
   urlthumb: string;
   playListId: string;
   playListGroup: string;

@@ -118,11 +118,7 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
       style={styles.root}
       onBackdropPress={onClose}>
       <Box
-        flex={false}
-        style={[
-          styles.container,
-          {backgroundColor: theme.background.playerModal},
-        ]}>
+        style={[styles.container, {backgroundColor: theme.background.modal}]}>
         <Box
           style={[
             styles.indicator,
@@ -141,7 +137,7 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
                 color={
                   favorite.some(item => item.id === song?.id)
                     ? colors.sunsetOrange
-                    : theme.background.playerModal
+                    : theme.background.modal
                 }
               />
             </Box>
@@ -159,7 +155,7 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
             style={[styles.icon__btn, {backgroundColor: theme.primary}]}
             onPress={handleShare}>
             <Box flex={1} center middle>
-              <ReplyIcon color={theme.background.playerModal} />
+              <ReplyIcon color={theme.background.modal} />
             </Box>
           </TouchableOpacity>
         </Box>

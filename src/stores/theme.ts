@@ -12,7 +12,7 @@ interface ITheme {
     settingItem: string;
     seeAll: string;
     back: string;
-    playerModal: string;
+    modal: string;
   };
   primary: string;
   text: {
@@ -27,7 +27,7 @@ const lightTheme: ITheme = {
     settingItem: 'rgba(0, 0, 0, 0.14)',
     seeAll: 'rgba(0, 0, 0, 0.2)',
     back: 'rgba(0, 0, 0, 0.5)',
-    playerModal: '#DDDDDD',
+    modal: '#DDDDDD',
   },
   primary: colors.codGray,
   text: {primary: colors.codGray},
@@ -40,7 +40,7 @@ const darkTheme: ITheme = {
     settingItem: 'rgba(255, 255, 255, 0.14)',
     seeAll: 'rgba(255, 255, 255, 0.2)',
     back: 'rgba(255, 255, 255, 0.5)',
-    playerModal: colors.mineShaft,
+    modal: colors.mineShaft,
   },
   primary: colors.white,
   text: {primary: colors.white},

@@ -61,8 +61,12 @@ const styles = StyleSheet.create({
 
 const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
   const {playlist} = route.params;
-  const {data, isLoading} = useQuery(['playlist', playlist.id], () =>
-    getSongsOfJamendoPlaylist(playlist.id),
+  const {data, isLoading} = useQuery(
+    ['playlist', playlist.id],
+    () => getSongsOfJamendoPlaylist(playlist.id),
+    {
+      enabled: playlist.type !== 'custom',
+    },
   );
 
   const theme = useThemeStore(state => state.theme);
