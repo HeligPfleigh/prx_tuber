@@ -26,7 +26,7 @@ interface MyPlaylistsState {
 
 export const useMyPlaylistsStore = create<MyPlaylistsState>()(
   persist(
-    set => ({
+    (set, get) => ({
       favorite: [] as Array<ISong>,
 
       myPlaylists: [] as Array<IMyPlaylist>,
@@ -117,6 +117,13 @@ export const useMyPlaylistsStore = create<MyPlaylistsState>()(
             }
           }),
         ),
+
+      getPlaylistById: (playlistId: number) =>
+        get().myPlaylists.find(playlist => playlist.id === playlistId) || {
+          id: 0,
+          name: 'Favorite',
+          songs: get().favorite,
+        },
     }),
     {
       name: 'my-playlists-storage',

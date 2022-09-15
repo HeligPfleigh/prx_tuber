@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 
@@ -9,6 +9,8 @@ import {useMyPlaylistsStore} from '@plx_tuber/stores/myPlaylists';
 
 interface IAddPlaylistModalProps {
   open: boolean;
+  playlistName?: string;
+  playlistId?: number;
   onClose?: () => void;
 }
 
@@ -30,24 +32,43 @@ const styles = StyleSheet.create({
 
 const AddPlaylistModal: React.FC<IAddPlaylistModalProps> = ({
   open,
+  playlistName,
+  playlistId,
   onClose,
 }) => {
   const theme = useThemeStore(state => state.theme);
 
   const createPlaylist = useMyPlaylistsStore(state => state.createPlaylist);
+  const editPlaylistName = useMyPlaylistsStore(state => state.editPlaylistName);
 
   const [name, setName] = useState<string>();
+
+  useEffect(() => {
+    setName(playlistName);
+  }, [playlistName]);
 
   const handleClose = () => {
     onClose?.();
     setName(undefined);
   };
 
-  const handleCreateNewPlaylist = () => {
-    if (name) {
-      createPlaylist(name);
-      handleClose();
+  const handleSavePlaylist = () => {
+    if (!name) {
+      return;
     }
+
+    // create new playlist
+    if (!playlistName) {
+      createPlaylist(name);
+    } else {
+      if (!playlistId) {
+        return;
+      }
+      // edit name of existed playlist
+      editPlaylistName(playlistId, name);
+    }
+
+    handleClose();
   };
 
   return (
@@ -59,7 +80,7 @@ const AddPlaylistModal: React.FC<IAddPlaylistModalProps> = ({
       <Box
         style={[styles.container, {backgroundColor: theme.background.modal}]}>
         <Typography variant="b5" fontWeight="700" color={theme.text.primary}>
-          Create new playlist
+          {playlistName ? 'Edit playlist name' : 'Create new playlist'}
         </Typography>
 
         <TextInput
@@ -74,7 +95,7 @@ const AddPlaylistModal: React.FC<IAddPlaylistModalProps> = ({
         />
 
         <Box row mt={5}>
-          <TouchableOpacity onPress={handleCreateNewPlaylist}>
+          <TouchableOpacity onPress={handleSavePlaylist}>
             <Box mr={2}>
               <Typography variant="caps3" color={colors.caribbeanGreen}>
                 Create

@@ -23,4 +23,7 @@ export type RootStackParamList = {
   };
   [NavigatorMap.Search]: undefined;
   [NavigatorMap.Policy]: undefined;
+  [NavigatorMap.MyPlaylist]: {
+    id: number;
+  };
 };
