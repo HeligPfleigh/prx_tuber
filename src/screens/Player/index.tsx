@@ -1,7 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useEffect, useMemo, useState} from 'react';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  TouchableOpacity,
+  Share,
+} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Slider from '@react-native-community/slider';
 
 import {Box, Typography} from '@plx_tuber/components';
 import {useThemeStore} from '@plx_tuber/stores/theme';
@@ -13,10 +17,10 @@ import TrackPlayer, {
   Event,
   PlaybackStateEvent,
   PlaybackTrackChangedEvent,
+  RepeatMode,
   State,
   Track,
 } from 'react-native-track-player';
-import {ThumbImage} from '@plx_tuber/assets/images';
 import HeartIcon from '@plx_tuber/assets/icons/Heart.icon';
 import BackwardIcon from '@plx_tuber/assets/icons/Backward.icon';
 import ForwardIcon from '@plx_tuber/assets/icons/Forward.icon';
@@ -25,6 +29,11 @@ import LoopIcon from '@plx_tuber/assets/icons/Loop.icon';
 import {PlayerScreenProps} from './types';
 import ShareIcon from '@plx_tuber/assets/icons/Share.icon';
 import MenuPlusIcon from '@plx_tuber/assets/icons/MenuPlus.icon';
+import PauseIcon from '@plx_tuber/assets/icons/Pause.icon';
+import PlayerSlider from './PlayerSlider';
+import {useMyPlaylistsStore} from '@plx_tuber/stores/myPlaylists';
+import {ISong} from '@plx_tuber/core/types';
+import HeartFillIcon from '@plx_tuber/assets/icons/HeartFill.icon';
 
 const styles = StyleSheet.create({
   container: {
@@ -40,16 +49,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  play__pause__btn: {
+    ...round(58),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.white,
+  },
+  progress: {width: '100%', marginTop: spacing(4)},
 });
 
 const Player: React.FC<PlayerScreenProps> = ({navigation}) => {
   const theme = useThemeStore(state => state.theme);
+  const favorite = useMyPlaylistsStore(state => state.favorite);
+  const addToFavorite = useMyPlaylistsStore(state => state.addToFavorite);
 
   const insets = useSafeAreaInsets();
 
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
-
-  const [, setTrackState] = useState<State>(State.None);
+  const [trackState, setTrackState] = useState<State>(State.None);
+  const [repeatMode, setRepeatMode] = useState<RepeatMode>(RepeatMode.Off);
 
   useEffect(() => {
     TrackPlayer.addEventListener(
@@ -80,8 +98,10 @@ const Player: React.FC<PlayerScreenProps> = ({navigation}) => {
         }
         const trackObject = await TrackPlayer.getTrack(trackIndex);
         const state = await TrackPlayer.getState();
+        const mRepeatMode = await TrackPlayer.getRepeatMode();
         setTrackState(state);
         setCurrentTrack(trackObject);
+        setRepeatMode(mRepeatMode);
       } catch (error) {
         // TODO
       }
@@ -91,6 +111,91 @@ const Player: React.FC<PlayerScreenProps> = ({navigation}) => {
   }, []);
 
   const handleBack = () => navigation.goBack();
+
+  const handlePlayPause = async () => {
+    try {
+      const state = await TrackPlayer.getState();
+
+      switch (state) {
+        case State.Playing:
+          await TrackPlayer.pause();
+          break;
+        case State.Paused:
+          await TrackPlayer.play();
+          break;
+        case State.Stopped:
+          await TrackPlayer.seekTo(0);
+          await TrackPlayer.play();
+          break;
+      }
+    } catch (error) {
+      // TODO
+    }
+  };
+
+  const handleBackwardClicked = async () => {
+    try {
+      await TrackPlayer.skipToPrevious();
+    } catch (error) {}
+  };
+
+  const handleForwardClicked = async () => {
+    try {
+      await TrackPlayer.skipToNext();
+    } catch (error) {}
+  };
+
+  const handleLoopClicked = () => {
+    setRepeatMode(prev => {
+      if (prev === RepeatMode.Off) {
+        TrackPlayer.setRepeatMode(RepeatMode.Track);
+        return RepeatMode.Track;
+      } else {
+        TrackPlayer.setRepeatMode(RepeatMode.Off);
+        return RepeatMode.Off;
+      }
+    });
+  };
+
+  const handleAddToFavorite = () => {
+    if (currentTrack) {
+      addToFavorite(currentTrack as unknown as ISong);
+    }
+  };
+
+  const handleShare = () => {
+    if (currentTrack) {
+      Share.share({
+        message: `Check out this song on our site: ${
+          currentTrack?.shareurl || ''
+        }`,
+      });
+    }
+  };
+
+  const icon = useMemo(() => {
+    switch (trackState) {
+      case State.Playing:
+        return (
+          <PauseIcon
+            color={colors.black}
+            width={responsiveSize(36)}
+            height={responsiveSize(36)}
+          />
+        );
+      case State.Paused:
+      case State.Stopped:
+        return (
+          <PlayIcon
+            color={colors.black}
+            width={responsiveSize(36)}
+            height={responsiveSize(36)}
+          />
+        );
+      default:
+        return <ActivityIndicator />;
+    }
+  }, [trackState]);
 
   return (
     <Box
@@ -127,45 +232,46 @@ const Player: React.FC<PlayerScreenProps> = ({navigation}) => {
           </Typography>
         </Box>
 
-        <Slider
-          style={{width: '100%', marginTop: spacing(4)}}
-          minimumValue={0}
-          maximumValue={1}
-          minimumTrackTintColor={colors.caribbeanGreen}
-          maximumTrackTintColor={theme.background.seeAll}
-          thumbImage={ThumbImage}
-        />
-        <Box row space="between" center>
-          <Typography variant="caps3" color={theme.text.primary}>
-            01:23
-          </Typography>
-          <Typography variant="caps3" color={colors.gray100}>
-            02:30
-          </Typography>
-        </Box>
+        <PlayerSlider />
 
         <Box row space="between" center mt={3} pl={2} pr={2}>
-          <HeartIcon color={colors.scorpion} />
-          <BackwardIcon color={colors.white} />
-          <Box
-            style={{
-              ...round(58),
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: theme.primary,
-            }}>
-            <PlayIcon
-              width={responsiveSize(36)}
-              height={responsiveSize(36)}
-              color={colors.black}
+          <TouchableOpacity onPress={handleAddToFavorite}>
+            {favorite.some(item => item.id === currentTrack?.id) ? (
+              <HeartFillIcon color={colors.sunsetOrange} />
+            ) : (
+              <HeartIcon color={colors.scorpion} />
+            )}
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={handleBackwardClicked}>
+            <BackwardIcon color={theme.primary} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={handlePlayPause}
+            style={styles.play__pause__btn}>
+            {icon}
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={handleForwardClicked}>
+            <ForwardIcon color={theme.primary} />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={handleLoopClicked}>
+            <LoopIcon
+              color={
+                repeatMode === RepeatMode.Off
+                  ? colors.scorpion
+                  : colors.caribbeanGreen
+              }
             />
-          </Box>
-          <ForwardIcon color={colors.white} />
-          <LoopIcon color={colors.scorpion} />
+          </TouchableOpacity>
         </Box>
 
         <Box row space="between" center mt={1} pl={2} pr={2}>
-          <ShareIcon color={colors.scorpion} />
+          <TouchableOpacity onPress={handleShare}>
+            <ShareIcon color={colors.scorpion} />
+          </TouchableOpacity>
           <MenuPlusIcon color={colors.scorpion} />
         </Box>
       </Box>

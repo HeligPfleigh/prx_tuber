@@ -80,6 +80,7 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
       await TrackPlayer.reset();
 
       await TrackPlayer.add({
+        ...song,
         url: song.audio,
         title: song.name,
         artist: song.artistName,

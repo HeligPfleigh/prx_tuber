@@ -129,6 +129,7 @@ const MyPlaylist: React.FC<MyPlaylistScreenProps> = ({navigation, route}) => {
         selectedPlaylist.songs
           .filter(item => Boolean(item.audio))
           .map(item => ({
+            ...item,
             url: item.audio,
             title: item.name,
             artist: item.artistName,

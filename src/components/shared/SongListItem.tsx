@@ -37,6 +37,7 @@ const SongListItem: React.FC<SongListItemProps> = ({song, onMenuPress}) => {
       await TrackPlayer.reset();
 
       await TrackPlayer.add({
+        ...song,
         url: song.audio,
         title: song.name,
         artist: song.artistName,

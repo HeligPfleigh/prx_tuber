@@ -42,7 +42,7 @@ const PlayerBar = () => {
 
   const progress = useProgress();
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   useEffect(() => {
     TrackPlayer.addEventListener(
