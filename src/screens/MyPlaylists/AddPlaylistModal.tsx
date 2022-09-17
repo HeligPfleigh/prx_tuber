@@ -98,7 +98,7 @@ const AddPlaylistModal: React.FC<IAddPlaylistModalProps> = ({
           <TouchableOpacity onPress={handleSavePlaylist}>
             <Box mr={2}>
               <Typography variant="caps3" color={colors.caribbeanGreen}>
-                Create
+                Save
               </Typography>
             </Box>
           </TouchableOpacity>

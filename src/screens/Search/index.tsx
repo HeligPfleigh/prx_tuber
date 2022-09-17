@@ -5,7 +5,11 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {Box, Typography} from '@plx_tuber/components';
 import {colors, responsiveSize, round, spacing} from '@plx_tuber/theme';
-import {SongListItem, withPlayerBar} from '@plx_tuber/components/shared';
+import {
+  PlayerModal,
+  SongListItem,
+  withPlayerBar,
+} from '@plx_tuber/components/shared';
 import {ISong} from '@plx_tuber/core/types';
 import LeftArrowIcon from '@plx_tuber/assets/icons/LeftArrow.icon';
 import {SearchScreenProps} from './types';
@@ -47,7 +51,7 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
 
   const theme = useThemeStore(state => state.theme);
 
-  const {data, isLoading, isFetched, refetch} = useQuery(
+  const {data, isFetched} = useQuery(
     ['search', searchText],
     () => searchSong(searchText),
     {enabled: Boolean(searchText)},
@@ -57,9 +61,12 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
 
   const handlePressBack = () => navigation.goBack();
 
+  const [selectedSong, setSelectedSong] = useState<ISong>();
+  const handleClosePlayerModal = () => setSelectedSong(undefined);
+
   const renderItem = ({item}: {item: ISong}) => (
     <Box pb={2}>
-      <SongListItem song={item} />
+      <SongListItem song={item} onMenuPress={() => setSelectedSong(item)} />
     </Box>
   );
 
@@ -101,15 +108,12 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
       <Box
         row
         center
-        style={[
-          styles.input__container,
-          {backgroundColor: theme.background.default},
-        ]}>
+        style={[styles.input__container, {backgroundColor: colors.white}]}>
         <SearchIcon color={colors.silver} />
         <TextInput
           value={searchText}
           onChangeText={setSearchText}
-          style={styles.input}
+          style={[styles.input, {backgroundColor: colors.white}]}
           placeholder="Search song by title"
           placeholderTextColor={colors.silver}
           autoFocus
@@ -130,8 +134,12 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
         keyExtractor={item => `${item.id}`}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.root}
-        refreshing={isLoading}
-        onRefresh={refetch}
+      />
+
+      <PlayerModal
+        open={Boolean(selectedSong)}
+        onClose={handleClosePlayerModal}
+        song={selectedSong}
       />
     </Box>
   );
