@@ -117,6 +117,12 @@ export const useMyPlaylistsStore = create<MyPlaylistsState>()(
                 selectedPlaylistIdx
               ].songs.filter((song: ISong) => song.id !== songId);
             }
+
+            if (playlistId === FAVORITE_PLAYLIST_ID) {
+              state.favorite = state.favorite.filter(
+                song => song.id !== songId,
+              );
+            }
           }),
         ),
     }),

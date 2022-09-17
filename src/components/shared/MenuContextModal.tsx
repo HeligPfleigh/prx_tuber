@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     alignItems: 'center',
-    minHeight: responsiveSize(200),
+    marginBottom: spacing(3),
     borderTopLeftRadius: responsiveSize(20),
     borderTopRightRadius: responsiveSize(20),
     padding: spacing(1.5),

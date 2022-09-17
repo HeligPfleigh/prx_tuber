@@ -116,7 +116,7 @@ const MyPlaylists: React.FC<MyPlaylistsScreenProps> = ({navigation}) => {
           // fix open modal on ios
           setTimeout(() => {
             setEditedPlaylistId(selectedPlaylistId);
-          }, 1000);
+          }, 500);
           setSelectedPlaylistId(undefined);
         },
       },
