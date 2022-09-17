@@ -51,12 +51,14 @@ const RootStackNavigator = () => (
       name={NavigatorMap.Playlists}
       component={PlaylistsScreen}
     />
-    <RootStack.Screen name={NavigatorMap.Search} component={SearchScreen} />
     <RootStack.Screen name={NavigatorMap.Policy} component={PolicyScreen} />
     <RootStack.Screen
       name={NavigatorMap.MyPlaylist}
       component={MyPlaylistScreen}
     />
+    <RootStack.Group screenOptions={{presentation: 'modal'}}>
+      <RootStack.Screen name={NavigatorMap.Search} component={SearchScreen} />
+    </RootStack.Group>
   </RootStack.Navigator>
 );
 

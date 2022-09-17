@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {TouchableOpacity, ScrollView, StyleSheet} from 'react-native';
 
 import {Box, Typography} from '@plx_tuber/components';
@@ -9,7 +9,10 @@ import AddCircleIcon from '@plx_tuber/assets/icons/AddCircle.icon';
 import {colors, responsiveSize, spacing} from '@plx_tuber/theme';
 import MenuIcon from '@plx_tuber/assets/icons/Menu.icon';
 import HeartFillIcon from '@plx_tuber/assets/icons/HeartFill.icon';
-import {useMyPlaylistsStore} from '@plx_tuber/stores/myPlaylists';
+import {
+  FAVORITE_PLAYLIST_ID,
+  useMyPlaylistsStore,
+} from '@plx_tuber/stores/myPlaylists';
 import {MyPlaylistsScreenProps} from './types';
 import MusicIcon from '@plx_tuber/assets/icons/Music.icon';
 import AddPlaylistModal from './AddPlaylistModal';
@@ -67,61 +70,87 @@ const MyPlaylists: React.FC<MyPlaylistsScreenProps> = ({navigation}) => {
     setEditedPlaylistId(undefined);
   };
 
-  const menu = [
-    {
-      icon: <AddPhotoIcon color={theme.primary} />,
-      title: 'Add playlist photo',
-      onPress: async () => {
-        const result = await launchImageLibrary({
-          mediaType: 'photo',
-        });
+  const menu = useMemo(() => {
+    if (!selectedPlaylistId) {
+      return [];
+    }
 
-        const images = (result.assets || [])
-          .map(asset => asset.uri)
-          .filter(Boolean) as Array<string>;
+    if (selectedPlaylistId === FAVORITE_PLAYLIST_ID) {
+      return [
+        {
+          icon: <AddCircleIcon color={theme.primary} />,
+          title: 'Add song',
+          onPress: () => {
+            setSelectedPlaylistId(undefined);
+            navigation.navigate(NavigatorMap.Search);
+          },
+        },
+      ];
+    }
 
-        if (images.length && selectedPlaylistId) {
-          editPlaylistImage(selectedPlaylistId, images[0]);
-          toast.show('Playlist image changed successfully!');
-        }
+    return [
+      {
+        icon: <AddPhotoIcon color={theme.primary} />,
+        title: 'Add playlist photo',
+        onPress: async () => {
+          const result = await launchImageLibrary({
+            mediaType: 'photo',
+          });
 
-        setSelectedPlaylistId(undefined);
-      },
-    },
-    {
-      icon: <EditFillIcon color={theme.primary} />,
-      title: 'Rename playlist',
-      onPress: () => {
-        // fix open modal on ios
-        setTimeout(() => {
-          setEditedPlaylistId(selectedPlaylistId);
-        }, 1000);
-        setSelectedPlaylistId(undefined);
-      },
-    },
-    {
-      icon: <AddCircleIcon color={theme.primary} />,
-      title: 'Add song',
-      onPress: () => {
-        setSelectedPlaylistId(undefined);
-        navigation.navigate(NavigatorMap.Search);
-      },
-    },
-    {
-      icon: <ShareIcon color={theme.primary} />,
-      title: 'Share playlist',
-    },
-    {
-      icon: <DeleteIcon color={theme.primary} />,
-      title: 'Remove playlist',
-      onPress: () => {
-        if (selectedPlaylistId) {
-          removePlaylist(selectedPlaylistId);
+          const images = (result.assets || [])
+            .map(asset => asset.uri)
+            .filter(Boolean) as Array<string>;
+
+          if (images.length && selectedPlaylistId) {
+            editPlaylistImage(selectedPlaylistId, images[0]);
+            toast.show('Playlist image changed successfully!');
+          }
+
           setSelectedPlaylistId(undefined);
-        }
+        },
       },
-    },
-  ];
+      {
+        icon: <EditFillIcon color={theme.primary} />,
+        title: 'Rename playlist',
+        onPress: () => {
+          // fix open modal on ios
+          setTimeout(() => {
+            setEditedPlaylistId(selectedPlaylistId);
+          }, 1000);
+          setSelectedPlaylistId(undefined);
+        },
+      },
+      {
+        icon: <AddCircleIcon color={theme.primary} />,
+        title: 'Add song',
+        onPress: () => {
+          setSelectedPlaylistId(undefined);
+          navigation.navigate(NavigatorMap.Search);
+        },
+      },
+      {
+        icon: <ShareIcon color={theme.primary} />,
+        title: 'Share playlist',
+      },
+      {
+        icon: <DeleteIcon color={theme.primary} />,
+        title: 'Remove playlist',
+        onPress: () => {
+          if (selectedPlaylistId) {
+            removePlaylist(selectedPlaylistId);
+            setSelectedPlaylistId(undefined);
+          }
+        },
+      },
+    ];
+  }, [
+    editPlaylistImage,
+    navigation,
+    removePlaylist,
+    selectedPlaylistId,
+    theme.primary,
+    toast,
+  ]);
 
   return (
     <ScrollView
@@ -136,7 +165,7 @@ const MyPlaylists: React.FC<MyPlaylistsScreenProps> = ({navigation}) => {
         </TouchableOpacity>
       </Box>
 
-      <TouchableOpacity onPress={handleOpenPlaylist(0)}>
+      <TouchableOpacity onPress={handleOpenPlaylist(FAVORITE_PLAYLIST_ID)}>
         <Box mt={3} row center>
           <Box style={styles.item__avatar__container}>
             <HeartFillIcon color={colors.white} />
@@ -149,7 +178,11 @@ const MyPlaylists: React.FC<MyPlaylistsScreenProps> = ({navigation}) => {
             }`}</Typography>
           </Box>
 
-          <MenuIcon color={colors.blueBayoux} />
+          <TouchableOpacity
+            hitSlop={{top: 5, left: 10, bottom: 5, right: 10}}
+            onPress={() => setSelectedPlaylistId(FAVORITE_PLAYLIST_ID)}>
+            <MenuIcon color={colors.blueBayoux} />
+          </TouchableOpacity>
         </Box>
       </TouchableOpacity>
 

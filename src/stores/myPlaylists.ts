@@ -24,9 +24,11 @@ interface MyPlaylistsState {
   removeSongFromPlaylist: (playlistId: number, songId: number) => void;
 }
 
+export const FAVORITE_PLAYLIST_ID = -10;
+
 export const useMyPlaylistsStore = create<MyPlaylistsState>()(
   persist(
-    (set, get) => ({
+    set => ({
       favorite: [] as Array<ISong>,
 
       myPlaylists: [] as Array<IMyPlaylist>,
@@ -117,13 +119,6 @@ export const useMyPlaylistsStore = create<MyPlaylistsState>()(
             }
           }),
         ),
-
-      getPlaylistById: (playlistId: number) =>
-        get().myPlaylists.find(playlist => playlist.id === playlistId) || {
-          id: 0,
-          name: 'Favorite',
-          songs: get().favorite,
-        },
     }),
     {
       name: 'my-playlists-storage',
