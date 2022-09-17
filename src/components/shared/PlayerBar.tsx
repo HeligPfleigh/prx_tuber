@@ -15,6 +15,8 @@ import TrackPlayer, {
   useProgress,
 } from 'react-native-track-player';
 import {useThemeStore} from '@plx_tuber/stores/theme';
+import {useNavigation} from '@react-navigation/native';
+import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 
 const styles = StyleSheet.create({
   root: {
@@ -39,6 +41,8 @@ const PlayerBar = () => {
   const theme = useThemeStore(state => state.theme);
 
   const progress = useProgress();
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     TrackPlayer.addEventListener(
@@ -118,7 +122,8 @@ const PlayerBar = () => {
 
   return (
     <TouchableOpacity
-      style={[styles.root, {backgroundColor: theme.background.default}]}>
+      style={[styles.root, {backgroundColor: theme.background.default}]}
+      onPress={() => navigation.navigate(NavigatorMap.Player)}>
       <Progress
         style={styles.progress}
         fill={colors.bondiBlue}

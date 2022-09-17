@@ -26,4 +26,5 @@ export type RootStackParamList = {
   [NavigatorMap.MyPlaylist]: {
     id: number;
   };
+  [NavigatorMap.Player]: undefined;
 };
