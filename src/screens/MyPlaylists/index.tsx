@@ -1,8 +1,13 @@
 import React, {useMemo, useState} from 'react';
 import {TouchableOpacity, ScrollView, StyleSheet} from 'react-native';
 
-import {Box, Typography} from '@plx_tuber/components';
-import {MenuContext, withPlayerBar} from '@plx_tuber/components/shared';
+import {
+  Box,
+  Typography,
+  MenuContext,
+  withPlayerBar,
+  AddPlaylistModal,
+} from '@plx_tuber/components';
 import {useThemeStore} from '@plx_tuber/stores/theme';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AddCircleIcon from '@plx_tuber/assets/icons/AddCircle.icon';
@@ -15,7 +20,6 @@ import {
 } from '@plx_tuber/stores/myPlaylists';
 import {MyPlaylistsScreenProps} from './types';
 import MusicIcon from '@plx_tuber/assets/icons/Music.icon';
-import AddPlaylistModal from './AddPlaylistModal';
 import AddPhotoIcon from '@plx_tuber/assets/icons/AddPhoto.icon';
 import EditFillIcon from '@plx_tuber/assets/icons/EditFill.icon';
 import ShareIcon from '@plx_tuber/assets/icons/Share.icon';

@@ -16,7 +16,7 @@ interface MyPlaylistsState {
   favorite: Array<ISong>;
   myPlaylists: Array<IMyPlaylist>;
   addToFavorite: (song: ISong) => void;
-  createPlaylist: (name: string) => void;
+  createPlaylist: (name: string, song?: ISong) => void;
   removePlaylist: (playlistId: number) => void;
   editPlaylistName: (playlistId: number, name: string) => void;
   editPlaylistImage: (playlistId: number, image?: string) => void;
@@ -46,13 +46,13 @@ export const useMyPlaylistsStore = create<MyPlaylistsState>()(
           }),
         ),
 
-      createPlaylist: (name: string) =>
+      createPlaylist: (name: string, song?: ISong) =>
         set(
           produce((state: MyPlaylistsState) => {
             state.myPlaylists.push({
               name,
               id: new Date().getTime(),
-              songs: [] as Array<ISong>,
+              songs: song ? [song] : ([] as Array<ISong>),
             });
           }),
         ),

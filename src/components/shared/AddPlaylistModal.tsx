@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 
-import {Box, Typography} from '@plx_tuber/components';
+import {Box, Typography} from '../common';
 import {useThemeStore} from '@plx_tuber/stores/theme';
 import {colors, responsiveSize, spacing} from '@plx_tuber/theme';
 import {useMyPlaylistsStore} from '@plx_tuber/stores/myPlaylists';
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const AddPlaylistModal: React.FC<IAddPlaylistModalProps> = ({
+export const AddPlaylistModal: React.FC<IAddPlaylistModalProps> = ({
   open,
   playlistName,
   playlistId,
@@ -112,5 +112,3 @@ const AddPlaylistModal: React.FC<IAddPlaylistModalProps> = ({
     </Modal>
   );
 };
-
-export default AddPlaylistModal;

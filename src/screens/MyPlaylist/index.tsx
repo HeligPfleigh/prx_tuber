@@ -2,12 +2,15 @@ import React, {useMemo, useState} from 'react';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {TouchableOpacity, StyleSheet, ScrollView, Share} from 'react-native';
 
-import {Box, Typography} from '@plx_tuber/components';
 import {
+  Box,
+  Typography,
   MenuContext,
   SongListItem,
   withPlayerBar,
-} from '@plx_tuber/components/shared';
+  AddPlaylistModal,
+} from '@plx_tuber/components';
+
 import {useThemeStore} from '@plx_tuber/stores/theme';
 import LeftArrowIcon from '@plx_tuber/assets/icons/LeftArrow.icon';
 import {colors, responsiveSize, round, spacing} from '@plx_tuber/theme';
@@ -29,7 +32,6 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import EditFillIcon from '@plx_tuber/assets/icons/EditFill.icon';
 import ShareIcon from '@plx_tuber/assets/icons/Share.icon';
 import DeleteIcon from '@plx_tuber/assets/icons/Delete.icon';
-import AddPlaylistModal from '../MyPlaylists/AddPlaylistModal';
 import {ISong} from '@plx_tuber/core/types';
 
 const styles = StyleSheet.create({
