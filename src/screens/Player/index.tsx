@@ -34,6 +34,8 @@ import PlayerSlider from './PlayerSlider';
 import {useMyPlaylistsStore} from '@plx_tuber/stores/myPlaylists';
 import {ISong} from '@plx_tuber/core/types';
 import HeartFillIcon from '@plx_tuber/assets/icons/HeartFill.icon';
+import {PlaylistQueueModal} from './PlaylistQueueModal';
+import {AddToPlaylistModal} from '@plx_tuber/components/shared';
 
 const styles = StyleSheet.create({
   container: {
@@ -68,6 +70,12 @@ const Player: React.FC<PlayerScreenProps> = ({navigation}) => {
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [trackState, setTrackState] = useState<State>(State.None);
   const [repeatMode, setRepeatMode] = useState<RepeatMode>(RepeatMode.Off);
+
+  const [openPlaylistQueue, setOpenPlaylistQueue] = useState<boolean>(false);
+  const togglePlaylistQueue = () => setOpenPlaylistQueue(prev => !prev);
+
+  const [openAddToPlaylist, setOpenAddToPlaylist] = useState<boolean>(false);
+  const toggleAddToPlaylist = () => setOpenAddToPlaylist(prev => !prev);
 
   useEffect(() => {
     TrackPlayer.addEventListener(
@@ -207,7 +215,7 @@ const Player: React.FC<PlayerScreenProps> = ({navigation}) => {
           <LeftArrowIcon color={colors.white} />
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={togglePlaylistQueue}>
           <PlayerMenuIcon color={theme.primary} />
         </TouchableOpacity>
       </Box>
@@ -272,9 +280,22 @@ const Player: React.FC<PlayerScreenProps> = ({navigation}) => {
           <TouchableOpacity onPress={handleShare}>
             <ShareIcon color={colors.scorpion} />
           </TouchableOpacity>
-          <MenuPlusIcon color={colors.scorpion} />
+
+          <TouchableOpacity onPress={toggleAddToPlaylist}>
+            <MenuPlusIcon color={colors.scorpion} />
+          </TouchableOpacity>
         </Box>
       </Box>
+
+      <PlaylistQueueModal
+        open={openPlaylistQueue}
+        onClose={togglePlaylistQueue}
+      />
+
+      <AddToPlaylistModal
+        open={openAddToPlaylist}
+        onClose={toggleAddToPlaylist}
+      />
     </Box>
   );
 };
