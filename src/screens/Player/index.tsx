@@ -36,6 +36,8 @@ import {ISong} from '@plx_tuber/core/types';
 import HeartFillIcon from '@plx_tuber/assets/icons/HeartFill.icon';
 import {PlaylistQueueModal} from './PlaylistQueueModal';
 import {AddToPlaylistModal} from '@plx_tuber/components/shared';
+import {SLEEPTIME} from '@plx_tuber/core/constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
   container: {
@@ -118,11 +120,24 @@ const Player: React.FC<PlayerScreenProps> = ({navigation}) => {
     initialLoad();
   }, []);
 
+  // useEffect(() => {
+  //   // pause when it is sleeptime
+  //   TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, () => {
+  //     console.log({sleepTime});
+  //     console.log(dayjs(sleepTime).isBefore(dayjs()));
+  //     if (sleepTime && dayjs(sleepTime).isBefore(dayjs())) {
+  //       TrackPlayer.pause();
+  //     }
+  //   });
+  // }, [sleepTime]);
+
   const handleBack = () => navigation.goBack();
 
   const handlePlayPause = async () => {
     try {
       const state = await TrackPlayer.getState();
+
+      await AsyncStorage.removeItem(SLEEPTIME); // remove sleeptime when press play again
 
       switch (state) {
         case State.Playing:

@@ -14,6 +14,8 @@ import {ISong} from '@plx_tuber/core/types';
 import TrackPlayer from 'react-native-track-player';
 import {useToast} from 'react-native-toast-notifications';
 import {useMyPlaylistsStore} from '@plx_tuber/stores/myPlaylists';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {SLEEPTIME} from '@plx_tuber/core/constants';
 
 interface IPlayerModalProps {
   open: boolean;
@@ -87,6 +89,7 @@ export const PlayerModal: React.FC<IPlayerModalProps> = ({
         artwork: song.image,
       });
 
+      await AsyncStorage.removeItem(SLEEPTIME); // remove sleeptime when press play again
       await TrackPlayer.play();
     } catch (error) {
       if (error instanceof Error) {

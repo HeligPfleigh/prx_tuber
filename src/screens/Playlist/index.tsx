@@ -25,6 +25,8 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import TrackPlayer from 'react-native-track-player';
 import {useThemeStore} from '@plx_tuber/stores/theme';
+import {SLEEPTIME} from '@plx_tuber/core/constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
   back__btn: {
@@ -99,6 +101,7 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
           })),
       );
 
+      await AsyncStorage.removeItem(SLEEPTIME); // remove sleeptime when press play again
       await TrackPlayer.play();
     } catch (error) {
       // TODO

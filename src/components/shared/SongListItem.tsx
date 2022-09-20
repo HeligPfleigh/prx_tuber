@@ -9,6 +9,8 @@ import TrackPlayer from 'react-native-track-player';
 import {useToast} from 'react-native-toast-notifications';
 import {useThemeStore} from '@plx_tuber/stores/theme';
 import {ISong} from '@plx_tuber/core/types';
+import {SLEEPTIME} from '@plx_tuber/core/constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface SongListItemProps {
   song: ISong;
@@ -44,6 +46,7 @@ const SongListItem: React.FC<SongListItemProps> = ({song, onMenuPress}) => {
         artwork: song.image,
       });
 
+      await AsyncStorage.removeItem(SLEEPTIME); // remove sleeptime when press play again
       await TrackPlayer.play();
     } catch (error) {
       if (error instanceof Error) {

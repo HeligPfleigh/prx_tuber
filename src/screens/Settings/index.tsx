@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -7,10 +7,11 @@ import {
   Platform,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-// import DateTimePicker from '@react-native-community/datetimepicker';
+import DatePicker from 'react-native-date-picker';
 import Config from 'react-native-config';
+import dayjs from 'dayjs';
 
-// import ClockIcon from '@plx_tuber/assets/icons/Clock.icon';
+import ClockIcon from '@plx_tuber/assets/icons/Clock.icon';
 import EmailIcon from '@plx_tuber/assets/icons/Email.icon';
 import LightIcon from '@plx_tuber/assets/icons/Light.icon';
 import PlayIcon from '@plx_tuber/assets/icons/Play.icon';
@@ -22,6 +23,9 @@ import {withPlayerBar} from '@plx_tuber/components/shared';
 import {useThemeStore} from '@plx_tuber/stores/theme';
 import {SettingScreenProps} from './types';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
+import {useToast} from 'react-native-toast-notifications';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {SLEEPTIME} from '@plx_tuber/core/constants';
 
 const styles = StyleSheet.create({
   root: {
@@ -42,17 +46,25 @@ const rateLink =
     : googlePlayLink;
 
 const Settings: React.FC<SettingScreenProps> = ({navigation}) => {
-  // const [date, setDate] = useState<Date>();
+  const [date, setDate] = useState<Date>(new Date());
   const insets = useSafeAreaInsets();
   const theme = useThemeStore(state => state.theme);
   const toggleDarkLightTheme = useThemeStore(
     state => state.toggleDarkLightTheme,
   );
+  const toast = useToast();
 
-  // const onChange = (_event: unknown, selectedDate?: Date) => {
-  //   const currentDate = selectedDate;
-  //   setDate(currentDate);
-  // };
+  useEffect(() => {
+    const loadSleepTime = async () => {
+      const sleeptime = await AsyncStorage.getItem(SLEEPTIME);
+      if (sleeptime) {
+        AsyncStorage.getItem(SLEEPTIME);
+        setDate(dayjs(sleeptime).toDate());
+      }
+    };
+
+    loadSleepTime();
+  }, []);
 
   const handlePressRateAndReview = () => Linking.openURL(rateLink);
 
@@ -61,6 +73,16 @@ const Settings: React.FC<SettingScreenProps> = ({navigation}) => {
 
   const handlePressPrivacyPolicy = () => {
     navigation.navigate(NavigatorMap.Policy);
+  };
+
+  const handleSaveSleepTime = () => {
+    AsyncStorage.setItem(SLEEPTIME, date.toISOString());
+    toast.show('Sleep time has been saved!');
+  };
+
+  const handleClearSleepTime = () => {
+    AsyncStorage.removeItem(SLEEPTIME);
+    toast.show('Sleep time is cleared!');
   };
 
   const settings = [
@@ -123,9 +145,9 @@ const Settings: React.FC<SettingScreenProps> = ({navigation}) => {
         </TouchableOpacity>
       ))}
 
-      {/* <Box
+      <Box
         p={2}
-        color="rgba(255, 255, 255, 0.14)"
+        color={theme.background.settingItem}
         style={styles.border__radius}
         mb={2}>
         <Box row center>
@@ -139,17 +161,31 @@ const Settings: React.FC<SettingScreenProps> = ({navigation}) => {
           </Box>
         </Box>
 
-        <DateTimePicker
-          value={date || new Date()}
-          mode="time"
-          is24Hour={true}
-          onChange={onChange}
-          display="spinner"
-          textColor={colors.white}
-        />
-
         <Box center>
-          <TouchableOpacity>
+          <DatePicker
+            date={date}
+            onDateChange={setDate}
+            mode="time"
+            androidVariant="nativeAndroid"
+            textColor={theme.text.primary}
+          />
+        </Box>
+
+        <Box middle row>
+          <TouchableOpacity onPress={handleSaveSleepTime}>
+            <Box
+              color={colors.sunsetOrange}
+              pl={4}
+              p={4}
+              pt={1}
+              pb={1}
+              mr={1}
+              style={styles.border__radius}>
+              <Typography color={colors.white}>Set</Typography>
+            </Box>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={handleClearSleepTime}>
             <Box
               color={colors.sunsetOrange}
               pl={4}
@@ -157,11 +193,11 @@ const Settings: React.FC<SettingScreenProps> = ({navigation}) => {
               pt={1}
               pb={1}
               style={styles.border__radius}>
-              <Typography color={colors.white}>Start</Typography>
+              <Typography color={colors.white}>Clear</Typography>
             </Box>
           </TouchableOpacity>
         </Box>
-      </Box> */}
+      </Box>
     </ScrollView>
   );
 };

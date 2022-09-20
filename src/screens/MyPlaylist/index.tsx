@@ -34,6 +34,8 @@ import EditFillIcon from '@plx_tuber/assets/icons/EditFill.icon';
 import ShareIcon from '@plx_tuber/assets/icons/Share.icon';
 import DeleteIcon from '@plx_tuber/assets/icons/Delete.icon';
 import {ISong} from '@plx_tuber/core/types';
+import {SLEEPTIME} from '@plx_tuber/core/constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
   container: {
@@ -147,6 +149,7 @@ const MyPlaylist: React.FC<MyPlaylistScreenProps> = ({navigation, route}) => {
           })),
       );
 
+      await AsyncStorage.removeItem(SLEEPTIME); // remove sleeptime when press play again
       await TrackPlayer.play();
     } catch (error) {
       // TODO

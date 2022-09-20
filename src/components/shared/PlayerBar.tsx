@@ -17,6 +17,8 @@ import TrackPlayer, {
 import {useThemeStore} from '@plx_tuber/stores/theme';
 import {useNavigation} from '@react-navigation/native';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {SLEEPTIME} from '@plx_tuber/core/constants';
 
 const styles = StyleSheet.create({
   root: {
@@ -98,6 +100,8 @@ const PlayerBar = () => {
   const handlePlayPause = async () => {
     try {
       const state = await TrackPlayer.getState();
+
+      await AsyncStorage.removeItem(SLEEPTIME); // remove sleeptime when press play again
 
       switch (state) {
         case State.Playing:
