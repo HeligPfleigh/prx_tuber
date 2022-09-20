@@ -6,7 +6,11 @@ import {Box, Typography} from '@plx_tuber/components';
 import {responsiveSize} from '@plx_tuber/theme';
 import {useQuery} from '@tanstack/react-query';
 import {getTopSong} from '@plx_tuber/core/apis';
-import {PlayerModal, SongListItem} from '@plx_tuber/components/shared';
+import {
+  AddToPlaylistModal,
+  PlayerModal,
+  SongListItem,
+} from '@plx_tuber/components/shared';
 import {HomeNavigationProps} from './types';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 import {ISong} from '@plx_tuber/core/types';
@@ -29,6 +33,13 @@ const TopSongs = () => {
 
   const [selectedSong, setSelectedSong] = useState<ISong>();
 
+  const [openPlayerModal, setOpenPlayerModal] = useState<boolean>(false);
+  const togglePlayerModal = () => setOpenPlayerModal(prev => !prev);
+
+  const [openAddToPlaylistModal, setOpenToPlaylistModal] =
+    useState<boolean>(false);
+  const toggleAddToPlaylistModal = () => setOpenToPlaylistModal(prev => !prev);
+
   const theme = useThemeStore(state => state.theme);
 
   const handleSeeAll = () => {
@@ -38,7 +49,18 @@ const TopSongs = () => {
     });
   };
 
-  const handleClosePlayerModal = () => setSelectedSong(undefined);
+  const handleSelectSong = (song: ISong) => () => {
+    setSelectedSong(song);
+    togglePlayerModal();
+  };
+
+  const handleAddToPlaylist = () => {
+    togglePlayerModal();
+    // fix open modal on ios
+    setTimeout(() => {
+      toggleAddToPlaylistModal();
+    }, 500);
+  };
 
   return (
     <>
@@ -61,13 +83,20 @@ const TopSongs = () => {
 
       {(query.data || []).slice(0, 5).map(item => (
         <Box mb={2} key={item.id}>
-          <SongListItem song={item} onMenuPress={() => setSelectedSong(item)} />
+          <SongListItem song={item} onMenuPress={handleSelectSong(item)} />
         </Box>
       ))}
 
       <PlayerModal
-        open={Boolean(selectedSong)}
-        onClose={handleClosePlayerModal}
+        open={openPlayerModal}
+        onClose={togglePlayerModal}
+        onAddToPlaylist={handleAddToPlaylist}
+        song={selectedSong}
+      />
+
+      <AddToPlaylistModal
+        open={openAddToPlaylistModal}
+        onClose={toggleAddToPlaylistModal}
         song={selectedSong}
       />
     </>

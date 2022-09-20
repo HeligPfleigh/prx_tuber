@@ -294,6 +294,7 @@ const Player: React.FC<PlayerScreenProps> = ({navigation}) => {
 
       <AddToPlaylistModal
         open={openAddToPlaylist}
+        song={currentTrack as unknown as ISong}
         onClose={toggleAddToPlaylist}
       />
     </Box>

@@ -17,6 +17,7 @@ import {useQuery} from '@tanstack/react-query';
 import {getSongsOfJamendoPlaylist} from '@plx_tuber/core/apis';
 import {ISong} from '@plx_tuber/core/types';
 import {
+  AddToPlaylistModal,
   PlayerModal,
   SongListItem,
   withPlayerBar,
@@ -73,6 +74,13 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
 
   const [selectedSong, setSelectedSong] = useState<ISong>();
 
+  const [openPlayerModal, setOpenPlayerModal] = useState<boolean>(false);
+  const togglePlayerModal = () => setOpenPlayerModal(prev => !prev);
+
+  const [openAddToPlaylistModal, setOpenToPlaylistModal] =
+    useState<boolean>(false);
+  const toggleAddToPlaylistModal = () => setOpenToPlaylistModal(prev => !prev);
+
   const handlePressBack = () => navigation.goBack();
 
   const handlePlayAll = async () => {
@@ -97,11 +105,22 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
     }
   };
 
-  const handleClosePlayerModal = () => setSelectedSong(undefined);
+  const handleSelectSong = (song: ISong) => () => {
+    setSelectedSong(song);
+    togglePlayerModal();
+  };
+
+  const handleAddToPlaylist = () => {
+    togglePlayerModal();
+    // fix open modal on ios
+    setTimeout(() => {
+      toggleAddToPlaylistModal();
+    }, 500);
+  };
 
   const renderItem = ({item}: {item: ISong}) => (
     <Box p={2}>
-      <SongListItem song={item} onMenuPress={() => setSelectedSong(item)} />
+      <SongListItem song={item} onMenuPress={handleSelectSong(item)} />
     </Box>
   );
 
@@ -167,9 +186,16 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
       />
 
       <PlayerModal
-        open={Boolean(selectedSong)}
+        open={openPlayerModal}
+        onClose={togglePlayerModal}
+        onAddToPlaylist={handleAddToPlaylist}
         song={selectedSong}
-        onClose={handleClosePlayerModal}
+      />
+
+      <AddToPlaylistModal
+        open={openAddToPlaylistModal}
+        onClose={toggleAddToPlaylistModal}
+        song={selectedSong}
       />
     </Box>
   );

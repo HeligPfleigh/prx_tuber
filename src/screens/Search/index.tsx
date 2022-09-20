@@ -6,6 +6,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Box, Typography} from '@plx_tuber/components';
 import {colors, responsiveSize, round, spacing} from '@plx_tuber/theme';
 import {
+  AddToPlaylistModal,
   PlayerModal,
   SongListItem,
   withPlayerBar,
@@ -62,11 +63,30 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
   const handlePressBack = () => navigation.goBack();
 
   const [selectedSong, setSelectedSong] = useState<ISong>();
-  const handleClosePlayerModal = () => setSelectedSong(undefined);
+
+  const [openPlayerModal, setOpenPlayerModal] = useState<boolean>(false);
+  const togglePlayerModal = () => setOpenPlayerModal(prev => !prev);
+
+  const [openAddToPlaylistModal, setOpenToPlaylistModal] =
+    useState<boolean>(false);
+  const toggleAddToPlaylistModal = () => setOpenToPlaylistModal(prev => !prev);
+
+  const handleSelectSong = (song: ISong) => () => {
+    setSelectedSong(song);
+    togglePlayerModal();
+  };
+
+  const handleAddToPlaylist = () => {
+    togglePlayerModal();
+    // fix open modal on ios
+    setTimeout(() => {
+      toggleAddToPlaylistModal();
+    }, 500);
+  };
 
   const renderItem = ({item}: {item: ISong}) => (
     <Box pb={2}>
-      <SongListItem song={item} onMenuPress={() => setSelectedSong(item)} />
+      <SongListItem song={item} onMenuPress={handleSelectSong(item)} />
     </Box>
   );
 
@@ -137,8 +157,15 @@ const Search: React.FC<SearchScreenProps> = ({navigation}) => {
       />
 
       <PlayerModal
-        open={Boolean(selectedSong)}
-        onClose={handleClosePlayerModal}
+        open={openPlayerModal}
+        onClose={togglePlayerModal}
+        onAddToPlaylist={handleAddToPlaylist}
+        song={selectedSong}
+      />
+
+      <AddToPlaylistModal
+        open={openAddToPlaylistModal}
+        onClose={toggleAddToPlaylistModal}
         song={selectedSong}
       />
     </Box>

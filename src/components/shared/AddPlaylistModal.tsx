@@ -6,11 +6,13 @@ import {Box, Typography} from '../common';
 import {useThemeStore} from '@plx_tuber/stores/theme';
 import {colors, responsiveSize, spacing} from '@plx_tuber/theme';
 import {useMyPlaylistsStore} from '@plx_tuber/stores/myPlaylists';
+import {ISong} from '@plx_tuber/core/types';
 
 interface IAddPlaylistModalProps {
   open: boolean;
   playlistName?: string;
   playlistId?: number;
+  song?: ISong;
   onClose?: () => void;
 }
 
@@ -34,6 +36,7 @@ export const AddPlaylistModal: React.FC<IAddPlaylistModalProps> = ({
   open,
   playlistName,
   playlistId,
+  song,
   onClose,
 }) => {
   const theme = useThemeStore(state => state.theme);
@@ -59,7 +62,7 @@ export const AddPlaylistModal: React.FC<IAddPlaylistModalProps> = ({
 
     // create new playlist
     if (!playlistName) {
-      createPlaylist(name);
+      createPlaylist(name, song);
     } else {
       if (!playlistId) {
         return;

@@ -95,12 +95,20 @@ export const useMyPlaylistsStore = create<MyPlaylistsState>()(
       addSongToPlaylist: (playlistId: number, song: ISong) =>
         set(
           produce((state: MyPlaylistsState) => {
+            // check if playlist is existed
             const selectedPlaylistIdx = state.myPlaylists.findIndex(
               (playlist: IMyPlaylist) => playlist.id === playlistId,
             );
 
             if (selectedPlaylistIdx !== -1) {
-              state.myPlaylists[selectedPlaylistIdx].songs.push(song);
+              // check if song is existed
+              const isExistedSong = state.myPlaylists[
+                selectedPlaylistIdx
+              ].songs.some(item => item.id === song.id);
+
+              if (!isExistedSong) {
+                state.myPlaylists[selectedPlaylistIdx].songs.push(song);
+              }
             }
           }),
         ),

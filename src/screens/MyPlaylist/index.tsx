@@ -9,6 +9,7 @@ import {
   SongListItem,
   withPlayerBar,
   AddPlaylistModal,
+  AddToPlaylistModal,
 } from '@plx_tuber/components';
 
 import {useThemeStore} from '@plx_tuber/stores/theme';
@@ -115,6 +116,13 @@ const MyPlaylist: React.FC<MyPlaylistScreenProps> = ({navigation, route}) => {
     useState<boolean>(false);
   const toggleChangeNameModal = () => setOpenChangeNameModal(prev => !prev);
 
+  const [openAddToPlaylistModal, setOpenToPlaylistModal] =
+    useState<boolean>(false);
+  const toggleAddToPlaylistModal = () => setOpenToPlaylistModal(prev => !prev);
+
+  const [openSongMenu, setOpenSongMenu] = useState<boolean>(false);
+  const toggleSongMenu = () => setOpenSongMenu(prev => !prev);
+
   const [selectedSong, setSelectedSong] = useState<ISong>();
 
   const insets = useSafeAreaInsets();
@@ -143,6 +151,11 @@ const MyPlaylist: React.FC<MyPlaylistScreenProps> = ({navigation, route}) => {
     } catch (error) {
       // TODO
     }
+  };
+
+  const handleSelectSong = (song: ISong) => () => {
+    setSelectedSong(song);
+    toggleSongMenu();
   };
 
   const content = () => {
@@ -197,10 +210,7 @@ const MyPlaylist: React.FC<MyPlaylistScreenProps> = ({navigation, route}) => {
 
           {selectedPlaylist.songs.map(item => (
             <Box mb={2} key={item.id}>
-              <SongListItem
-                song={item}
-                onMenuPress={() => setSelectedSong(item)}
-              />
+              <SongListItem song={item} onMenuPress={handleSelectSong(item)} />
             </Box>
           ))}
         </Box>
@@ -288,7 +298,11 @@ const MyPlaylist: React.FC<MyPlaylistScreenProps> = ({navigation, route}) => {
       icon: <AddCircleIcon color={theme.primary} />,
       title: 'Add to another playlist',
       onPress: () => {
-        // TODO
+        toggleSongMenu();
+        // fix open modal on ios
+        setTimeout(() => {
+          toggleAddToPlaylistModal();
+        }, 500);
       },
     },
     {
@@ -381,9 +395,15 @@ const MyPlaylist: React.FC<MyPlaylistScreenProps> = ({navigation, route}) => {
       />
 
       <MenuContext
-        open={Boolean(selectedSong)}
+        open={openSongMenu}
         menuOptions={songMenu}
-        onClose={() => setSelectedSong(undefined)}
+        onClose={toggleSongMenu}
+      />
+
+      <AddToPlaylistModal
+        open={openAddToPlaylistModal}
+        onClose={toggleAddToPlaylistModal}
+        song={selectedSong}
       />
     </ScrollView>
   );

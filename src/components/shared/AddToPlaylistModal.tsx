@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Modal from 'react-native-modal';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
@@ -8,6 +8,8 @@ import {colors, responsiveSize, spacing} from '@plx_tuber/theme';
 import {Box, Typography} from '../common';
 import AddIcon from '@plx_tuber/assets/icons/Add.icon';
 import MusicIcon from '@plx_tuber/assets/icons/Music.icon';
+import {ISong} from '@plx_tuber/core/types';
+import {AddPlaylistModal} from './AddPlaylistModal';
 
 const styles = StyleSheet.create({
   root: {
@@ -46,15 +48,35 @@ const styles = StyleSheet.create({
 
 interface IAddToPlaylistModalProps {
   open: boolean;
+  song?: ISong;
   onClose: () => void;
 }
 
 export const AddToPlaylistModal: React.FC<IAddToPlaylistModalProps> = ({
   open,
+  song,
   onClose,
 }) => {
   const theme = useThemeStore(state => state.theme);
   const myPlaylists = useMyPlaylistsStore(state => state.myPlaylists);
+  const addSongToPlaylist = useMyPlaylistsStore(
+    state => state.addSongToPlaylist,
+  );
+
+  const [openAddPlaylist, setOpenAddPlaylist] = useState<boolean>(false);
+  const toggleAddPlaylist = () => setOpenAddPlaylist(prev => !prev);
+
+  const handleAddSongToPlaylist = (id: number) => () => {
+    if (song) {
+      addSongToPlaylist(id, song);
+    }
+    onClose();
+  };
+
+  const handleCloseAddPlaylistModal = () => {
+    toggleAddPlaylist();
+    onClose();
+  };
 
   return (
     <Modal
@@ -76,7 +98,7 @@ export const AddToPlaylistModal: React.FC<IAddToPlaylistModalProps> = ({
           />
         </Box>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={toggleAddPlaylist}>
           <Box row center mt={2}>
             <Box style={styles.song__thumbnail}>
               <AddIcon color={colors.white} />
@@ -90,7 +112,9 @@ export const AddToPlaylistModal: React.FC<IAddToPlaylistModalProps> = ({
         </TouchableOpacity>
 
         {myPlaylists.map(item => (
-          <TouchableOpacity key={item.id}>
+          <TouchableOpacity
+            key={item.id}
+            onPress={handleAddSongToPlaylist(item.id)}>
             <Box row center mt={2}>
               <Box
                 style={[
@@ -105,29 +129,13 @@ export const AddToPlaylistModal: React.FC<IAddToPlaylistModalProps> = ({
             </Box>
           </TouchableOpacity>
         ))}
-
-        {/* {menuOptions.map(item => (
-        <TouchableOpacity key={item.title} onPress={item.onPress}>
-          <Box
-            p={2}
-            style={[
-              styles.action__btn,
-              styles.full__width,
-              {backgroundColor: theme.background.settingItem},
-            ]}
-            row
-            center
-            mt={2}>
-            <Box mr={2}>{item.icon}</Box>
-            <Box flex={1}>
-              <Typography variant="b5" color={theme.text.primary}>
-                {item.title}
-              </Typography>
-            </Box>
-          </Box>
-        </TouchableOpacity>
-      ))} */}
       </Box>
+
+      <AddPlaylistModal
+        open={openAddPlaylist}
+        onClose={handleCloseAddPlaylistModal}
+        song={song}
+      />
     </Modal>
   );
 };
