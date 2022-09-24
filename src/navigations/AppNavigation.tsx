@@ -5,6 +5,7 @@ import {
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useRef} from 'react';
+import analytics from '@react-native-firebase/analytics';
 
 import NavigatorMap from './NavigatorMap';
 import {TabParamList, RootStackParamList} from './types';
@@ -82,7 +83,7 @@ const AppNavigator = () => {
 
     const previousRouteName = routeNameRef.current;
     const currentRouteName = navigationRef.getCurrentRoute()?.name;
-    // const currentRouteParams = navigationRef.getCurrentRoute()?.params ?? {};
+    const currentRouteParams = navigationRef.getCurrentRoute()?.params ?? {};
 
     if (!currentRouteName) {
       return;
@@ -91,11 +92,11 @@ const AppNavigator = () => {
     if (previousRouteName !== currentRouteName) {
       try {
         // firebase analytics
-        // await analytics().logScreenView({
-        //   screen_name: currentRouteName,
-        //   screen_class: currentRouteName,
-        //   ...currentRouteParams,
-        // });
+        await analytics().logScreenView({
+          screen_name: currentRouteName,
+          screen_class: currentRouteName,
+          ...currentRouteParams,
+        });
       } catch (error) {}
     }
 

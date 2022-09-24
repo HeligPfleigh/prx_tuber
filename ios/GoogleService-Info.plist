@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>838654077102-di8il62flo5vig8qiq4304bodpgmuten.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.838654077102-di8il62flo5vig8qiq4304bodpgmuten</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>838654077102-cnpp4l66e1shlfnpm2t0m1au9govokmu.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCqEszHrgnWNUpzOewjguRbqxsU8gwqqeU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>838654077102</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.prx-tuber</string>
+	<key>PROJECT_ID</key>
+	<string>prxtuber</string>
+	<key>STORAGE_BUCKET</key>
+	<string>prxtuber.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:838654077102:ios:51fcd5ceb5d45ecc05a53f</string>
+</dict>
+</plist>

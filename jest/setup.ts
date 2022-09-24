@@ -24,11 +24,11 @@ declare global {
 
 global.__reanimatedWorkletInit = jest.fn();
 
-// jest.mock('@react-native-firebase/analytics', () => () => {
-//   return {
-//     logScreenView: jest.fn(),
-//   };
-// });
+jest.mock('@react-native-firebase/analytics', () => () => {
+  return {
+    logScreenView: jest.fn(),
+  };
+});
 
 // jest.mock('react-native-in-app-review', () => ({
 //   RequestInAppReview: jest.fn().mockImplementation(() => {
