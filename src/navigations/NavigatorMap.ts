@@ -8,6 +8,7 @@ enum NavigatorMap {
   Policy = 'Policy',
   MyPlaylist = 'MyPlaylist',
   Player = 'Player',
+  Artist = 'Artist',
 
   // tab
   HomeTab = 'HomeTab',

@@ -21,6 +21,7 @@ import MyPlaylistsScreen from '@plx_tuber/screens/MyPlaylists';
 import PolicyScreen from '@plx_tuber/screens/Policy';
 import MyPlaylistScreen from '@plx_tuber/screens/MyPlaylist';
 import PlayerScreen from '@plx_tuber/screens/Player';
+import ArtistScreen from '@plx_tuber/screens/Artist';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -59,6 +60,7 @@ const RootStackNavigator = () => (
       component={MyPlaylistScreen}
     />
     <RootStack.Screen name={NavigatorMap.Search} component={SearchScreen} />
+    <RootStack.Screen name={NavigatorMap.Artist} component={ArtistScreen} />
     <RootStack.Group screenOptions={{presentation: 'fullScreenModal'}}>
       <RootStack.Screen name={NavigatorMap.Player} component={PlayerScreen} />
     </RootStack.Group>

@@ -274,10 +274,10 @@ const MyPlaylist: React.FC<MyPlaylistScreenProps> = ({navigation, route}) => {
           navigation.navigate(NavigatorMap.Search);
         },
       },
-      {
-        icon: <ShareIcon color={theme.primary} />,
-        title: 'Share playlist',
-      },
+      // {
+      //   icon: <ShareIcon color={theme.primary} />,
+      //   title: 'Share playlist',
+      // },
       {
         icon: <DeleteIcon color={theme.primary} />,
         title: 'Remove playlist',

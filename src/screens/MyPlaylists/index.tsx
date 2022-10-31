@@ -22,7 +22,7 @@ import {MyPlaylistsScreenProps} from './types';
 import MusicIcon from '@plx_tuber/assets/icons/Music.icon';
 import AddPhotoIcon from '@plx_tuber/assets/icons/AddPhoto.icon';
 import EditFillIcon from '@plx_tuber/assets/icons/EditFill.icon';
-import ShareIcon from '@plx_tuber/assets/icons/Share.icon';
+// import ShareIcon from '@plx_tuber/assets/icons/Share.icon';
 import DeleteIcon from '@plx_tuber/assets/icons/Delete.icon';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -132,10 +132,10 @@ const MyPlaylists: React.FC<MyPlaylistsScreenProps> = ({navigation}) => {
           navigation.navigate(NavigatorMap.Search);
         },
       },
-      {
-        icon: <ShareIcon color={theme.primary} />,
-        title: 'Share playlist',
-      },
+      // {
+      //   icon: <ShareIcon color={theme.primary} />,
+      //   title: 'Share playlist',
+      // },
       {
         icon: <DeleteIcon color={theme.primary} />,
         title: 'Remove playlist',

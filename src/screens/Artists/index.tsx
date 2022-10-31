@@ -18,6 +18,8 @@ import FastImage from 'react-native-fast-image';
 import UserIcon from '@plx_tuber/assets/icons/User.icon';
 import {withPlayerBar} from '@plx_tuber/components/shared';
 import {useThemeStore} from '@plx_tuber/stores/theme';
+import {ArtistsScreenProps} from './types';
+import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 
 const styles = StyleSheet.create({
   search__container: {
@@ -65,7 +67,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Artists = () => {
+const Artists: React.FC<ArtistsScreenProps> = ({navigation}) => {
   const {error, data, isLoading} = useQuery(['artists'], getArtists);
   const toast = useToast();
   const insets = useSafeAreaInsets();
@@ -79,8 +81,16 @@ const Artists = () => {
     }
   }, [toast, error]);
 
+  const openArtistDetail = (item: IArtist) => () => {
+    navigation.navigate(NavigatorMap.Artist, {
+      artist: item,
+    });
+  };
+
   const renderItem = ({item}: {item: IArtist}) => (
-    <TouchableOpacity style={styles.item__container}>
+    <TouchableOpacity
+      style={styles.item__container}
+      onPress={openArtistDetail(item)}>
       <Box style={styles.item__con}>
         {item.avatar ? (
           <FastImage
