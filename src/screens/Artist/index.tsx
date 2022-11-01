@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {Box, Typography} from '@plx_tuber/components';
-import {withPlayerBar} from '@plx_tuber/components/shared';
+import {SongListItem, withPlayerBar} from '@plx_tuber/components/shared';
 import {useThemeStore} from '@plx_tuber/stores/theme';
 import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import {colors, responsiveSize, round, spacing} from '@plx_tuber/theme';
@@ -10,6 +10,12 @@ import LeftArrowIcon from '@plx_tuber/assets/icons/LeftArrow.icon';
 import {ArtistScreenProps} from './types';
 import FastImage from 'react-native-fast-image';
 import UserIcon from '@plx_tuber/assets/icons/User.icon';
+import PlayIcon from '@plx_tuber/assets/icons/Play.icon';
+import TrackPlayer from 'react-native-track-player';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {SLEEPTIME} from '@plx_tuber/core/constants';
+import {useQuery} from '@tanstack/react-query';
+import {getArtistDetail} from '@plx_tuber/core/apis';
 
 const styles = StyleSheet.create({
   container: {
@@ -68,10 +74,36 @@ const Artist: React.FC<ArtistScreenProps> = ({navigation, route}) => {
 
   const artist = route.params.artist;
 
+  const {data} = useQuery(['artist', artist.nameArtist], () =>
+    getArtistDetail(artist.nameArtist),
+  );
+
   const insets = useSafeAreaInsets();
 
   const handlePressBack = () => navigation.goBack();
 
+  const handlePlayAll = async () => {
+    try {
+      await TrackPlayer.reset();
+
+      await TrackPlayer.add(
+        (data || [])
+          .filter(item => Boolean(item.audio))
+          .map(item => ({
+            ...item,
+            url: item.audio,
+            title: item.name,
+            artist: item.artistName,
+            artwork: item.image,
+          })),
+      );
+
+      await AsyncStorage.removeItem(SLEEPTIME); // remove sleeptime when press play again
+      await TrackPlayer.play();
+    } catch (error) {
+      // TODO
+    }
+  };
   return (
     <ScrollView
       style={[styles.container, {backgroundColor: theme.background.default}]}>
@@ -114,6 +146,25 @@ const Artist: React.FC<ArtistScreenProps> = ({navigation, route}) => {
               />
             )}
           </Box>
+        </Box>
+
+        <Box center>
+          <TouchableOpacity style={styles.playAll__btn} onPress={handlePlayAll}>
+            <Box mr={1}>
+              <PlayIcon color={colors.codGray} />
+            </Box>
+            <Typography color={colors.codGray} variant="h6" fontWeight="600">
+              Play all
+            </Typography>
+          </TouchableOpacity>
+        </Box>
+
+        <Box mt={3.5}>
+          {(data || []).map(item => (
+            <Box mb={2} key={item.id}>
+              <SongListItem song={item} onMenuPress={() => {}} />
+            </Box>
+          ))}
         </Box>
       </Box>
     </ScrollView>

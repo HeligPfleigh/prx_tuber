@@ -76,3 +76,14 @@ export const searchSong = async (query: string): Promise<Array<ISong>> => {
 
   return data?.data;
 };
+
+// fake artist detail endpoint
+export const getArtistDetail = async (name: string): Promise<Array<ISong>> => {
+  const {data} = await instance.get('/jamendo/search', {
+    params: {
+      query: name,
+    },
+  });
+
+  return data?.data;
+};
