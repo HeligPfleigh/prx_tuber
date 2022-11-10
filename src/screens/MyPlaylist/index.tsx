@@ -206,7 +206,9 @@ const MyPlaylist: React.FC<MyPlaylistScreenProps> = ({navigation, route}) => {
                 <AddIcon color={colors.white} />
               </Box>
               <Box flex={1} ml={2}>
-                <Typography color={theme.text.primary}>Add song</Typography>
+                <Typography variant="b5" color={theme.text.primary}>
+                  Add song
+                </Typography>
               </Box>
             </Box>
           </TouchableOpacity>

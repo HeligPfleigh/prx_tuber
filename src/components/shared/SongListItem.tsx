@@ -60,7 +60,7 @@ const SongListItem: React.FC<SongListItemProps> = ({song, onMenuPress}) => {
   return (
     <TouchableOpacity onPress={handlePlayMusic}>
       <Box row flex={1} center>
-        <Box flex={1}>
+        <Box>
           <FastImage
             source={{uri: song.image}}
             style={styles.song__thumbnail}
@@ -68,9 +68,13 @@ const SongListItem: React.FC<SongListItemProps> = ({song, onMenuPress}) => {
           />
         </Box>
 
-        <Box ml={1} middle mr={1} flex={4}>
-          <Typography color={theme.text.primary}>{song.name}</Typography>
-          <Typography color={colors.gray}>{song.artistName}</Typography>
+        <Box ml={2} middle mr={1} flex={4}>
+          <Typography variant="b5" color={theme.text.primary}>
+            {song.name}
+          </Typography>
+          <Typography variant="caps4" color={colors.gray}>
+            {song.artistName}
+          </Typography>
         </Box>
 
         <TouchableOpacity

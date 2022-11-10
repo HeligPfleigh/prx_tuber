@@ -1,8 +1,13 @@
+import {responsiveSize} from '@plx_tuber/theme';
 import * as React from 'react';
 import Svg, {SvgProps, Path} from 'react-native-svg';
 
 const MenuPlusIcon = (props: SvgProps) => (
-  <Svg width={23} height={17} viewBox="0 0 23 17" {...props}>
+  <Svg
+    width={responsiveSize(23)}
+    height={responsiveSize(17)}
+    viewBox="0 0 23 17"
+    {...props}>
     <Path
       d="M1.035 1.042h15.963M1.035 6.363h15.963M1.035 11.684h10.642"
       stroke={props.color}

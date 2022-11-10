@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     padding: spacing(1),
     borderRadius: responsiveSize(8),
+    fontSize: responsiveSize(14),
   },
 });
 

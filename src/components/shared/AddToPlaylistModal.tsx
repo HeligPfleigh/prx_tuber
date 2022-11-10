@@ -104,7 +104,7 @@ export const AddToPlaylistModal: React.FC<IAddToPlaylistModalProps> = ({
               <AddIcon color={colors.white} />
             </Box>
             <Box flex={1} ml={2}>
-              <Typography color={theme.text.primary}>
+              <Typography variant="b5" color={theme.text.primary}>
                 Create new playlist
               </Typography>
             </Box>
@@ -124,7 +124,9 @@ export const AddToPlaylistModal: React.FC<IAddToPlaylistModalProps> = ({
                 <MusicIcon color={colors.caribbeanGreen} />
               </Box>
               <Box flex={1} ml={2}>
-                <Typography color={theme.text.primary}>{item.name}</Typography>
+                <Typography variant="b5" color={theme.text.primary}>
+                  {item.name}
+                </Typography>
               </Box>
             </Box>
           </TouchableOpacity>

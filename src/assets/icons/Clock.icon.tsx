@@ -1,8 +1,14 @@
+import {responsiveSize} from '@plx_tuber/theme';
 import * as React from 'react';
 import Svg, {SvgProps, Path} from 'react-native-svg';
 
 const ClockIcon = (props: SvgProps) => (
-  <Svg width={24} height={24} fill="none" viewBox="0 0 24 24" {...props}>
+  <Svg
+    width={responsiveSize(24)}
+    height={responsiveSize(24)}
+    fill="none"
+    viewBox="0 0 24 24"
+    {...props}>
     <Path d="M0 0h24v24H0z" fill="none" />
     <Path
       fill={props.color}

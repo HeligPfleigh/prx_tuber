@@ -1,8 +1,13 @@
+import {responsiveSize} from '@plx_tuber/theme';
 import * as React from 'react';
 import Svg, {SvgProps, Path} from 'react-native-svg';
 
 const PlayerMenuIcon = (props: SvgProps) => (
-  <Svg width={22} height={18} viewBox="0 0 22 18" {...props}>
+  <Svg
+    width={responsiveSize(22)}
+    height={responsiveSize(18)}
+    viewBox="0 0 22 18"
+    {...props}>
     <Path
       d="m21 14.235-3.5 2.5v-5l3.5 2.5Z"
       fill={props.color}

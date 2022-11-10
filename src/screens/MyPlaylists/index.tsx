@@ -176,10 +176,12 @@ const MyPlaylists: React.FC<MyPlaylistsScreenProps> = ({navigation}) => {
           </Box>
 
           <Box flex={1} ml={2} mr={2}>
-            <Typography color={theme.text.primary}>Favorite</Typography>
-            <Typography color={colors.gray}>{`${favorite.length} song${
-              favorite.length === 1 ? '' : 's'
-            }`}</Typography>
+            <Typography variant="b5" color={theme.text.primary}>
+              Favorite
+            </Typography>
+            <Typography variant="caps4" color={colors.gray}>{`${
+              favorite.length
+            } song${favorite.length === 1 ? '' : 's'}`}</Typography>
           </Box>
 
           <TouchableOpacity
@@ -210,12 +212,12 @@ const MyPlaylists: React.FC<MyPlaylistsScreenProps> = ({navigation}) => {
             </Box>
 
             <Box flex={1} ml={2} mr={2}>
-              <Typography color={theme.text.primary}>
+              <Typography variant="b5" color={theme.text.primary}>
                 {playlist.name}
               </Typography>
-              <Typography color={colors.gray}>{`${playlist.songs.length} song${
-                playlist.songs.length === 1 ? '' : 's'
-              }`}</Typography>
+              <Typography variant="caps4" color={colors.gray}>{`${
+                playlist.songs.length
+              } song${playlist.songs.length === 1 ? '' : 's'}`}</Typography>
             </Box>
 
             <TouchableOpacity

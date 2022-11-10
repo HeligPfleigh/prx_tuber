@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     borderRadius: responsiveSize(8),
     marginTop: spacing(5),
     textAlign: 'center',
+    fontSize: responsiveSize(14),
   },
 });
 

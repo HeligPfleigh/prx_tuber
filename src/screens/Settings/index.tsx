@@ -181,7 +181,9 @@ const Settings: React.FC<SettingScreenProps> = ({navigation}) => {
               pb={1}
               mr={1}
               style={styles.border__radius}>
-              <Typography color={colors.white}>Set</Typography>
+              <Typography variant="b5" color={colors.white}>
+                Set
+              </Typography>
             </Box>
           </TouchableOpacity>
 
@@ -193,7 +195,9 @@ const Settings: React.FC<SettingScreenProps> = ({navigation}) => {
               pt={1}
               pb={1}
               style={styles.border__radius}>
-              <Typography color={colors.white}>Clear</Typography>
+              <Typography variant="b5" color={colors.white}>
+                Clear
+              </Typography>
             </Box>
           </TouchableOpacity>
         </Box>
