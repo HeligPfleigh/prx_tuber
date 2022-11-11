@@ -8,7 +8,13 @@ import React, {useRef} from 'react';
 import analytics from '@react-native-firebase/analytics';
 
 import NavigatorMap from './NavigatorMap';
-import {TabParamList, RootStackParamList} from './types';
+import {
+  RootTabParamList,
+  HomeStackParamList,
+  DiscoverStackParamList,
+  FavoriteAndPlaylistStackParamList,
+  SettingStackParamList,
+} from './types';
 import PlxTuberTabBar from './PlxTuberTabBar';
 import HomeScreen from '@plx_tuber/screens/Home';
 import ArtistsScreen from '@plx_tuber/screens/Artists';
@@ -23,48 +29,133 @@ import MyPlaylistScreen from '@plx_tuber/screens/MyPlaylist';
 import PlayerScreen from '@plx_tuber/screens/Player';
 import ArtistScreen from '@plx_tuber/screens/Artist';
 
-const Tab = createBottomTabNavigator<TabParamList>();
-const RootStack = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator<RootTabParamList>();
 
-const TabNavigator = () => (
+const HomeStack = createNativeStackNavigator<HomeStackParamList>();
+const DiscoverStack = createNativeStackNavigator<DiscoverStackParamList>();
+const FavoriteAndPlaylistStack =
+  createNativeStackNavigator<FavoriteAndPlaylistStackParamList>();
+const SettingStack = createNativeStackNavigator<SettingStackParamList>();
+
+const HomeStackNavigator = () => (
+  <HomeStack.Navigator
+    screenOptions={{
+      headerShown: false,
+    }}>
+    <HomeStack.Screen name={NavigatorMap.Home} component={HomeScreen} />
+
+    <HomeStack.Screen
+      name={NavigatorMap.Playlists}
+      component={PlaylistsScreen}
+    />
+
+    <HomeStack.Screen name={NavigatorMap.Playlist} component={PlaylistScreen} />
+
+    <HomeStack.Screen name={NavigatorMap.Search} component={SearchScreen} />
+
+    <HomeStack.Screen name={NavigatorMap.Songs} component={SongsScreen} />
+
+    <HomeStack.Group screenOptions={{presentation: 'fullScreenModal'}}>
+      <HomeStack.Screen name={NavigatorMap.Player} component={PlayerScreen} />
+    </HomeStack.Group>
+  </HomeStack.Navigator>
+);
+
+const DiscoverStackNavigator = () => (
+  <DiscoverStack.Navigator
+    screenOptions={{
+      headerShown: false,
+    }}>
+    <DiscoverStack.Screen
+      name={NavigatorMap.Discover}
+      component={ArtistsScreen}
+    />
+
+    <DiscoverStack.Screen name={NavigatorMap.Artist} component={ArtistScreen} />
+
+    <DiscoverStack.Group screenOptions={{presentation: 'fullScreenModal'}}>
+      <DiscoverStack.Screen
+        name={NavigatorMap.Player}
+        component={PlayerScreen}
+      />
+    </DiscoverStack.Group>
+  </DiscoverStack.Navigator>
+);
+
+const FavoriteAndPlaylistStackNavigator = () => (
+  <FavoriteAndPlaylistStack.Navigator
+    screenOptions={{
+      headerShown: false,
+    }}>
+    <FavoriteAndPlaylistStack.Screen
+      name={NavigatorMap.FavoriteAndPlaylist}
+      component={MyPlaylistsScreen}
+    />
+
+    <FavoriteAndPlaylistStack.Screen
+      name={NavigatorMap.MyPlaylist}
+      component={MyPlaylistScreen}
+    />
+
+    <FavoriteAndPlaylistStack.Screen
+      name={NavigatorMap.Search}
+      component={SearchScreen}
+    />
+
+    <FavoriteAndPlaylistStack.Group
+      screenOptions={{presentation: 'fullScreenModal'}}>
+      <FavoriteAndPlaylistStack.Screen
+        name={NavigatorMap.Player}
+        component={PlayerScreen}
+      />
+    </FavoriteAndPlaylistStack.Group>
+  </FavoriteAndPlaylistStack.Navigator>
+);
+
+const SettingStackNavigator = () => (
+  <SettingStack.Navigator
+    screenOptions={{
+      headerShown: false,
+    }}>
+    <SettingStack.Screen
+      name={NavigatorMap.Setting}
+      component={SettingsScreen}
+    />
+
+    <SettingStack.Screen name={NavigatorMap.Policy} component={PolicyScreen} />
+
+    <SettingStack.Group screenOptions={{presentation: 'fullScreenModal'}}>
+      <SettingStack.Screen
+        name={NavigatorMap.Player}
+        component={PlayerScreen}
+      />
+    </SettingStack.Group>
+  </SettingStack.Navigator>
+);
+
+const RootTabNavigator = () => (
   <Tab.Navigator
     tabBar={props => <PlxTuberTabBar {...props} />}
     screenOptions={{
       headerShown: false,
     }}>
-    <Tab.Screen name={NavigatorMap.HomeTab} component={HomeScreen} />
-    <Tab.Screen name={NavigatorMap.DiscoverTab} component={ArtistsScreen} />
+    <Tab.Screen name={NavigatorMap.HomeTab} component={HomeStackNavigator} />
+
+    <Tab.Screen
+      name={NavigatorMap.DiscoverTab}
+      component={DiscoverStackNavigator}
+    />
+
     <Tab.Screen
       name={NavigatorMap.FavoriteAndPlaylistTab}
-      component={MyPlaylistsScreen}
+      component={FavoriteAndPlaylistStackNavigator}
     />
-    <Tab.Screen name={NavigatorMap.SettingTab} component={SettingsScreen} />
-  </Tab.Navigator>
-);
 
-const RootStackNavigator = () => (
-  <RootStack.Navigator
-    screenOptions={{
-      headerShown: false,
-    }}>
-    <RootStack.Screen name={NavigatorMap.MainTab} component={TabNavigator} />
-    <RootStack.Screen name={NavigatorMap.Playlist} component={PlaylistScreen} />
-    <RootStack.Screen name={NavigatorMap.Songs} component={SongsScreen} />
-    <RootStack.Screen
-      name={NavigatorMap.Playlists}
-      component={PlaylistsScreen}
+    <Tab.Screen
+      name={NavigatorMap.SettingTab}
+      component={SettingStackNavigator}
     />
-    <RootStack.Screen name={NavigatorMap.Policy} component={PolicyScreen} />
-    <RootStack.Screen
-      name={NavigatorMap.MyPlaylist}
-      component={MyPlaylistScreen}
-    />
-    <RootStack.Screen name={NavigatorMap.Search} component={SearchScreen} />
-    <RootStack.Screen name={NavigatorMap.Artist} component={ArtistScreen} />
-    <RootStack.Group screenOptions={{presentation: 'fullScreenModal'}}>
-      <RootStack.Screen name={NavigatorMap.Player} component={PlayerScreen} />
-    </RootStack.Group>
-  </RootStack.Navigator>
+  </Tab.Navigator>
 );
 
 const AppNavigator = () => {
@@ -111,7 +202,7 @@ const AppNavigator = () => {
       ref={navigationRef}
       onReady={onNavigationReady}
       onStateChange={onStateChange}>
-      <RootStackNavigator />
+      <RootTabNavigator />
     </NavigationContainer>
   );
 };

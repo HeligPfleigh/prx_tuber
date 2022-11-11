@@ -15,6 +15,12 @@ enum NavigatorMap {
   DiscoverTab = 'DiscoverTab',
   FavoriteAndPlaylistTab = 'FavoriteAndPlaylistTab',
   SettingTab = 'SettingTab',
+
+  // default screen for each stack
+  Home = 'Home',
+  Discover = 'Discover',
+  FavoriteAndPlaylist = 'FavoriteAndPlaylist',
+  Setting = 'Setting',
 }
 
 export default NavigatorMap;

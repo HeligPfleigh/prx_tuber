@@ -1,13 +1,19 @@
-import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-import {CompositeScreenProps} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {CompositeScreenProps} from '@react-navigation/native';
+import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
-import {RootStackParamList, TabParamList} from '@plx_tuber/navigations/types';
+import {
+  FavoriteAndPlaylistStackParamList,
+  RootTabParamList,
+} from '@plx_tuber/navigations/types';
 
 export type MyPlaylistsScreenProps = CompositeScreenProps<
-  BottomTabScreenProps<TabParamList, NavigatorMap.FavoriteAndPlaylistTab>,
-  NativeStackScreenProps<RootStackParamList, NavigatorMap.MainTab>
+  NativeStackScreenProps<
+    FavoriteAndPlaylistStackParamList,
+    NavigatorMap.FavoriteAndPlaylist
+  >,
+  BottomTabScreenProps<RootTabParamList, NavigatorMap.FavoriteAndPlaylistTab>
 >;
 
 export type MyPlaylistsNavigationProps = MyPlaylistsScreenProps['navigation'];
