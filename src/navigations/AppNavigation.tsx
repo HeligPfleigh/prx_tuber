@@ -73,6 +73,8 @@ const DiscoverStackNavigator = () => (
 
     <DiscoverStack.Screen name={NavigatorMap.Artist} component={ArtistScreen} />
 
+    <DiscoverStack.Screen name={NavigatorMap.Search} component={SearchScreen} />
+
     <DiscoverStack.Group screenOptions={{presentation: 'fullScreenModal'}}>
       <DiscoverStack.Screen
         name={NavigatorMap.Player}

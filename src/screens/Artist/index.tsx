@@ -3,7 +3,12 @@ import React from 'react';
 import {Box, Typography} from '@plx_tuber/components';
 import {SongListItem, withPlayerBar} from '@plx_tuber/components/shared';
 import {useThemeStore} from '@plx_tuber/stores/theme';
-import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import {colors, responsiveSize, round, spacing} from '@plx_tuber/theme';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import LeftArrowIcon from '@plx_tuber/assets/icons/LeftArrow.icon';
@@ -74,7 +79,7 @@ const Artist: React.FC<ArtistScreenProps> = ({navigation, route}) => {
 
   const artist = route.params.artist;
 
-  const {data} = useQuery(['artist', artist.nameArtist], () =>
+  const {data, isLoading} = useQuery(['artist', artist.nameArtist], () =>
     getArtistDetail(artist.nameArtist),
   );
 
@@ -160,11 +165,15 @@ const Artist: React.FC<ArtistScreenProps> = ({navigation, route}) => {
         </Box>
 
         <Box mt={3.5}>
-          {(data || []).map(item => (
-            <Box mb={2} key={item.id}>
-              <SongListItem song={item} onMenuPress={() => {}} />
-            </Box>
-          ))}
+          {isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            (data || []).map(item => (
+              <Box mb={2} key={item.id}>
+                <SongListItem song={item} onMenuPress={() => {}} />
+              </Box>
+            ))
+          )}
         </Box>
       </Box>
     </ScrollView>

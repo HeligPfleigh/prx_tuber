@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     width: responsiveSize(60),
     height: responsiveSize(60),
     borderRadius: responsiveSize(5),
+    backgroundColor: colors.gray,
   },
 });
 
@@ -60,7 +61,7 @@ const SongListItem: React.FC<SongListItemProps> = ({song, onMenuPress}) => {
   return (
     <TouchableOpacity onPress={handlePlayMusic}>
       <Box row flex={1} center>
-        <Box>
+        <Box style={styles.song__thumbnail}>
           <FastImage
             source={{uri: song.image}}
             style={styles.song__thumbnail}

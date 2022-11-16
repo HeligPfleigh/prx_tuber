@@ -12,8 +12,8 @@ import {useThemeStore} from '@plx_tuber/stores/theme';
 
 const styles = StyleSheet.create({
   seeAll__btn: {
-    width: responsiveSize(50),
-    height: responsiveSize(19),
+    width: responsiveSize(60),
+    height: responsiveSize(24),
     borderRadius: responsiveSize(20),
     justifyContent: 'center',
     alignItems: 'center',
@@ -81,7 +81,7 @@ const Discover: React.FC<IDiscoverProps> = ({playlist}) => {
             {backgroundColor: theme.background.seeAll},
           ]}
           onPress={handleSeeAll}>
-          <Typography variant="caps4" color={theme.text.primary}>
+          <Typography variant="caps3" color={theme.text.primary}>
             See all
           </Typography>
         </TouchableOpacity>

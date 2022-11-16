@@ -30,6 +30,7 @@ export type DiscoverStackParamList = {
   [NavigatorMap.Artist]: {
     artist: IArtist;
   };
+  [NavigatorMap.Search]: undefined;
   [NavigatorMap.Player]: undefined;
 };
 

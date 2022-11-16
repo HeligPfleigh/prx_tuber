@@ -87,6 +87,8 @@ const Artists: React.FC<ArtistsScreenProps> = ({navigation}) => {
     });
   };
 
+  const handleOpenSearch = () => navigation.navigate(NavigatorMap.Search);
+
   const renderItem = ({item}: {item: IArtist}) => (
     <TouchableOpacity
       style={styles.item__container}
@@ -121,7 +123,8 @@ const Artists: React.FC<ArtistsScreenProps> = ({navigation}) => {
         </Typography>
 
         <TouchableOpacity
-          style={[styles.search__container, {borderColor: theme.primary}]}>
+          style={[styles.search__container, {borderColor: theme.primary}]}
+          onPress={handleOpenSearch}>
           <SearchIcon color={theme.primary} />
         </TouchableOpacity>
       </Box>

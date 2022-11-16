@@ -14,7 +14,7 @@ import dayjs from 'dayjs';
 import ClockIcon from '@plx_tuber/assets/icons/Clock.icon';
 import EmailIcon from '@plx_tuber/assets/icons/Email.icon';
 import LightIcon from '@plx_tuber/assets/icons/Light.icon';
-import PlayIcon from '@plx_tuber/assets/icons/Play.icon';
+// import PlayIcon from '@plx_tuber/assets/icons/Play.icon';
 import PrivacyIcon from '@plx_tuber/assets/icons/Privacy.icon';
 import StartIcon from '@plx_tuber/assets/icons/Star.icon';
 import {Box, Typography} from '@plx_tuber/components';
@@ -86,11 +86,11 @@ const Settings: React.FC<SettingScreenProps> = ({navigation}) => {
   };
 
   const settings = [
-    {
-      icon: <PlayIcon color={theme.primary} />,
-      title: 'Stream quality',
-      status: 'Normal',
-    },
+    // {
+    //   icon: <PlayIcon color={theme.primary} />,
+    //   title: 'Stream quality',
+    //   status: 'Normal',
+    // },
     {
       icon: <LightIcon color={theme.primary} />,
       title: 'Light Mode',
