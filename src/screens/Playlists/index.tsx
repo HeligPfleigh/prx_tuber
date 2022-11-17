@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: responsiveSize(164),
     borderRadius: responsiveSize(10),
+    backgroundColor: colors.gray,
   },
 });
 

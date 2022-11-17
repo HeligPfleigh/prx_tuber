@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     width: responsiveSize(264),
     height: responsiveSize(128),
     borderRadius: responsiveSize(10),
+    backgroundColor: colors.gray,
   },
   actions: {
     position: 'absolute',

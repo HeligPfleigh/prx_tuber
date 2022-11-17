@@ -1,18 +1,19 @@
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 
 import NavigatorMap from './NavigatorMap';
 import HomeIcon from '@plx_tuber/assets/icons/Home.icon';
 import DiscoverIcon from '@plx_tuber/assets/icons/Discover.icon';
 import HeartIcon from '@plx_tuber/assets/icons/Heart.icon';
 import CogIcon from '@plx_tuber/assets/icons/Cog.icon';
-import {colors, responsiveSize, spacing} from '@plx_tuber/theme';
+import {colors, responsiveSize} from '@plx_tuber/theme';
 import HomeFillIcon from '@plx_tuber/assets/icons/HomeFill.icon';
 import DiscoverFillIcon from '@plx_tuber/assets/icons/DiscoverFill.icon';
 import HeartFillIcon from '@plx_tuber/assets/icons/HeartFill.icon';
 import CogFillIcon from '@plx_tuber/assets/icons/CogFill.icon';
 import {useThemeStore} from '@plx_tuber/stores/theme';
+import * as Animatable from 'react-native-animatable';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,11 +26,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  tabIndicator: {
-    width: responsiveSize(3),
-    height: responsiveSize(3),
-    marginTop: spacing(1),
-  },
 });
 
 const Icons = {
@@ -39,11 +35,17 @@ const Icons = {
   [NavigatorMap.SettingTab]: <CogIcon color={colors.scorpion} />,
 };
 
-const PlxTuberTabBar: React.FC<BottomTabBarProps> = ({
-  state,
-  descriptors,
-  navigation,
-}) => {
+const TabButton = (props: any) => {
+  const {
+    onPress,
+    accessibilityState,
+    onLongPress,
+    routeName,
+    tabBarAccessibilityLabel,
+  } = props;
+
+  const focused = accessibilityState.selected;
+
   const theme = useThemeStore(mState => mState.theme);
 
   const SelectedIcons = {
@@ -55,6 +57,44 @@ const PlxTuberTabBar: React.FC<BottomTabBarProps> = ({
     [NavigatorMap.SettingTab]: <CogFillIcon color={theme.text.primary} />,
   };
 
+  const viewRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (focused) {
+      viewRef.current.animate({
+        0: {scale: 0.5, rotate: '0deg'},
+        1: {scale: 1.2, rotate: '360deg'},
+      });
+    } else {
+      viewRef.current.animate({
+        0: {scale: 1.2, rotate: '360deg'},
+        1: {scale: 1, rotate: '0deg'},
+      });
+    }
+  }, [focused]);
+
+  return (
+    <TouchableOpacity
+      accessibilityRole="button"
+      accessibilityLabel={tabBarAccessibilityLabel}
+      onPress={onPress}
+      onLongPress={onLongPress}
+      activeOpacity={1}
+      style={[styles.tab, {backgroundColor: theme.background.default}]}>
+      <Animatable.View ref={viewRef} duration={800}>
+        {focused
+          ? SelectedIcons[routeName as keyof typeof SelectedIcons]
+          : Icons[routeName as keyof typeof SelectedIcons]}
+      </Animatable.View>
+    </TouchableOpacity>
+  );
+};
+
+const PlxTuberTabBar: React.FC<BottomTabBarProps> = ({
+  state,
+  descriptors,
+  navigation,
+}) => {
   return (
     <View style={styles.container}>
       {state.routes.map((route, index) => {
@@ -87,25 +127,15 @@ const PlxTuberTabBar: React.FC<BottomTabBarProps> = ({
         };
 
         return (
-          <TouchableOpacity
-            accessibilityRole="button"
+          <TabButton
+            key={route.key}
             accessibilityState={isFocused ? {selected: true} : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarTestID}
+            // testID={options.tabBarTestID}
+            routeName={route.name}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={[styles.tab, {backgroundColor: theme.background.default}]}
-            key={route.key}>
-            {isFocused
-              ? SelectedIcons[route.name as keyof typeof SelectedIcons]
-              : Icons[route.name as keyof typeof SelectedIcons]}
-            <View
-              style={[
-                styles.tabIndicator,
-                {backgroundColor: isFocused ? colors.java : colors.codGray},
-              ]}
-            />
-          </TouchableOpacity>
+          />
         );
       })}
     </View>

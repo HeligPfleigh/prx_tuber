@@ -3,7 +3,7 @@ import {FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {Box, Typography} from '@plx_tuber/components';
-import {responsiveSize} from '@plx_tuber/theme';
+import {colors, responsiveSize} from '@plx_tuber/theme';
 import {IPlaylist} from '@plx_tuber/core/types';
 import {useNavigation} from '@react-navigation/native';
 import {HomeNavigationProps} from './types';
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     width: responsiveSize(144),
     height: responsiveSize(144),
     borderRadius: responsiveSize(10),
+    backgroundColor: colors.gray,
   },
 });
 
