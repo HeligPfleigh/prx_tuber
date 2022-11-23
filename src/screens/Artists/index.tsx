@@ -116,7 +116,7 @@ const Artists: React.FC<ArtistsScreenProps> = ({navigation}) => {
   );
 
   return (
-    <Box flex={1} color={theme.background.default} p={2}>
+    <Box flex={1} color={theme.background.default} pt={2} pl={2} pr={2}>
       <Box row space="between" center mb={2} style={{paddingTop: insets.top}}>
         <Typography variant="h6" color={theme.text.primary} fontWeight="700">
           Discover

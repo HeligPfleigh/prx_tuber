@@ -7,7 +7,7 @@ import HomeIcon from '@plx_tuber/assets/icons/Home.icon';
 import DiscoverIcon from '@plx_tuber/assets/icons/Discover.icon';
 import HeartIcon from '@plx_tuber/assets/icons/Heart.icon';
 import CogIcon from '@plx_tuber/assets/icons/Cog.icon';
-import {colors, responsiveSize} from '@plx_tuber/theme';
+import {colors, responsiveSize, spacing} from '@plx_tuber/theme';
 import HomeFillIcon from '@plx_tuber/assets/icons/HomeFill.icon';
 import DiscoverFillIcon from '@plx_tuber/assets/icons/DiscoverFill.icon';
 import HeartFillIcon from '@plx_tuber/assets/icons/HeartFill.icon';
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: spacing(1.5),
   },
 });
 
