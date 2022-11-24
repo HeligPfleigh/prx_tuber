@@ -91,12 +91,12 @@ const Settings: React.FC<SettingScreenProps> = ({navigation}) => {
     //   title: 'Stream quality',
     //   status: 'Normal',
     // },
-    {
-      icon: <LightIcon color={theme.primary} />,
-      title: 'Light Mode',
-      status: theme.key === 'light' ? 'On' : 'Off',
-      onPress: toggleDarkLightTheme,
-    },
+    // {
+    //   icon: <LightIcon color={theme.primary} />,
+    //   title: 'Light Mode',
+    //   status: theme.key === 'light' ? 'On' : 'Off',
+    //   onPress: toggleDarkLightTheme,
+    // },
     {
       icon: <StartIcon color={theme.primary} />,
       title: 'Rate this app',

@@ -21,11 +21,12 @@ const styles = StyleSheet.create({
   },
   tab: {
     flex: 1,
-    paddingVertical: responsiveSize(16),
+    height: 50,
+    // paddingVertical: responsiveSize(16),
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: spacing(1.5),
+    // marginBottom: spacing(1.5),
   },
 });
 

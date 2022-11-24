@@ -28,6 +28,7 @@ import PolicyScreen from '@plx_tuber/screens/Policy';
 import MyPlaylistScreen from '@plx_tuber/screens/MyPlaylist';
 import PlayerScreen from '@plx_tuber/screens/Player';
 import ArtistScreen from '@plx_tuber/screens/Artist';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
@@ -136,28 +137,31 @@ const SettingStackNavigator = () => (
 );
 
 const RootTabNavigator = () => (
-  <Tab.Navigator
-    tabBar={props => <PlxTuberTabBar {...props} />}
-    screenOptions={{
-      headerShown: false,
-    }}>
-    <Tab.Screen name={NavigatorMap.HomeTab} component={HomeStackNavigator} />
+  <SafeAreaView edges={['right', 'bottom', 'left']} style={{flex: 1, backgroundColor:  '#121212'}}>
+    <Tab.Navigator
+      tabBar={props => <PlxTuberTabBar {...props} />}
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Tab.Screen name={NavigatorMap.HomeTab} component={HomeStackNavigator} />
 
-    <Tab.Screen
-      name={NavigatorMap.DiscoverTab}
-      component={DiscoverStackNavigator}
-    />
+      <Tab.Screen
+        name={NavigatorMap.DiscoverTab}
+        component={DiscoverStackNavigator}
+      />
 
-    <Tab.Screen
-      name={NavigatorMap.FavoriteAndPlaylistTab}
-      component={FavoriteAndPlaylistStackNavigator}
-    />
+      <Tab.Screen
+        name={NavigatorMap.FavoriteAndPlaylistTab}
+        component={FavoriteAndPlaylistStackNavigator}
+      />
 
-    <Tab.Screen
-      name={NavigatorMap.SettingTab}
-      component={SettingStackNavigator}
-    />
-  </Tab.Navigator>
+      <Tab.Screen
+        name={NavigatorMap.SettingTab}
+        component={SettingStackNavigator}
+      />
+    </Tab.Navigator>
+  </SafeAreaView>
+  
 );
 
 const AppNavigator = () => {
