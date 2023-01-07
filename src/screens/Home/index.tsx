@@ -19,6 +19,7 @@ import {HomeScreenProps} from './types';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 import {withPlayerBar} from '@plx_tuber/components/shared';
 import {useThemeStore} from '@plx_tuber/stores/theme';
+import BasicNativeAdsView from '@plx_tuber/components/ads/BasicNativeAdsView';
 
 const styles = StyleSheet.create({
   container: {
@@ -73,6 +74,10 @@ const Home: React.FC<HomeScreenProps> = ({navigation}) => {
         <>
           <Box mt={5}>
             <HotTopics topics={hotTopic} />
+          </Box>
+
+          <Box mt={2}>
+            <BasicNativeAdsView />
           </Box>
 
           <Box mt={3.5}>

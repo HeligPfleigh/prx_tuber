@@ -29,6 +29,7 @@ import MyPlaylistScreen from '@plx_tuber/screens/MyPlaylist';
 import PlayerScreen from '@plx_tuber/screens/Player';
 import ArtistScreen from '@plx_tuber/screens/Artist';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useAppOpenAd} from '@plx_tuber/components/ads/useAppOpenAd';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
@@ -169,6 +170,8 @@ const RootTabNavigator = () => (
 const AppNavigator = () => {
   const navigationRef = useNavigationContainerRef();
   const routeNameRef = useRef<string>('');
+
+  useAppOpenAd();
 
   const onNavigationReady = () => {
     if (navigationRef.current) {
