@@ -28,7 +28,7 @@ import PolicyScreen from '@plx_tuber/screens/Policy';
 import MyPlaylistScreen from '@plx_tuber/screens/MyPlaylist';
 import PlayerScreen from '@plx_tuber/screens/Player';
 import ArtistScreen from '@plx_tuber/screens/Artist';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
@@ -137,7 +137,10 @@ const SettingStackNavigator = () => (
 );
 
 const RootTabNavigator = () => (
-  <SafeAreaView edges={['right', 'bottom', 'left']} style={{flex: 1, backgroundColor:  '#121212'}}>
+  <SafeAreaView
+    edges={['right', 'bottom', 'left']}
+    // eslint-disable-next-line react-native/no-inline-styles
+    style={{flex: 1, backgroundColor: '#121212'}}>
     <Tab.Navigator
       tabBar={props => <PlxTuberTabBar {...props} />}
       screenOptions={{
@@ -161,7 +164,6 @@ const RootTabNavigator = () => (
       />
     </Tab.Navigator>
   </SafeAreaView>
-  
 );
 
 const AppNavigator = () => {

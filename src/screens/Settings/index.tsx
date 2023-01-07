@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 
 import ClockIcon from '@plx_tuber/assets/icons/Clock.icon';
 import EmailIcon from '@plx_tuber/assets/icons/Email.icon';
-import LightIcon from '@plx_tuber/assets/icons/Light.icon';
+// import LightIcon from '@plx_tuber/assets/icons/Light.icon';
 // import PlayIcon from '@plx_tuber/assets/icons/Play.icon';
 import PrivacyIcon from '@plx_tuber/assets/icons/Privacy.icon';
 import StartIcon from '@plx_tuber/assets/icons/Star.icon';
@@ -49,9 +49,9 @@ const Settings: React.FC<SettingScreenProps> = ({navigation}) => {
   const [date, setDate] = useState<Date>(new Date());
   const insets = useSafeAreaInsets();
   const theme = useThemeStore(state => state.theme);
-  const toggleDarkLightTheme = useThemeStore(
-    state => state.toggleDarkLightTheme,
-  );
+  // const toggleDarkLightTheme = useThemeStore(
+  //   state => state.toggleDarkLightTheme,
+  // );
   const toast = useToast();
 
   useEffect(() => {
@@ -138,9 +138,9 @@ const Settings: React.FC<SettingScreenProps> = ({navigation}) => {
                 {setting.title}
               </Typography>
             </Box>
-            <Typography variant="b5" color={colors.caribbeanGreen100}>
+            {/* <Typography variant="b5" color={colors.caribbeanGreen100}>
               {setting.status || ''}
-            </Typography>
+            </Typography> */}
           </Box>
         </TouchableOpacity>
       ))}
