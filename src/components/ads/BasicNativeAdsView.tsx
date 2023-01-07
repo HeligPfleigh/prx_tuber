@@ -31,11 +31,9 @@ const styles = StyleSheet.create({
     height: responsiveSize(125),
   },
   tagline: {
-    fontFamily: 'Poppins-Bold',
     fontSize: responsiveSize(12),
   },
   advertiser: {
-    fontFamily: 'Poppins-Bold',
     fontSize: responsiveSize(10),
   },
   callToAction: {

@@ -8,7 +8,9 @@ production = ENV["PRODUCTION"] == "1"
 $RNFirebaseAsStaticFramework = true
 
 target 'prx_tuber' do
-  use_frameworks!
+  use_frameworks! :linkage => :static
+
+  pod 'GoogleMobileAdsMediationFacebook', '6.11.0.0'
 
   config = use_native_modules!
 
