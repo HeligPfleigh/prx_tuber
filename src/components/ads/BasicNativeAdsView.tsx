@@ -61,7 +61,10 @@ const BasicNativeAdsView: React.FC = () => {
   }, []);
 
   return (
-    <NativeAdView adUnitID={adConfigs.nativeAdUnitId} ref={nativeAdViewRef}>
+    <NativeAdView
+      adUnitID={adConfigs.nativeAdUnitId}
+      ref={nativeAdViewRef}
+      adChoicesPlacement="topRight">
       <Box color={colors.white} row>
         <AdBadge style={styles.badge} textStyle={styles.badgeText} />
 
