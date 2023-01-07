@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import FastImage from 'react-native-fast-image';
 import {TouchableOpacity, StyleSheet} from 'react-native';
 
@@ -11,6 +11,7 @@ import {useThemeStore} from '@plx_tuber/stores/theme';
 import {ISong} from '@plx_tuber/core/types';
 import {SLEEPTIME} from '@plx_tuber/core/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useInterstitialAd} from '../ads/useInterstitialAd';
 
 interface SongListItemProps {
   song: ISong;
@@ -31,7 +32,17 @@ const SongListItem: React.FC<SongListItemProps> = ({song, onMenuPress}) => {
 
   const theme = useThemeStore(state => state.theme);
 
+  const {isLoaded, load, show, isClosed} = useInterstitialAd();
+
+  useEffect(() => {
+    load();
+  }, [load, isClosed]);
+
   const handlePlayMusic = async () => {
+    if (isLoaded) {
+      show();
+    }
+
     try {
       if (!song.audio) {
         throw new Error('Cannot load track!');

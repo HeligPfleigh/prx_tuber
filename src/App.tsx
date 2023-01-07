@@ -8,11 +8,20 @@ import {
 } from '@tanstack/react-query';
 import NetInfo from '@react-native-community/netinfo';
 // import TrackPlayer from 'react-native-track-player';
+import mobileAds from 'react-native-google-mobile-ads';
 
 import AppNavigator from './navigations/AppNavigation';
 import {SetupService} from './services';
 
 const queryClient = new QueryClient();
+
+mobileAds()
+  .initialize()
+  .then(adapterStatuses => {
+    // Initialization complete!
+    // eslint-disable-next-line no-console
+    console.log({adapterStatuses});
+  });
 
 function App() {
   useEffect(() => {

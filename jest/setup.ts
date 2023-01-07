@@ -102,3 +102,5 @@ jest.mock('react-native-track-player', () => {
     getRate: jest.fn(),
   };
 });
+
+import 'react-native-google-mobile-ads/jest.setup';
