@@ -25,7 +25,7 @@ jobs:
         run: ln -s ${ANDROID_HOME}/build-tools/31.0.0/d8 ${ANDROID_HOME}/build-tools/31.0.0/dx && ln -s ${ANDROID_HOME}/build-tools/31.0.0/lib/d8.jar ${ANDROID_HOME}/build-tools/31.0.0/lib/dx.jar
       - name: Build Android Release
         run: |
-          cd android && ENVFILE=.env.production ./gradlew assembleRelease
+          cd android && ENVFILE=.env ./gradlew assembleRelease
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
