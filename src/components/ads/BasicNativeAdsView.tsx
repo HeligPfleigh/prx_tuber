@@ -5,7 +5,7 @@ import NativeAdView, {
   AdBadge,
   AdvertiserView,
   CallToActionView,
-  ImageView,
+  NativeMediaView,
   TaglineView,
 } from 'react-native-admob-native-ads';
 
@@ -66,7 +66,7 @@ const BasicNativeAdsView: React.FC = () => {
         <AdBadge style={styles.badge} textStyle={styles.badgeText} />
 
         <Box flex={2}>
-          <ImageView style={styles.image} />
+          <NativeMediaView style={styles.image} />
         </Box>
 
         <Box flex={3} p={2}>
