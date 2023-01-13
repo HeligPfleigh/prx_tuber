@@ -14,6 +14,8 @@ import HeartFillIcon from '@plx_tuber/assets/icons/HeartFill.icon';
 import CogFillIcon from '@plx_tuber/assets/icons/CogFill.icon';
 import {useThemeStore} from '@plx_tuber/stores/theme';
 import * as Animatable from 'react-native-animatable';
+import {BannerAd, BannerAdSize} from 'react-native-google-mobile-ads';
+import {adConfigs} from '@plx_tuber/components/ads/config';
 
 const styles = StyleSheet.create({
   container: {
@@ -98,48 +100,58 @@ const PlxTuberTabBar: React.FC<BottomTabBarProps> = ({
   navigation,
 }) => {
   return (
-    <View style={styles.container}>
-      {state.routes.map((route, index) => {
-        const {options} = descriptors[route.key];
+    <View>
+      <BannerAd
+        unitId={adConfigs.bannerAdUnitId}
+        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        requestOptions={{
+          requestNonPersonalizedAdsOnly: true,
+        }}
+      />
 
-        const isFocused = state.index === index;
+      <View style={styles.container}>
+        {state.routes.map((route, index) => {
+          const {options} = descriptors[route.key];
 
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
+          const isFocused = state.index === index;
 
-          if (!isFocused && !event.defaultPrevented) {
-            // The `merge: true` option makes sure that the params inside the tab screen are preserved
-            navigation.navigate({
-              name: route.name,
-              merge: true,
-              params: undefined,
+          const onPress = () => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
             });
-          }
-        };
 
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
-        };
+            if (!isFocused && !event.defaultPrevented) {
+              // The `merge: true` option makes sure that the params inside the tab screen are preserved
+              navigation.navigate({
+                name: route.name,
+                merge: true,
+                params: undefined,
+              });
+            }
+          };
 
-        return (
-          <TabButton
-            key={route.key}
-            accessibilityState={isFocused ? {selected: true} : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            // testID={options.tabBarTestID}
-            routeName={route.name}
-            onPress={onPress}
-            onLongPress={onLongPress}
-          />
-        );
-      })}
+          const onLongPress = () => {
+            navigation.emit({
+              type: 'tabLongPress',
+              target: route.key,
+            });
+          };
+
+          return (
+            <TabButton
+              key={route.key}
+              accessibilityState={isFocused ? {selected: true} : {}}
+              accessibilityLabel={options.tabBarAccessibilityLabel}
+              // testID={options.tabBarTestID}
+              routeName={route.name}
+              onPress={onPress}
+              onLongPress={onLongPress}
+            />
+          );
+        })}
+      </View>
     </View>
   );
 };

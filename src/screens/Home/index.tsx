@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   ActivityIndicator,
   ScrollView,
@@ -19,7 +19,7 @@ import {HomeScreenProps} from './types';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 import {withPlayerBar} from '@plx_tuber/components/shared';
 import {useThemeStore} from '@plx_tuber/stores/theme';
-import BasicNativeAdsView from '@plx_tuber/components/ads/BasicNativeAdsView';
+import {useInterstitialAd} from '@plx_tuber/components/ads/useInterstitialAd';
 
 const styles = StyleSheet.create({
   container: {
@@ -46,7 +46,18 @@ const Home: React.FC<HomeScreenProps> = ({navigation}) => {
 
   const insets = useSafeAreaInsets();
 
-  const handleOpenSearch = () => navigation.navigate(NavigatorMap.Search);
+  const {isLoaded, load, show, isClosed} = useInterstitialAd(true);
+
+  useEffect(() => {
+    load();
+  }, [load, isClosed]);
+
+  const handleOpenSearch = () => {
+    if (isLoaded) {
+      show();
+    }
+    navigation.navigate(NavigatorMap.Search);
+  };
 
   const hotTopic = jamendoData?.hotTopic || [];
   const discover = jamendoData?.discover || [];
@@ -74,10 +85,6 @@ const Home: React.FC<HomeScreenProps> = ({navigation}) => {
         <>
           <Box mt={5}>
             <HotTopics topics={hotTopic} />
-          </Box>
-
-          <Box mt={2}>
-            <BasicNativeAdsView />
           </Box>
 
           <Box mt={3.5}>

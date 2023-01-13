@@ -12,7 +12,7 @@ import {useThemeStore} from '@plx_tuber/stores/theme';
 import {colors, responsiveSize, round, spacing} from '@plx_tuber/theme';
 import LeftArrowIcon from '@plx_tuber/assets/icons/LeftArrow.icon';
 import PlayerMenuIcon from '@plx_tuber/assets/icons/PlayerMenu.icon';
-import FastImage from 'react-native-fast-image';
+// import FastImage from 'react-native-fast-image';
 import TrackPlayer, {
   Event,
   PlaybackStateEvent,
@@ -38,6 +38,7 @@ import {PlaylistQueueModal} from './PlaylistQueueModal';
 import {AddToPlaylistModal} from '@plx_tuber/components/shared';
 import {SLEEPTIME} from '@plx_tuber/core/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import PlayerAdsView from '@plx_tuber/components/ads/PlayerAdsView';
 
 const styles = StyleSheet.create({
   container: {
@@ -236,13 +237,14 @@ const Player: React.FC<PlayerScreenProps> = ({navigation}) => {
       </Box>
 
       <Box flex={1} color={colors.black} middle>
-        <FastImage
+        {/* <FastImage
           source={{
             uri: String(currentTrack?.artwork) || '',
           }}
           style={styles.thumbnail}
           resizeMode={FastImage.resizeMode.contain}
-        />
+        /> */}
+        <PlayerAdsView />
       </Box>
 
       <Box flex={1}>

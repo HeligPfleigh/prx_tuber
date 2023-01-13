@@ -15,6 +15,7 @@ import {HomeNavigationProps} from './types';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 import {ISong} from '@plx_tuber/core/types';
 import {useThemeStore} from '@plx_tuber/stores/theme';
+import BasicNativeAdsView from '@plx_tuber/components/ads/BasicNativeAdsView';
 
 const styles = StyleSheet.create({
   seeAll__btn: {
@@ -79,6 +80,10 @@ const TopSongs = () => {
             See all
           </Typography>
         </TouchableOpacity>
+      </Box>
+
+      <Box mb={2}>
+        <BasicNativeAdsView />
       </Box>
 
       {(query.data || []).slice(0, 5).map(item => (

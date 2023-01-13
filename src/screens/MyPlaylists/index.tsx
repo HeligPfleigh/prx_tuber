@@ -28,6 +28,7 @@ import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 import {launchImageLibrary} from 'react-native-image-picker';
 import FastImage from 'react-native-fast-image';
 import {useToast} from 'react-native-toast-notifications';
+import BasicNativeAdsView from '@plx_tuber/components/ads/BasicNativeAdsView';
 
 const styles = StyleSheet.create({
   container: {
@@ -228,6 +229,10 @@ const MyPlaylists: React.FC<MyPlaylistsScreenProps> = ({navigation}) => {
           </Box>
         </TouchableOpacity>
       ))}
+
+      <Box mt={2}>
+        <BasicNativeAdsView />
+      </Box>
 
       <AddPlaylistModal
         open={Boolean(editedPlaylistId)}

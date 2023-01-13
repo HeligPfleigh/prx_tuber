@@ -7,10 +7,9 @@ import {
 } from 'react-native-google-mobile-ads';
 import {adConfigs} from './config';
 
-export const useInterstitialAd = (): Omit<
-  AdHookReturns,
-  'reward' | 'isEarnedReward'
-> => {
+export const useInterstitialAd = (
+  disableCount?: boolean,
+): Omit<AdHookReturns, 'reward' | 'isEarnedReward'> => {
   const data = useInterstitialAdDefault(adConfigs.interstitialAdUnitId, {
     requestNonPersonalizedAdsOnly: true,
   });
@@ -20,6 +19,11 @@ export const useInterstitialAd = (): Omit<
   const {interstitialAdRate, interstitialAdDisplayAmount} = adsStore;
 
   const show = () => {
+    if (disableCount) {
+      data.show();
+      return;
+    }
+
     adsStore.increaseInterstitialAdDisplayAmount();
     if (
       !interstitialAdRate ||

@@ -27,6 +27,7 @@ import TrackPlayer from 'react-native-track-player';
 import {useThemeStore} from '@plx_tuber/stores/theme';
 import {SLEEPTIME} from '@plx_tuber/core/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BasicNativeAdsView from '@plx_tuber/components/ads/BasicNativeAdsView';
 
 const styles = StyleSheet.create({
   back__btn: {
@@ -173,6 +174,10 @@ const Playlist: React.FC<PlaylistScreenProps> = ({navigation, route}) => {
             ) : null}
           </Box>
         </LinearGradient>
+      </Box>
+
+      <Box m={2}>
+        <BasicNativeAdsView />
       </Box>
     </SafeAreaView>
   );
