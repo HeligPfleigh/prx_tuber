@@ -1,5 +1,5 @@
 import {colors, responsiveSize} from '@plx_tuber/theme';
-import React, {memo} from 'react';
+import React, {memo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import NativeAdView, {
   AdBadge,
@@ -29,8 +29,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const PlayerAdsView: React.FC = () => {
+interface PlayerAdsViewProps {
+  replaceFor: JSX.Element;
+}
+
+const PlayerAdsView: React.FC<PlayerAdsViewProps> = ({replaceFor}) => {
   const nativeAdViewRef = React.useRef<NativeAdView>(null);
+
+  const [adloaded, setAdLoaded] = useState<boolean>(false);
 
   React.useEffect(() => {
     nativeAdViewRef.current?.loadAd();
@@ -40,14 +46,19 @@ const PlayerAdsView: React.FC = () => {
     <NativeAdView
       adUnitID={adConfigs.nativeAdUnitId}
       ref={nativeAdViewRef}
-      adChoicesPlacement="topRight">
-      <Box row>
-        <AdBadge style={styles.badge} textStyle={styles.badgeText} />
+      adChoicesPlacement="topRight"
+      onAdLoaded={() => setAdLoaded(true)}>
+      {adloaded ? (
+        <Box row>
+          <AdBadge style={styles.badge} textStyle={styles.badgeText} />
 
-        <Box flex={2}>
-          <NativeMediaView style={styles.image} />
+          <Box flex={2} mt={2}>
+            <NativeMediaView style={styles.image} />
+          </Box>
         </Box>
-      </Box>
+      ) : (
+        replaceFor
+      )}
     </NativeAdView>
   );
 };

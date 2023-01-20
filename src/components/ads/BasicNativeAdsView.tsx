@@ -1,6 +1,6 @@
 import {colors, responsiveSize} from '@plx_tuber/theme';
-import React, {memo} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {memo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import NativeAdView, {
   AdBadge,
   AdvertiserView,
@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
 const BasicNativeAdsView: React.FC = () => {
   const nativeAdViewRef = React.useRef<NativeAdView>(null);
 
-  // TODO: ask permission on ios ??
+  const [adloaded, setAdLoaded] = useState<boolean>(false);
+
   React.useEffect(() => {
     nativeAdViewRef.current?.loadAd();
   }, []);
@@ -66,26 +67,31 @@ const BasicNativeAdsView: React.FC = () => {
     <NativeAdView
       adUnitID={adConfigs.nativeAdUnitId}
       ref={nativeAdViewRef}
-      adChoicesPlacement="topRight">
-      <Box row style={{height: responsiveSize(60)}}>
-        <AdBadge style={styles.badge} textStyle={styles.badgeText} />
+      adChoicesPlacement="topRight"
+      onAdLoaded={() => setAdLoaded(true)}>
+      {adloaded ? (
+        <Box row style={{height: responsiveSize(75)}}>
+          <AdBadge style={styles.badge} textStyle={styles.badgeText} />
 
-        <Box flex={2}>
-          <NativeMediaView style={styles.image} />
-        </Box>
+          <Box flex={2} mt={2}>
+            <NativeMediaView style={styles.image} />
+          </Box>
 
-        <Box flex={3} p={2}>
-          <TaglineView style={styles.tagline} />
-          <AdvertiserView style={styles.advertiser} />
-        </Box>
+          <Box flex={3} p={2}>
+            <TaglineView style={styles.tagline} />
+            <AdvertiserView style={styles.advertiser} />
+          </Box>
 
-        <Box flex={1} center middle>
-          <CallToActionView
-            style={styles.callToAction}
-            textStyle={styles.callToActionText}
-          />
+          <Box flex={2} center middle>
+            <CallToActionView
+              style={styles.callToAction}
+              textStyle={styles.callToActionText}
+            />
+          </Box>
         </Box>
-      </Box>
+      ) : (
+        <View />
+      )}
     </NativeAdView>
   );
 };
