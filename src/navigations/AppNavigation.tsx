@@ -30,6 +30,7 @@ import PlayerScreen from '@plx_tuber/screens/Player';
 import ArtistScreen from '@plx_tuber/screens/Artist';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useAppOpenAd} from '@plx_tuber/components/ads/useAppOpenAd';
+import {StatusBar} from 'react-native';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
@@ -213,6 +214,7 @@ const AppNavigator = () => {
       ref={navigationRef}
       onReady={onNavigationReady}
       onStateChange={onStateChange}>
+      <StatusBar barStyle="light-content" />
       <RootTabNavigator />
     </NavigationContainer>
   );

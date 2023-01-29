@@ -5,7 +5,7 @@ import NativeAdView, {
   AdBadge,
   AdvertiserView,
   CallToActionView,
-  NativeMediaView,
+  ImageView,
   TaglineView,
 } from 'react-native-admob-native-ads';
 
@@ -70,11 +70,11 @@ const BasicNativeAdsView: React.FC = () => {
       adChoicesPlacement="topRight"
       onAdLoaded={() => setAdLoaded(true)}>
       {adloaded ? (
-        <Box row style={{height: responsiveSize(75)}}>
+        <Box row style={{height: responsiveSize(80)}}>
           <AdBadge style={styles.badge} textStyle={styles.badgeText} />
 
           <Box flex={2} mt={2}>
-            <NativeMediaView style={styles.image} />
+            <ImageView style={styles.image} />
           </Box>
 
           <Box flex={3} p={2}>
