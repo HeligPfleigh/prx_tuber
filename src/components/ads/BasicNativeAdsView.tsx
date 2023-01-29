@@ -5,7 +5,7 @@ import NativeAdView, {
   AdBadge,
   AdvertiserView,
   CallToActionView,
-  ImageView,
+  NativeMediaView,
   TaglineView,
 } from 'react-native-admob-native-ads';
 
@@ -18,13 +18,13 @@ const styles = StyleSheet.create({
     height: responsiveSize(15),
     borderWidth: 1,
     borderRadius: 2,
-    borderColor: colors.scorpion,
+    borderColor: colors.bondiBlue,
     position: 'absolute',
     zIndex: 2,
   },
   badgeText: {
     fontSize: responsiveSize(9),
-    color: colors.scorpion,
+    color: colors.bondiBlue,
   },
   image: {
     width: '100%',
@@ -74,7 +74,7 @@ const BasicNativeAdsView: React.FC = () => {
           <AdBadge style={styles.badge} textStyle={styles.badgeText} />
 
           <Box flex={2} mt={2}>
-            <ImageView style={styles.image} />
+            <NativeMediaView style={styles.image} />
           </Box>
 
           <Box flex={3} p={2}>

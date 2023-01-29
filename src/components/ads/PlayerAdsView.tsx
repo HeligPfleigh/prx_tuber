@@ -15,13 +15,13 @@ const styles = StyleSheet.create({
     height: responsiveSize(15),
     borderWidth: 1,
     borderRadius: 2,
-    borderColor: colors.scorpion,
+    borderColor: colors.bondiBlue,
     position: 'absolute',
     zIndex: 2,
   },
   badgeText: {
     fontSize: responsiveSize(9),
-    color: colors.scorpion,
+    color: colors.bondiBlue,
   },
   image: {
     width: '100%',
