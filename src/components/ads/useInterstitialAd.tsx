@@ -1,5 +1,7 @@
 import {useAdsStore} from '@plx_tuber/stores/ads';
 import dayjs from 'dayjs';
+import {useEffect} from 'react';
+import {StatusBar} from 'react-native';
 import Config from 'react-native-config';
 import {
   AdHookReturns,
@@ -18,8 +20,15 @@ export const useInterstitialAd = (
 
   const {interstitialAdRate, interstitialAdDisplayAmount} = adsStore;
 
+  useEffect(() => {
+    if (data?.isClosed) {
+      StatusBar.setHidden(false);
+    }
+  }, [data?.isClosed]);
+
   const show = () => {
     if (disableCount) {
+      StatusBar.setHidden(true);
       data.show();
       return;
     }
@@ -32,6 +41,7 @@ export const useInterstitialAd = (
     ) {
       return;
     } else {
+      StatusBar.setHidden(true);
       data.show();
     }
   };

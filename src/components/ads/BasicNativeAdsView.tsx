@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: responsiveSize(60),
+    height: responsiveSize(120),
   },
   tagline: {
     fontSize: responsiveSize(12),
@@ -70,19 +70,16 @@ const BasicNativeAdsView: React.FC = () => {
       adChoicesPlacement="topRight"
       onAdLoaded={() => setAdLoaded(true)}>
       {adloaded ? (
-        <Box row style={{height: responsiveSize(80)}}>
+        <Box row style={{height: responsiveSize(135)}}>
           <AdBadge style={styles.badge} textStyle={styles.badgeText} />
 
           <Box flex={2} mt={2}>
             <NativeMediaView style={styles.image} />
           </Box>
 
-          <Box flex={3} p={2}>
+          <Box flex={2} center middle mt={2}>
             <TaglineView style={styles.tagline} />
             <AdvertiserView style={styles.advertiser} />
-          </Box>
-
-          <Box flex={2} center middle>
             <CallToActionView
               style={styles.callToAction}
               textStyle={styles.callToActionText}

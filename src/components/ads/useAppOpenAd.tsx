@@ -1,15 +1,19 @@
 import {useAdsStore} from '@plx_tuber/stores/ads';
 import dayjs from 'dayjs';
 import {useEffect} from 'react';
+import {StatusBar} from 'react-native';
 import Config from 'react-native-config';
 import {useAppOpenAd as useAppOpenAdDefault} from 'react-native-google-mobile-ads';
 
 import {adConfigs} from './config';
 
 export const useAppOpenAd = () => {
-  const {isLoaded, load, show} = useAppOpenAdDefault(adConfigs.openAdUnitId, {
-    requestNonPersonalizedAdsOnly: true,
-  });
+  const {isLoaded, load, show, isClosed} = useAppOpenAdDefault(
+    adConfigs.openAdUnitId,
+    {
+      requestNonPersonalizedAdsOnly: true,
+    },
+  );
 
   const adsStore = useAdsStore(state => state);
 
@@ -18,6 +22,12 @@ export const useAppOpenAd = () => {
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    if (isClosed) {
+      StatusBar.setHidden(false);
+    }
+  }, [isClosed]);
 
   const handleShowOpenAd = () => {
     adsStore.increaseOpenAdDisplayAmount();
@@ -28,6 +38,7 @@ export const useAppOpenAd = () => {
     ) {
       return;
     } else {
+      StatusBar.setHidden(true);
       show();
     }
   };

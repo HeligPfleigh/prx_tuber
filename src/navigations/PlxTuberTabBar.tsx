@@ -14,8 +14,8 @@ import HeartFillIcon from '@plx_tuber/assets/icons/HeartFill.icon';
 import CogFillIcon from '@plx_tuber/assets/icons/CogFill.icon';
 import {useThemeStore} from '@plx_tuber/stores/theme';
 import * as Animatable from 'react-native-animatable';
-import {BannerAd, BannerAdSize} from 'react-native-google-mobile-ads';
-import {adConfigs} from '@plx_tuber/components/ads/config';
+// import {BannerAd, BannerAdSize} from 'react-native-google-mobile-ads';
+// import {adConfigs} from '@plx_tuber/components/ads/config';
 
 const styles = StyleSheet.create({
   container: {
@@ -101,13 +101,13 @@ const PlxTuberTabBar: React.FC<BottomTabBarProps> = ({
 }) => {
   return (
     <View>
-      <BannerAd
+      {/* <BannerAd
         unitId={adConfigs.bannerAdUnitId}
         size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
         requestOptions={{
           requestNonPersonalizedAdsOnly: true,
         }}
-      />
+      /> */}
 
       <View style={styles.container}>
         {state.routes.map((route, index) => {
