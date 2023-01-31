@@ -9,6 +9,7 @@ import {SongListItem, withPlayerBar} from '@plx_tuber/components/shared';
 import {ISong} from '@plx_tuber/core/types';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useThemeStore} from '@plx_tuber/stores/theme';
+import BasicNativeAdsView from '@plx_tuber/components/ads/BasicNativeAdsView';
 
 const styles = StyleSheet.create({
   header__container: {
@@ -53,6 +54,10 @@ const Songs: React.FC<SongsScreenProps> = ({route, navigation}) => {
             {title}
           </Typography>
         </Box>
+      </Box>
+
+      <Box pl={2} pr={2}>
+        <BasicNativeAdsView />
       </Box>
     </SafeAreaView>
   );

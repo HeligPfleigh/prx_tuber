@@ -20,6 +20,7 @@ import {withPlayerBar} from '@plx_tuber/components/shared';
 import {useThemeStore} from '@plx_tuber/stores/theme';
 import {ArtistsScreenProps} from './types';
 import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
+import BasicNativeAdsView from '@plx_tuber/components/ads/BasicNativeAdsView';
 
 const styles = StyleSheet.create({
   search__container: {
@@ -115,6 +116,12 @@ const Artists: React.FC<ArtistsScreenProps> = ({navigation}) => {
     </TouchableOpacity>
   );
 
+  const renderHeader = () => (
+    <Box mb={1}>
+      <BasicNativeAdsView />
+    </Box>
+  );
+
   return (
     <Box flex={1} color={theme.background.default} pt={2} pl={2} pr={2}>
       <Box row space="between" center mb={2} style={{paddingTop: insets.top}}>
@@ -137,6 +144,7 @@ const Artists: React.FC<ArtistsScreenProps> = ({navigation}) => {
         <FlatList
           data={data || []}
           renderItem={renderItem}
+          ListHeaderComponent={renderHeader}
           keyExtractor={item => `${item.id}`}
           showsVerticalScrollIndicator={false}
           numColumns={3}

@@ -9,8 +9,8 @@ import {
 } from '@plx_tuber/navigations/types';
 
 export type SongsScreenProps = CompositeScreenProps<
-  BottomTabScreenProps<RootTabParamList, NavigatorMap.HomeTab>,
-  NativeStackScreenProps<HomeStackParamList, NavigatorMap.Songs>
+  NativeStackScreenProps<HomeStackParamList, NavigatorMap.Songs>,
+  BottomTabScreenProps<RootTabParamList, NavigatorMap.HomeTab>
 >;
 
 export type SongsNavigationProps = SongsScreenProps['navigation'];
