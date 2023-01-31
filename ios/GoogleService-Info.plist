@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>838654077102-di8il62flo5vig8qiq4304bodpgmuten.apps.googleusercontent.com</string>
+	<string>838654077102-tvovk7ta27iehkfinn8hdhic6iimisp0.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.838654077102-di8il62flo5vig8qiq4304bodpgmuten</string>
+	<string>com.googleusercontent.apps.838654077102-tvovk7ta27iehkfinn8hdhic6iimisp0</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>838654077102-cnpp4l66e1shlfnpm2t0m1au9govokmu.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>org.prx-tuber</string>
+	<string>com.pure.tuber.mp3.player</string>
 	<key>PROJECT_ID</key>
 	<string>prxtuber</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:838654077102:ios:51fcd5ceb5d45ecc05a53f</string>
+	<string>1:838654077102:ios:f9d02cee549829df05a53f</string>
 </dict>
 </plist>
