@@ -30,12 +30,12 @@ jest.mock('@react-native-firebase/analytics', () => () => {
   };
 });
 
-// jest.mock('react-native-in-app-review', () => ({
-//   RequestInAppReview: jest.fn().mockImplementation(() => {
-//     return Promise.resolve();
-//   }),
-//   isAvailable: jest.fn(),
-// }));
+jest.mock('react-native-in-app-review', () => ({
+  RequestInAppReview: jest.fn().mockImplementation(() => {
+    return Promise.resolve();
+  }),
+  isAvailable: jest.fn(),
+}));
 
 // jest.mock('react-native-share', () => ({
 //   default: jest.fn(),

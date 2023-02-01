@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import FastImage from 'react-native-fast-image';
 import {TouchableOpacity, StyleSheet} from 'react-native';
+import InAppReview from 'react-native-in-app-review';
 
 import {Box, Typography} from '../common';
 import MenuIcon from '@plx_tuber/assets/icons/Menu.icon';
@@ -9,9 +10,11 @@ import TrackPlayer from 'react-native-track-player';
 import {useToast} from 'react-native-toast-notifications';
 import {useThemeStore} from '@plx_tuber/stores/theme';
 import {ISong} from '@plx_tuber/core/types';
-import {SLEEPTIME} from '@plx_tuber/core/constants';
+import {IS_APP_RATE_OPENED, SLEEPTIME} from '@plx_tuber/core/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useInterstitialAd} from '../ads/useInterstitialAd';
+import dayjs from 'dayjs';
+import Config from 'react-native-config';
 
 interface SongListItemProps {
   song: ISong;
@@ -39,7 +42,27 @@ const SongListItem: React.FC<SongListItemProps> = ({song, onMenuPress}) => {
   }, [load, isClosed]);
 
   const handlePlayMusic = async () => {
-    if (isLoaded) {
+    // request for in app review
+    const now = dayjs();
+    const isInAppReviewAvailable = InAppReview.isAvailable();
+    const isAppRateOpened = await AsyncStorage.getItem(IS_APP_RATE_OPENED);
+
+    const isShowAppReviewPopup =
+      isInAppReviewAvailable &&
+      now.isAfter(dayjs(Config.IN_APP_REVIEW_DISABLE_BEFORE_DAY)) &&
+      Boolean(!isAppRateOpened);
+
+    if (isShowAppReviewPopup) {
+      try {
+        await InAppReview.RequestInAppReview();
+      } catch (error) {
+        // TODO: handle error
+      } finally {
+        await AsyncStorage.setItem(IS_APP_RATE_OPENED, 'true');
+      }
+    }
+
+    if (isLoaded && !isShowAppReviewPopup) {
       show();
     }
 

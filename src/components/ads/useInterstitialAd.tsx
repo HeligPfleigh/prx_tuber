@@ -37,6 +37,8 @@ export const useInterstitialAd = (
     if (
       !interstitialAdRate ||
       interstitialAdDisplayAmount % interstitialAdRate ||
+      // show interstitial ads after 7 times user clicked on item
+      interstitialAdDisplayAmount < 7 ||
       !dayjs().isAfter(dayjs(Config.IN_APP_REVIEW_DISABLE_BEFORE_DAY))
     ) {
       return;
