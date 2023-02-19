@@ -1,7 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {Box, Typography} from '@plx_tuber/components';
-import {SongListItem, withPlayerBar} from '@plx_tuber/components/shared';
+import {
+  AddToPlaylistModal,
+  PlayerModal,
+  SongListItem,
+  withPlayerBar,
+} from '@plx_tuber/components/shared';
 import {useThemeStore} from '@plx_tuber/stores/theme';
 import {
   ActivityIndicator,
@@ -21,6 +26,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SLEEPTIME} from '@plx_tuber/core/constants';
 import {useQuery} from '@tanstack/react-query';
 import {getArtistDetail} from '@plx_tuber/core/apis';
+import BasicNativeAdsView from '@plx_tuber/components/ads/BasicNativeAdsView';
+import {ISong} from '@plx_tuber/core/types';
 
 const styles = StyleSheet.create({
   container: {
@@ -109,6 +116,28 @@ const Artist: React.FC<ArtistScreenProps> = ({navigation, route}) => {
       // TODO
     }
   };
+
+  const [selectedSong, setSelectedSong] = useState<ISong>();
+
+  const [openPlayerModal, setOpenPlayerModal] = useState<boolean>(false);
+  const togglePlayerModal = () => setOpenPlayerModal(prev => !prev);
+  const [openAddToPlaylistModal, setOpenToPlaylistModal] =
+    useState<boolean>(false);
+  const toggleAddToPlaylistModal = () => setOpenToPlaylistModal(prev => !prev);
+
+  const handleSelectSong = (song: ISong) => () => {
+    setSelectedSong(song);
+    togglePlayerModal();
+  };
+
+  const handleAddToPlaylist = () => {
+    togglePlayerModal();
+    // fix open modal on ios
+    setTimeout(() => {
+      toggleAddToPlaylistModal();
+    }, 500);
+  };
+
   return (
     <ScrollView
       style={[styles.container, {backgroundColor: theme.background.default}]}>
@@ -164,17 +193,37 @@ const Artist: React.FC<ArtistScreenProps> = ({navigation, route}) => {
           </TouchableOpacity>
         </Box>
 
+        <Box mt={2}>
+          <BasicNativeAdsView />
+        </Box>
+
         <Box mt={3.5}>
           {isLoading ? (
             <ActivityIndicator />
           ) : (
             (data || []).map(item => (
               <Box mb={2} key={item.id}>
-                <SongListItem song={item} onMenuPress={() => {}} />
+                <SongListItem
+                  song={item}
+                  onMenuPress={handleSelectSong(item)}
+                />
               </Box>
             ))
           )}
         </Box>
+
+        <PlayerModal
+          open={openPlayerModal}
+          onClose={togglePlayerModal}
+          onAddToPlaylist={handleAddToPlaylist}
+          song={selectedSong}
+        />
+
+        <AddToPlaylistModal
+          open={openAddToPlaylistModal}
+          onClose={toggleAddToPlaylistModal}
+          song={selectedSong}
+        />
       </Box>
     </ScrollView>
   );

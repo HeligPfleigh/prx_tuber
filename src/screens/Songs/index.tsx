@@ -56,7 +56,7 @@ const Songs: React.FC<SongsScreenProps> = ({route, navigation}) => {
         </Box>
       </Box>
 
-      <Box pl={2} pr={2}>
+      <Box pl={2} pr={2} mb={2}>
         <BasicNativeAdsView />
       </Box>
     </SafeAreaView>

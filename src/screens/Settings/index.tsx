@@ -26,6 +26,8 @@ import NavigatorMap from '@plx_tuber/navigations/NavigatorMap';
 import {useToast} from 'react-native-toast-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SLEEPTIME} from '@plx_tuber/core/constants';
+import {BannerAd, BannerAdSize} from 'react-native-google-mobile-ads';
+import {adConfigs} from '@plx_tuber/components/ads/config';
 
 const styles = StyleSheet.create({
   root: {
@@ -202,6 +204,14 @@ const Settings: React.FC<SettingScreenProps> = ({navigation}) => {
           </TouchableOpacity>
         </Box>
       </Box>
+
+      <BannerAd
+        unitId={adConfigs.bannerAdUnitId}
+        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        requestOptions={{
+          requestNonPersonalizedAdsOnly: true,
+        }}
+      />
     </ScrollView>
   );
 };

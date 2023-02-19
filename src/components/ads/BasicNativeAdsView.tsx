@@ -1,6 +1,6 @@
 import {colors, responsiveSize} from '@plx_tuber/theme';
-import React, {memo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {memo} from 'react';
+import {StyleSheet} from 'react-native';
 import NativeAdView, {
   AdBadge,
   AdvertiserView,
@@ -57,8 +57,6 @@ const styles = StyleSheet.create({
 const BasicNativeAdsView: React.FC = () => {
   const nativeAdViewRef = React.useRef<NativeAdView>(null);
 
-  const [adloaded, setAdLoaded] = useState<boolean>(false);
-
   React.useEffect(() => {
     nativeAdViewRef.current?.loadAd();
   }, []);
@@ -67,28 +65,23 @@ const BasicNativeAdsView: React.FC = () => {
     <NativeAdView
       adUnitID={adConfigs.nativeAdUnitId}
       ref={nativeAdViewRef}
-      adChoicesPlacement="topRight"
-      onAdLoaded={() => setAdLoaded(true)}>
-      {adloaded ? (
-        <Box row style={{height: responsiveSize(135)}}>
-          <AdBadge style={styles.badge} textStyle={styles.badgeText} />
+      adChoicesPlacement="topRight">
+      <Box row style={{height: responsiveSize(135)}}>
+        <AdBadge style={styles.badge} textStyle={styles.badgeText} />
 
-          <Box flex={2} mt={2}>
-            <NativeMediaView style={styles.image} />
-          </Box>
-
-          <Box flex={2} center middle mt={2}>
-            <TaglineView style={styles.tagline} />
-            <AdvertiserView style={styles.advertiser} />
-            <CallToActionView
-              style={styles.callToAction}
-              textStyle={styles.callToActionText}
-            />
-          </Box>
+        <Box flex={2} mt={2}>
+          <NativeMediaView style={styles.image} />
         </Box>
-      ) : (
-        <View />
-      )}
+
+        <Box flex={2} center middle mt={2}>
+          <TaglineView style={styles.tagline} />
+          <AdvertiserView style={styles.advertiser} />
+          <CallToActionView
+            style={styles.callToAction}
+            textStyle={styles.callToActionText}
+          />
+        </Box>
+      </Box>
     </NativeAdView>
   );
 };

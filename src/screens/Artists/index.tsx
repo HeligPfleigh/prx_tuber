@@ -117,7 +117,7 @@ const Artists: React.FC<ArtistsScreenProps> = ({navigation}) => {
   );
 
   const renderHeader = () => (
-    <Box mb={1}>
+    <Box mb={3}>
       <BasicNativeAdsView />
     </Box>
   );
